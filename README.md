@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3a17bfcc5ab3a5106472f1ea49c88b3cd04bb7d2
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -69,6 +72,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<<<<<<< HEAD
 =======
 # 깃 요구사항 벤치마킹
 
@@ -267,3 +271,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 - 상품분석
 - 매출분석
 >>>>>>> 173426afae63beee5da7ccc927342b6a6a0a3fc8
+=======
+>>>>>>> 3a17bfcc5ab3a5106472f1ea49c88b3cd04bb7d2
