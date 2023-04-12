@@ -1,7 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BrowserRouter as Route } from "react-router-dom";
-import Youtube from './Youtube';
 
 const HomePage = () => {
     const REST_API_KEY = "8d2b99868ab67054454a535a7db9fc4f";
