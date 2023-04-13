@@ -39,11 +39,11 @@ function Youtube(props){
     useEffect(() => {
       axios
         .get(
-          "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
-          //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=3&regionCode=KR&key=" + API_KEY
+          //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
+          "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=3&regionCode=KR&key=" + API_KEY
         )
         .then((res) => {
-          setYoutubeMostPopular(res.data.items)
+          CountYoutubeHotPlace(res.data.items)
         })
         .catch(() => {});
     }, []);
