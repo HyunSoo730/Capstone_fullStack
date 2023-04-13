@@ -1,0 +1,25 @@
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql:
+                            BasicBinder: TRACE
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver #h2 대신 mysql 사용      #org.h2.Driver
+        password: 1234
+        url: jdbc:mysql://3.39.41.194:3306/test?serverTimezone=UTC&characterEncoding=UTF-8
+        username: hyunsoo
+    jpa:
+        hibernate:
+            ddl-auto: update      #??????? ??? ? ??????? ????? ?? ??? ??'
+        properties:
+            hibernate:
+                format_sql: true #???? query? ????.'
+    output:
+        ansi:
+            enabled: always
+
