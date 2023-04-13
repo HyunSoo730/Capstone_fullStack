@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37435d02-510c-49ea-a873-697498bbcab7" name="Changes" comment="파일 숨기기" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/merge-test" />
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/Juhee-Shin" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Juhee-Shin" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2N29mykf7WhGyiNVjSIXw84S9kJ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/fullstack/fullStack/build.gradle",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "File.Encoding",
+    "spring.configuration.checksum": "57852d4f11b404c49bdf1583b963762f"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\fullstack\fullStack\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.FullstackApplication">
+    <configuration name="UserRepositoryTest.duplicateUpdateCheckEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fullstack.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="capstone.fullstack.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="capstone.fullstack.domain" />
+      <option name="MAIN_CLASS_NAME" value="capstone.fullstack.domain.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="duplicateUpdateCheckEmail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserRepositoryTest.join" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fullstack.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="capstone.fullstack.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="capstone.fullstack.domain" />
+      <option name="MAIN_CLASS_NAME" value="capstone.fullstack.domain.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="join" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserRepositoryTest.updateUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="fullstack.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="capstone.fullstack.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="capstone.fullstack.domain" />
+      <option name="MAIN_CLASS_NAME" value="capstone.fullstack.domain.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="updateUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FullstackApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fullstack.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="merge.capstone.fullstack.FullstackApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FullstackApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="fullstack.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="capstone.fullstack.FullstackApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserRepositoryTest.duplicateUpdateCheckEmail" />
+        <item itemvalue="JUnit.UserRepositoryTest.updateUser" />
+        <item itemvalue="JUnit.UserRepositoryTest.join" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37435d02-510c-49ea-a873-697498bbcab7" name="Changes" comment="" />
+      <created>1678851472548</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678851472548</updated>
+      <workItem from="1678851473808" duration="5454000" />
+      <workItem from="1680787381288" duration="2838000" />
+      <workItem from="1681268787502" duration="467000" />
+      <workItem from="1681269274118" duration="1033000" />
+      <workItem from="1681270339632" duration="5092000" />
+      <workItem from="1681275477522" duration="510000" />
+      <workItem from="1681276028471" duration="11937000" />
+      <workItem from="1681370545774" duration="7336000" />
+      <workItem from="1681402531171" duration="285000" />
+      <workItem from="1681459879484" duration="5418000" />
+      <workItem from="1681561964402" duration="37000" />
+      <workItem from="1681718718725" duration="4391000" />
+      <workItem from="1681724812071" duration="393000" />
+      <workItem from="1681725231385" duration="33041000" />
+      <workItem from="1681984389670" duration="1324000" />
+      <workItem from="1682414591707" duration="30441000" />
+      <workItem from="1682490364065" duration="94000" />
+      <workItem from="1682499253013" duration="5608000" />
+      <workItem from="1682582373717" duration="6241000" />
+      <workItem from="1682664209372" duration="27674000" />
+    </task>
+    <task id="LOCAL-00001" summary="my page">
+      <created>1681382428786</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1681382428786</updated>
+    </task>
+    <task id="LOCAL-00002" summary="openAPI save">
+      <created>1681986945342</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1681986945342</updated>
+    </task>
+    <task id="LOCAL-00003" summary="동이름으로 db에서 상권정보 가져오기">
+      <created>1682490424674</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682490424674</updated>
+    </task>
+    <task id="LOCAL-00004" summary="평균 영업 기간 추가">
+      <created>1682511216422</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682511216422</updated>
+    </task>
+    <task id="LOCAL-00005" summary="유동인구, 임대료 평균 영업기간 추가">
+      <created>1682751416314</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682751416314</updated>
+    </task>
+    <task id="LOCAL-00006" summary="git 설정">
+      <created>1682753441720</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1682753441720</updated>
+    </task>
+    <task id="LOCAL-00007" summary="파일 숨기기">
+      <created>1682753695114</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1682753695114</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Juhee-Shin" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="my page" />
+    <MESSAGE value="openAPI save" />
+    <MESSAGE value="동이름으로 db에서 상권정보 가져오기" />
+    <MESSAGE value="평균 영업 기간 추가" />
+    <MESSAGE value="유동인구, 임대료 평균 영업기간 추가" />
+    <MESSAGE value="git 설정" />
+    <MESSAGE value="파일 숨기기" />
+    <option name="LAST_COMMIT_MESSAGE" value="파일 숨기기" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
