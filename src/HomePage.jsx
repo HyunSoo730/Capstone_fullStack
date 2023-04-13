@@ -1,15 +1,43 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { React, useState } from 'react';
+import home_style from './HomePage.css';
+import { MenuItems } from "./HomePageMenuItems.jsx";
+import "./HomePageNavbar.css"
 
 const HomePage = () => {
-    const REST_API_KEY = "8d2b99868ab67054454a535a7db9fc4f";
-    const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    
+    const [clicked, setClicked] = useState(false);
+
+    const handleClick = () => {
+        setClicked(!clicked);
+    }
+
     return (
         <div>
-            <a href={KAKAO_AUTH_URL}>Kakao Login</a>
-            <NavLink to="/youtube">유튜브 분석</NavLink>
+            <nav className="Navbar">
+                <div className="menu-icon" onClick={handleClick}>
+                    <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+                </div>
+                <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+                    {MenuItems.map((item, index)=>{
+                        return (
+                            <li key={index}>
+                                <a className={item.cName} href={item.url}>
+                                    {item.title}
+                                </a>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </nav>
+            <body className={home_style.body}>
+                HELOOOOOOOOOOOOO
+            </body>
+            <div id={home_style.wrap}>
+                    <footer className={home_style.footer}>
+                        <span>개발자 : Izony |  | WANT | ME </span><br/>
+                        <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
+                        <span>version : 0.1 </span>
+                    </footer>
+                </div>
         </div>
     )
 };
