@@ -23,3 +23,6 @@ spring:
         ansi:
             enabled: always
 
+kakao:
+    api: 913c3e2fbc06e7547c10855ae65ad336
+    redirect_uri: http://localhost:8080/auth/kakao/callback

@@ -3,12 +3,12 @@ package capstone.fullstack.service;
 import capstone.fullstack.domain.User;
 import capstone.fullstack.dto.KakaoProfile;
 import capstone.fullstack.dto.OauthToken;
-import capstone.fullstack.repository.MemberRepository;
 import capstone.fullstack.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,6 +29,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Value("${kakao.api}")
+    private String kakaoApiKey;
+
+    @Value("${kakao.redirect_uri}")
+    private String redirectUri;
+
     public User save(String token) {
 
         //(1)
@@ -36,18 +42,19 @@ public class UserService {
         //(2)
         User user = userRepository.findByKakaoEmail(profile.getKakao_account().getEmail());
         //(3)
-        if(user == null) {
+        if (user == null) {
             user = User.builder()
                     .kakaoId(profile.getId())
                     //(4)
                     .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
                     .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
                     .kakaoEmail(profile.getKakao_account().getEmail()).build();
-                    //(5)
+            //(5)
 //                    .userRole("ROLE_USER").build();
 
             userRepository.save(user);
         }
+
 
         return user;
     }
@@ -104,8 +111,8 @@ public class UserService {
         //HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "67542b63a202518f4f172a590bbc7e55");
-        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
+        params.add("client_id", kakaoApiKey);
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
         //4가지 모두 넣어줌.
 

@@ -28,12 +28,12 @@ public class UserController {
     private final UserService userService;
 
     //프론트에서 인가코드 받아오는 url
-    @PostMapping("/user/login")
-    public User login(@RequestBody String accessToken) {
-        //프론트에서 넘겨주는 accessToken 카카오 회원 정보 DB에 저장
-        User user = userService.save(accessToken);
-        return user;
-    }
+//    @PostMapping("/user/login")
+//    public User login(@RequestBody String accessToken) {
+//        //프론트에서 넘겨주는 accessToken 카카오 회원 정보 DB에 저장
+//        User user = userService.save(accessToken);
+//        return user;
+//    }
 
     @GetMapping("/auth/kakao/callback")
     public User kakaoCallback(@RequestParam("code") String code) {
@@ -41,80 +41,5 @@ public class UserController {
         OauthToken oauthToken = userService.getAccessToken(code);
         User user = userService.save(oauthToken.getAccess_token());
         return user;
-        /**
-         *
-        RestTemplate rt = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", "Bearer " + token); //(1-4)
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        //HttpBody 오브젝트 생성
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", "67542b63a202518f4f172a590bbc7e55");
-        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
-        params.add("code", code);
-        //4가지 모두 넣어줌.
-
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers); //body 데이터와 헤더값 가짐.
-
-        ResponseEntity<String> response = rt.exchange(
-                "https://kauth.kakao.com/oauth/token",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                String.class
-        );
-
-        //ObjectMapper를 통해 객체로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        OauthToken oauthToken = null;
-        try {
-            oauthToken = objectMapper.readValue(response.getBody(), OauthToken.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        log.info("카카오 엑세스 토큰 {}", oauthToken.getAccess_token());
-         */
-
-        /**
-         *
-        RestTemplate rt2 = new RestTemplate();
-        HttpHeaders headers2 = new HttpHeaders();
-//        headers.add("Authorization", "Bearer " + token); //(1-4)
-        headers2.add("Authorization", "Bearer " + oauthToken.getAccess_token());
-        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest2 = new HttpEntity<>(headers2); //body 데이터와 헤더값 가짐.
-
-        ResponseEntity<String> response2 = rt2.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest2,
-                String.class
-        );
-        //access token 받고 토큰으로 회원 정보까지 조회해서 결과가 response2에 담김.
-        log.info("사용자 정보 조회, {}", response2.getBody());
-
-        //ObjectMapper를 통해 객체로 변환
-        ObjectMapper objectMapper2 = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
-        try {
-            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        //user 오브젝트 : username, password, email
-        log.info("카카오 아이디 {}", kakaoProfile.getId());
-        log.info("카카오 이메일 {}", kakaoProfile.getKakao_account().getEmail());
-        //해당 정보를 통해 우리 서버에 이제 생성해야함
-        log.info("서버 username {}", kakaoProfile.getKakao_account().getEmail() + "_" + kakaoProfile.getId());
-        log.info("서버 이메일 {}", kakaoProfile.getKakao_account().getEmail());
-        UUID garbagePassword = UUID.randomUUID();
-        log.info("서버에 랜덤으로 집어넣을 패스워드 {}", garbagePassword);
-
-        return "카카오 토큰 요청 완료에 대한 응답 : " + response2.getBody();
-         */
     }
 }
