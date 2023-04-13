@@ -2,7 +2,13 @@ import {React, useEffect, useState} from "react"
 import axios from "axios";
 import { locationData } from "./LocationDataItems";
 
+const style = {
+ 
+  backgroundColor : 'white',
+  border: '1px solid black',
+  
 
+}
 
 function CountYoutubeHotPlace(title) {
   for(let i = 0; i < locationData.length; i++){
@@ -33,17 +39,17 @@ function Youtube(props){
     useEffect(() => {
       axios
         .get(
-          //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=3&regionCode=KR&key=" + API_KEY
-          "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=3&regionCode=KR&key=" + API_KEY
+          "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
+          //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=3&regionCode=KR&key=" + API_KEY
         )
         .then((res) => {
-          CountYoutubeHotPlace(res.data.items)
+          setYoutubeMostPopular(res.data.items)
         })
         .catch(() => {});
     }, []);
 
     return(
-        <div>
+        <div style={style}>
           <div>
           Youtube Trends
             {YoutubeMostPopular.map((item, index)=>{
