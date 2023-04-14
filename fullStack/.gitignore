@@ -35,4 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### IntelliJ - api, DB ###
 /application.yml

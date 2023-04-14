@@ -3,7 +3,10 @@ package capstone.fullstack.service;
 import capstone.fullstack.domain.User;
 import capstone.fullstack.dto.KakaoProfile;
 import capstone.fullstack.dto.OauthToken;
+import capstone.fullstack.jwt.JwtProperties;
 import capstone.fullstack.repository.UserRepository;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -35,32 +39,46 @@ public class UserService {
     @Value("${kakao.redirect_uri}")
     private String redirectUri;
 
-    public User save(String token) {
+    public String saveUserAndGetToken(String token) {
 
-        //(1)
         KakaoProfile profile = findProfile(token);
-        //(2)
+
         User user = userRepository.findByKakaoEmail(profile.getKakao_account().getEmail());
-        //(3)
+
         if (user == null) {
             user = User.builder()
                     .kakaoId(profile.getId())
-                    //(4)
                     .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
                     .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
                     .kakaoEmail(profile.getKakao_account().getEmail()).build();
-            //(5)
-//                    .userRole("ROLE_USER").build();
 
             userRepository.save(user);
         }
 
 
-        return user;
+//        return user;
+        return createToken(user);
+    }
+
+    public String createToken(User user) { //(2-1)
+
+        //(2-2)
+        String jwtToken = JWT.create()
+                //(2-3)
+                .withSubject(user.getKakaoEmail())
+                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+
+                //(2-4)
+                .withClaim("id", user.getUserId())
+                .withClaim("nickname", user.getKakaoNickname())
+
+                //(2-5)
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+
+        return jwtToken; //(2-6)
     }
 
 
-    //(1-1)
     public KakaoProfile findProfile(String token) {
 
         //(1-2)
