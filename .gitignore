@@ -24,4 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # ###    IntelliJ api-key, DB Config ###
-./fullStack/src/main/resources/application.yml
+/fullStack/src/main/resources/application.yml
