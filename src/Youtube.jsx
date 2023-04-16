@@ -8,68 +8,80 @@ const style = {
 }
 
 function Youtube(props){
-    const [YoutubeHotPlace, setYoutubeHotPlace] = useState({});
-    const [YoutubeMostPopular, setYoutubeMostPopular] = useState([]);
-    const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+  const [YoutubeItem, setYoutubeItem] = useState([]);
+  const [YoutubePlace, setYoutubePlace] = useState({});
+  const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
-    const CountYoutubeHotPlace = (items) => {
-      for (let i = 0; i < items.length; i++){
-        for(let j = 0; j < locationData.length; j++){
-          if(items[i].snippet.title.includes(locationData[j])){
-            if (YoutubeHotPlace[locationData[j]] === undefined){
-              setYoutubeHotPlace({...YoutubeHotPlace, [locationData[j]]: 1});
-            }
-            else {
-              YoutubeHotPlace[locationData[j]]++;
-            }
+  const CheckYoutubeItem = (items) => {
+    for (let i = 0; i < items.length; i++){
+      if (YoutubeItem.length == 0){
+        setYoutubeItem([items[i]]);
+        CountYoutubePlace(items[i]);
+      }
+      else{
+        for (let j = 0; j < YoutubeItem.length; j++){
+          if (items[i].snippet.title != YoutubeItem[j].snippet.title){
+            setYoutubeItem([...YoutubeItem, items[i]]);
+            CountYoutubePlace(items[i]);
+          }
+          else{
             break;
           }
         }
       }
     }
+  }
 
-    useEffect(() => {
-      axios
-        .get(
-          //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
-          "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=20&regionCode=KR&key=" + API_KEY
-        )
-        .then((res) => {
-          CountYoutubeHotPlace(res.data.items)
-          console.log(res.data.items)
-        })
-        .catch(() => {});
-    }, []);
+  const CountYoutubePlace = (items) => {
+    for (let i = 0; i < locationData.length; i++){
+      if (items.snippet.title.includes(locationData[i])){
+        if (YoutubePlace[locationData[i]] === undefined){
+          setYoutubePlace({...YoutubePlace, [locationData[i]]: 1});
+        }
+        else {
+          YoutubePlace[locationData[i]]++;
+        }
+        break;
+      }
+    }
+  }
 
-    return(
-        <div style={style}>
-          <div>
-          Youtube Trends
-            {YoutubeMostPopular.map((item, index)=>{
-              return (
-                <li key={index}>
-                    <a>
-                      {item.snippet.title}
-                    </a>
-                </li>
-              )
-            })}
-          </div>
-          <div>
+  useEffect(() => {
+    axios
+      .get(
+        "https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
+      )
+      .then((res) => {
+        CheckYoutubeItem(res.data.items);
+      })
+      .catch(() => {console.log("Youtube API mostPopular Error")});
+    axios
+      .get(
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=30&regionCode=KR&key=" + API_KEY
+      )
+      .then((res) => {
+        CheckYoutubeItem(res.data.items);
+        console.log(res.data.items);
+      })
+      .catch(() => {console.log("Youtube API 핫플 Error")});
+  }, [YoutubePlace]);
+
+  return(
+      <div style={style}>
+        <div>
           Youtube HotPlace
-            {Object.keys(YoutubeHotPlace).map((item, index)=>{
-              console.log(YoutubeHotPlace)
+            {Object.keys(YoutubePlace).map((item, index)=>{
+              console.log(YoutubePlace)
               return(
-                <li key={index}>
+                <li key={item}>
                     <a>
                       {item}
                     </a>
                 </li>
               )
             })}
-          </div>
         </div>
-    );
-
+      </div>
+  );
 }
 export default Youtube;
