@@ -1,5 +1,5 @@
 import { React, useState } from 'react';
-import home_style from './HomePage.css';
+import HomeStyle from './HomePage.css';
 import { MenuItems } from "./HomePageMenuItems.jsx";
 import "./HomePageNavbar.css"
 
@@ -28,16 +28,15 @@ const HomePage = () => {
                     })}
                 </ul>
             </nav>
-            <body className={home_style.body}>
-                HELOOOOOOOOOOOOO
-            </body>
-            <div id={home_style.wrap}>
-                    <footer className={home_style.footer}>
-                        <span>개발자 : Izony |  | WANT | ME </span><br/>
+            <body id={HomeStyle.body}>
+                <div id={HomeStyle.wrap}>
+                    <footer id={HomeStyle.footer}>
+                        <span>개발자 : Izony | WHO | WANT | ME </span><br/>
                         <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
                         <span>version : 0.1 </span>
                     </footer>
                 </div>
+            </body>
         </div>
     )
 };
