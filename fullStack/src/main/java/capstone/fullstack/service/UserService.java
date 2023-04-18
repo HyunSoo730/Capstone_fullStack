@@ -3,12 +3,13 @@ package capstone.fullstack.service;
 import capstone.fullstack.domain.User;
 import capstone.fullstack.dto.KakaoProfile;
 import capstone.fullstack.dto.OauthToken;
-import capstone.fullstack.jwt.JwtProperties;
 import capstone.fullstack.repository.UserRepository;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import capstone.fullstack.util.JwtTokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +23,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -39,7 +39,13 @@ public class UserService {
     @Value("${kakao.redirect_uri}")
     private String redirectUri;
 
-    public String saveUserAndGetToken(String token) {
+    @Value("${user.secretkey}")
+    private String secretKey;
+
+    @Value("${user.expiredate}")
+    private String expireDate;
+
+    public String save(String token) {
 
         KakaoProfile profile = findProfile(token);
 
@@ -57,26 +63,61 @@ public class UserService {
 
 
 //        return user;
-        return createToken(user);
+        String jwtToken = JwtTokenUtils.generateToken(user, secretKey, Long.parseLong(expireDate));
+        log.info("JWT 토큰 발급 {}", jwtToken);
+        return jwtToken;
+        //유저 정보를 토대로 토큰 생성.
+
     }
 
-    public String createToken(User user) { //(2-1)
-
-        //(2-2)
-        String jwtToken = JWT.create()
-                //(2-3)
-                .withSubject(user.getKakaoEmail())
-                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
-
-                //(2-4)
-                .withClaim("id", user.getUserId())
-                .withClaim("nickname", user.getKakaoNickname())
-
-                //(2-5)
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-
-        return jwtToken; //(2-6)
+    /**
+     * jwt 토큰 검증
+     */
+    public User validateToken(String token) {
+        Long userId = JwtTokenUtils.fetchUserId(token, secretKey);  //해당 유저 아이디로 조회
+        User findUser = userRepository.findByUserId(userId);
+        log.info("User 정보 {}", findUser);
+        return findUser;
     }
+
+//    public String saveUserAndGetToken(String token) {
+//
+//        KakaoProfile profile = findProfile(token);
+//
+//        User user = userRepository.findByKakaoEmail(profile.getKakao_account().getEmail());
+//
+//        if (user == null) {
+//            user = User.builder()
+//                    .kakaoId(profile.getId())
+//                    .kakaoProfileImg(profile.getKakao_account().getProfile().getProfile_image_url())
+//                    .kakaoNickname(profile.getKakao_account().getProfile().getNickname())
+//                    .kakaoEmail(profile.getKakao_account().getEmail()).build();
+//
+//            userRepository.save(user);
+//        }
+//
+//
+////        return user;
+//        return createToken(user);
+//    }
+
+//    public String createToken(User user) { //(2-1)
+//
+//        //(2-2)
+//        String jwtToken = JWT.create()
+//                //(2-3)
+//                .withSubject(user.getKakaoEmail())
+//                .withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+//
+//                //(2-4)
+//                .withClaim("id", user.getUserId())
+//                .withClaim("nickname", user.getKakaoNickname())
+//
+//                //(2-5)
+//                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+//
+//        return jwtToken; //(2-6)
+//    }
 
 
     public KakaoProfile findProfile(String token) {
@@ -155,4 +196,5 @@ public class UserService {
 
         return oauthToken;
     }
+
 }
