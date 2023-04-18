@@ -22,3 +22,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ###    IntelliJ api-key, DB Config ###
+/fullStack/src/main/resources/application.yml
