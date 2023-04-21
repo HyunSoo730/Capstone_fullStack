@@ -75,6 +75,8 @@ public class UserService {
      */
     public User validateToken(String token) {
         Long userId = JwtTokenUtils.fetchUserId(token, secretKey);  //해당 유저 아이디로 조회
+        log.info("찾은 userId = {}", userId);
+
         User findUser = userRepository.findByUserId(userId);
         log.info("User 정보 {}", findUser);
         return findUser;
