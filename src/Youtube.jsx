@@ -2,6 +2,9 @@ import {React, useEffect, useState} from "react"
 import axios from "axios";
 import { locationData } from "./LocationDataItems";
 import ReactApexChart from "react-apexcharts";
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
+import geoData from './LocationData.json'
+import 'leaflet/dist/leaflet.css';
 
 const style = {
   backgroundColor : 'white',
@@ -73,9 +76,16 @@ const ApexChartOption = {
   }
 }
 
+function onEachFeature(feature, layer){
+  if(feature.properties){
+    layer.bindPopup("Your text or whatever")
+  }
+}
+
 function Youtube(props){
+
   const [YoutubeItem, setYoutubeItem] = useState([]);
-  const [YoutubePlace, setYoutubePlace] = useState([]);
+  const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [1]}, {name: "삼성동", data: [3]}, {name: "연남동", data: [10]}]);
   const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   const CheckYoutubeItem = (items) => {
@@ -117,6 +127,28 @@ function Youtube(props){
     }
   }
 
+  const polystyle = (feature) => {
+    for (let i = 0; i < YoutubePlace.length; i++){
+      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
+        //item.feature.properties = {...item.feature.properties, color: rgba(0.1 * YoutubePlace[i].data[0], 0, 0, 0.5)};
+        return {
+          fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          weight: 2,
+          opacity: 1,
+          color: 'white',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+    }
+    return {
+      fillColor: 'rgba(10, 0, 0, 0.5)',
+      weight: 2,
+      opacity: 1,
+      color: 'white',  //Outline color
+      fillOpacity: 0.7
+    };
+  }
+
   useEffect(() => {
     axios
       .get(
@@ -128,7 +160,7 @@ function Youtube(props){
       .catch(() => {console.log("Youtube API mostPopular Error")});
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=30&regionCode=KR&key=" + API_KEY
+        //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=1&regionCode=KR&key=" + API_KEY
       )
       .then((res) => {
         CheckYoutubeItem(res.data.items);
@@ -138,6 +170,22 @@ function Youtube(props){
 
   return(
       <div style={style}>
+        <MapContainer
+          center={[37.541, 126.986]}
+          zoom={13}
+          scrollWheelZoom={true}
+          style={{ width: "100%", height: "calc(100vh - 4rem)" }}>
+          <TileLayer
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={[51.505, -0.09]}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+          <GeoJSON data={geoData} style={polystyle}/>
+        </MapContainer>
         <div>
           <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625} />
         </div>
