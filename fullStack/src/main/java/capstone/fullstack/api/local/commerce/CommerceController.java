@@ -3,9 +3,11 @@ package capstone.fullstack.api.local.commerce;
 import capstone.fullstack.domain.CommerceChange;
 import capstone.fullstack.domain.Industry;
 import capstone.fullstack.domain.Sales;
+import capstone.fullstack.domain.population.Workplace;
 import capstone.fullstack.service.local.commerce.CommerceChangeService;
 import capstone.fullstack.service.local.commerce.IndustryService;
 import capstone.fullstack.service.local.commerce.SalesService;
+import capstone.fullstack.service.local.commerce.population.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ public class CommerceController {
     private final SalesService salesService;
     private final IndustryService industryService;
     private final CommerceChangeService commerceChangeService;
+    private final WorkplaceService workplaceService;
 
     @PostMapping("/api/v1/target")
     public Sales findDong(@RequestParam("SalesId") String id) {
@@ -34,5 +37,10 @@ public class CommerceController {
     @GetMapping("/api/v3/target")
     public CommerceChange findCC(@RequestParam("id") Long id) {
         return commerceChangeService.find(id);
+    }
+
+    @GetMapping("/api/v4/target")
+    public Workplace findWorkplace(@RequestParam Long id) {
+        return workplaceService.findWorkplacePopulation(id);
     }
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "industry_analysis")
+@Table(name = "industry_analysis") //업종 분석 테이블
 public class Industry {
 
     @Id
