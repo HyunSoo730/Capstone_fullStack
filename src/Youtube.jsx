@@ -4,7 +4,10 @@ import { locationData } from "./LocationDataItems";
 import ReactApexChart from "react-apexcharts";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
 import geoData from './LocationData.json'
+import { Drawer, Button, Placeholder } from 'rsuite';
+
 import 'leaflet/dist/leaflet.css';
+import "rsuite/dist/rsuite.css";
 
 const style = {
   backgroundColor : 'white',
@@ -76,17 +79,14 @@ const ApexChartOption = {
   }
 }
 
-function onEachFeature(feature, layer){
-  if(feature.properties){
-    layer.bindPopup("Your text or whatever")
-  }
-}
-
 function Youtube(props){
 
   const [YoutubeItem, setYoutubeItem] = useState([]);
   const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [1]}, {name: "삼성동", data: [3]}, {name: "연남동", data: [10]}]);
   const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
   const CheckYoutubeItem = (items) => {
     for (let i = 0; i < items.length; i++){
@@ -149,6 +149,20 @@ function Youtube(props){
     };
   }
 
+  function whenClicked(e, feature) {
+    setDrawerTitle(feature.properties.EMD_NM);
+    setDrawerOpen(true);
+  }
+
+  const onEachFeature = (feature, layer) => {
+    if(feature.properties){
+      layer.bindPopup(feature.properties.EMD_NM);
+    }
+    layer.on({
+      click: (e) => {whenClicked(e, feature)}
+    });
+  }
+
   useEffect(() => {
     axios
       .get(
@@ -174,21 +188,28 @@ function Youtube(props){
           center={[37.541, 126.986]}
           zoom={13}
           scrollWheelZoom={true}
-          style={{ width: "100%", height: "calc(100vh - 4rem)" }}>
+          style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
           <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-          <GeoJSON data={geoData} style={polystyle}/>
+          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature}/>
         </MapContainer>
-        <div>
-          <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625} />
-        </div>
+
+        <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
+          <Drawer.Header>
+            <Drawer.Title>{DrawerTitle}</Drawer.Title>
+            <Drawer.Actions>
+              <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
+              <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+            </Drawer.Actions>
+          </Drawer.Header>
+          <Drawer.Body>
+            <div>
+              <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625}  />
+            </div>
+          </Drawer.Body>
+        </Drawer>
       </div>
   );
 }
