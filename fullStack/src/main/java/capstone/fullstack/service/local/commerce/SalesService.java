@@ -37,7 +37,6 @@ public class SalesService {
     public List<SalesVO> getSalesListByDong(List<Integer> allCommercialCode, String sn) {
         List<Sales> salesList = salesRepository.findByCommercialCodeInAndServiceNameEquals(allCommercialCode, sn);
         Map<String, SalesVO> resultMap = new HashMap<>();
-
         for (Sales sales : salesList) {
             Local findLocal = localRepository.findFirstByCommercialCode(sales.getCommercialCode());
             String convertedDong = findLocal.getDong();  //상권코드 -> 행정동

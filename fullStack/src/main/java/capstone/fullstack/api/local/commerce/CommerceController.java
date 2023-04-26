@@ -9,7 +9,9 @@ import capstone.fullstack.service.local.commerce.population.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -184,6 +186,11 @@ public class CommerceController {
         //해결
     }
 
-
+//    @GetMapping("/test")
+//    public HashMap<String, Integer> test(@RequestParam String dong) {
+//        HashMap<String, Integer> r = new HashMap<>();
+//        r.put(dong, 1);
+//        return r;
+//    }
 
 }
