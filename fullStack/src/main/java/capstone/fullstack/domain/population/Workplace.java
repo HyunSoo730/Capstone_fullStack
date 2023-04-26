@@ -16,7 +16,7 @@ public class Workplace {
 
     private int year;     // 기준 년
     private int quarter; //기분 분기
-    private Long commercialCode;  //상권 코드
+    private Integer commercialCode;  //상권 코드
 
     private int totalNumOfWorkplace;  //총 직장 인구 수
     private int numOfMenWorkplace;  //남성 직장 인구 수

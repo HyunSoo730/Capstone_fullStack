@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "commerce_change")
-public class CommerceChange {  //상권 변화 엔티티
+@Table(name = "commerce_change")//상권 변화 엔티티
+public class CommerceChange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
