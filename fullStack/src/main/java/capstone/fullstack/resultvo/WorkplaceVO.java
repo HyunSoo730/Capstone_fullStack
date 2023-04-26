@@ -1,22 +1,15 @@
-package capstone.fullstack.domain.population;
+package capstone.fullstack.resultvo;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Entity
-@Getter
-@NoArgsConstructor
-@Table(name = "workplace_population") //직장인구 테이블
-public class Workplace {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long workplaceId;  //직장인구 id pk로 설정
+@Data   
+@AllArgsConstructor
+public class WorkplaceVO {
 
     private int year;     // 기준 년
     private int quarter; //기분 분기
-    private Integer commercialCode;  //상권 코드
+    private String dong;  //상권 코드 -> 행정동
 
     private int totalNumOfWorkplace;  //총 직장 인구 수
     private int numOfMenWorkplace;  //남성 직장 인구 수
@@ -43,4 +36,8 @@ public class Workplace {
     private int numOf40WomenWorkplace;  //여성 40대 직장 인구 수
     private int numOf50WomenWorkplace;  //여성 50대 직장 인구 수
     private int numOf60WomenWorkplace;  //여성 60대 직장 인구 수
+
+    public WorkplaceVO() {
+
+    }
 }
