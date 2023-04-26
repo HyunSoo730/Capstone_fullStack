@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity    //(서비스)업종 엔티티
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
