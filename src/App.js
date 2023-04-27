@@ -2,6 +2,7 @@ import './App.css';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import HomePage from './HomePage'
 import Youtube from './Youtube';
+import Analysis from './Analysis'
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<HomePage />}/>
           <Route path="/youtube" element={<Youtube />}/>
+          <Route path="/analysis" element={<Analysis />}/>
         </Routes>
       </BrowserRouter>
     </div>
