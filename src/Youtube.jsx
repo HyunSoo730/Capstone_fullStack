@@ -2,9 +2,9 @@ import {React, useEffect, useState} from "react"
 import axios from "axios";
 import { locationData } from "./LocationDataItems";
 import ReactApexChart from "react-apexcharts";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import geoData from './LocationData.json'
-import { Drawer, Button, Placeholder } from 'rsuite';
+import { Drawer, Button } from 'rsuite';
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -18,6 +18,9 @@ const ApexChartOption = {
   chart: {
     height: 350,
     type: 'bar',
+    toolbar: {
+      show: false
+    }
   },
   plotOptions: {
     bar: {
@@ -186,7 +189,7 @@ function Youtube(props){
       <div style={style}>
         <MapContainer
           center={[37.541, 126.986]}
-          zoom={13}
+          zoom={12}
           scrollWheelZoom={true}
           style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
           <TileLayer
