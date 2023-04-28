@@ -9,10 +9,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -81,6 +79,10 @@ public class WorkplaceService {
         }
         //Map에서 workplaceVO 리스트로 반환
         List<WorkplaceVO> workplaceVOList = new ArrayList<>(workplaceMap.values());
+        /**
+         * 년도 내림차순, 분기 오름차순
+         */
+        workplaceVOList = workplaceVOList.stream().sorted(Comparator.comparing(WorkplaceVO::getYear).reversed().thenComparing(WorkplaceVO::getQuarter)).collect(Collectors.toList());
         return workplaceVOList;
     }
 }

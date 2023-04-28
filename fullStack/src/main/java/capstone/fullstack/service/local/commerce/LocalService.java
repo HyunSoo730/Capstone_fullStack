@@ -25,7 +25,8 @@ public class LocalService {
         findLocal.stream().forEach(local -> {
             commercialCode.add(local.getCommercialCode());
         });
-        log.info("행정동 -> 상권코드 : 해당 엔티티 : {}", commercialCode);
+        //해당 행정동에 속하는 상권코드 모두 추출.
+        //        log.info("행정동 -> 상권코드 : 해당 엔티티 : {}", commercialCode);
         return findLocal;
     }
 

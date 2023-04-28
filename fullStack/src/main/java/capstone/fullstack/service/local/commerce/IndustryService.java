@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -77,6 +78,8 @@ public class IndustryService {
 
         // Map에서 IndustryVO 리스트로 변환
         List<IndustryVO> industryVOList = new ArrayList<>(industryVOMap.values());
+        industryVOList = industryVOList.stream().sorted(Comparator.comparing(IndustryVO::getYear).reversed().thenComparing(IndustryVO::getQuarter)).collect(Collectors.toList());
+
         return industryVOList;
     }
 

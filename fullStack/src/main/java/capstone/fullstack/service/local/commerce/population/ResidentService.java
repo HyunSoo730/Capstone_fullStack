@@ -10,10 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -83,6 +81,11 @@ public class ResidentService {
 
         //Map에서 residentVO 리스트로 반환
         List<ResidentVO> residentVOList = new ArrayList<>(residentVOMap.values());
+        /**
+         * 년도 내림차순, 분기 오름차순 정렬
+         */
+        residentVOList = residentVOList.stream().sorted(Comparator.comparing(ResidentVO::getYear).reversed().thenComparing(ResidentVO::getQuarter)).collect(Collectors.toList());
+//        residentVOList.forEach(System.out::println);
         return residentVOList;
     }
 }

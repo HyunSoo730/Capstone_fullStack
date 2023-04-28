@@ -9,10 +9,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -59,6 +59,18 @@ public class IncomeConsumptionService {
 
         //Map에서 리스트로 꺼내서
         List<IncomeConsumptionVO> res = new ArrayList<>(resultMap.values());
+        res = res.stream().sorted(Comparator.comparing(IncomeConsumptionVO::getYear).reversed().thenComparing(IncomeConsumptionVO::getQuarter)).collect(Collectors.toList());
+        // 상권 코드 개수로 나눈걸로 반환해야함
+//        int cnt = allCommercialCode.size();
+//        res.stream().forEach(incomeConsumptionVO -> {
+//            BigDecimal value = new BigDecimal((double)incomeConsumptionVO.getAverageMonthlyIncome() / cnt);
+//            BigDecimal roundedValue = value.setScale(4, RoundingMode.HALF_UP); //4째자리까지.
+//            incomeConsumptionVO.setAverageMonthlyIncome(Long.valueOf(String.valueOf(roundedValue)));
+//            BigDecimal value2 = new BigDecimal((double)incomeConsumptionVO.getTotalAmountSpent() / cnt);
+//            BigDecimal roundedValue2 = value2.setScale(4, RoundingMode.HALF_UP); //4째자리까지.
+//            incomeConsumptionVO.setAverageMonthlyIncome(Long.valueOf(String.valueOf(roundedValue2)));
+//        });
+
         return res;
 
     }

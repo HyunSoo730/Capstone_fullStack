@@ -1,4 +1,4 @@
-package capstone.fullstack.api.local.commerce;
+package capstone.fullstack.api.local.commerce.dong;
 
 import capstone.fullstack.repository.local.commerce.IndustryRepository;
 import capstone.fullstack.resultvo.*;

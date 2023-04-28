@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +93,13 @@ public class SalesService {
 
         //Map에서 SalesVO 리스트로 반환
         List<SalesVO> salesVOList = new ArrayList<>(resultMap.values());
+
+        salesVOList = salesVOList.stream().sorted(Comparator.comparing(SalesVO::getYear).reversed().thenComparing(SalesVO::getQuarter)).collect(Collectors.toList());
+        salesVOList.stream().forEach(salesVO -> {
+            BigDecimal value = new BigDecimal((double)salesVO.getSalesPerQuarter() / salesVO.getNumOfStores());
+            BigDecimal roundedValue = value.setScale(4, RoundingMode.HALF_UP); //4째자리까지.
+            salesVO.setAvgSalesPerQuarter(roundedValue);
+        });
         return salesVOList;
     }
 }
