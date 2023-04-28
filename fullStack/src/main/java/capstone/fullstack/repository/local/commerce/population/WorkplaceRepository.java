@@ -9,4 +9,5 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
 
     List<Workplace> findByCommercialCodeIn(List<Integer> code);
 
+    List<Workplace> findByCommercialCode(Integer commercialCode);
 }

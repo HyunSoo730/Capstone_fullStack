@@ -9,4 +9,5 @@ public interface FacilityRepository extends JpaRepository<Facility, Long> {
 
     List<Facility> findByCommercialCodeIn(List<Integer> code);
 
+    List<Facility> findByCommercialCode(Integer code);
 }

@@ -9,4 +9,5 @@ public interface IncomeConsumptionRepository extends JpaRepository<IncomeConsump
 
     List<IncomeConsumption> findByCommercialCodeIn(List<Integer> code);
 
+    List<IncomeConsumption> findByCommercialCode(Integer commercialCode);
 }

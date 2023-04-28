@@ -32,7 +32,7 @@ public class SalesService {
     /**
      * 특정 상권 코드에 해당하는 sales 모두 추출
      */
-    public List<Sales> findAllSales(Long commercialCode, String serviceName) {
+    public List<Sales> findAllSales(Integer commercialCode, String serviceName) {
         List<Sales> sales = salesRepository.findByCommercialCodeAndServiceName(commercialCode, serviceName);
         return sales;
     }
