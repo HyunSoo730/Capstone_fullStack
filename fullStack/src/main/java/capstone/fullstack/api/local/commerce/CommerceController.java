@@ -1,6 +1,9 @@
 package capstone.fullstack.api.local.commerce;
 
+import capstone.fullstack.repository.local.commerce.AvgOperationPeriodRepository;
 import capstone.fullstack.repository.local.commerce.IndustryRepository;
+import capstone.fullstack.repository.local.commerce.RentalFeeRepository;
+import capstone.fullstack.repository.local.commerce.population.FloatingRepository;
 import capstone.fullstack.resultvo.*;
 import capstone.fullstack.service.local.commerce.*;
 import capstone.fullstack.service.local.commerce.all.AllService;
@@ -9,9 +12,8 @@ import capstone.fullstack.service.local.commerce.population.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +27,9 @@ public class CommerceController {
     private final IncomeConsumptionService incomeConsumptionService;
     private final FacilityService facilityService;
     private final LocalService localService;
+    private final RentalFeeRepository rentalFeeRepository;
+    private final AvgOperationPeriodRepository avgOperationPeriodRepository;
+    private final FloatingRepository floatingRepository;
 
     private final AllService allService;
 
@@ -159,38 +164,15 @@ public class CommerceController {
         //해결. 연도 -> 분기 -> 해당 행정동에 대한 누계
     }
 
-    /**
-     * 소득소비 엔티티 반환 // 업종과는 관련 x
-     * 서울시 평균 소득 금액은 프론트에서 따로 기입
-     */
-    @GetMapping("/api/local-commerce/income_consumption")
-    public List<IncomeConsumptionVO> findAllIC(@RequestParam String dong) {
-        //1. 특정 행정동 상권코드로
-        List<Integer> allCommercialCode = allService.findAllCommercialCode(dong);
-        //2. 해당 상권코드들로 엔티티
-        List<IncomeConsumptionVO> res = incomeConsumptionService.getIncomeConsumptionByDong(allCommercialCode);
-        return res;
-        //해결
-    }
 
-    /**
-     * 집객시설 엔티티 반환
-     * 특정 년도, 특정 분기의 해당 상권 코드에 해당 얘기
-     */
-    @GetMapping("/api/local-commerce/facility")
-    public List<FacilityVO> findAllFacility(@RequestParam String dong) {
-        //1. 행정동 -> 상권 코드
-        List<Integer> allCommercialCode = allService.findAllCommercialCode(dong);
-        List<FacilityVO> res = facilityService.getFacilityByDong(allCommercialCode);
-        return res;
-        //해결
-    }
-
-//    @GetMapping("/test")
+    //    @GetMapping("/test")
 //    public HashMap<String, Integer> test(@RequestParam String dong) {
 //        HashMap<String, Integer> r = new HashMap<>();
 //        r.put(dong, 1);
 //        return r;
 //    }
+
+
+
 
 }
