@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet'
 import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json'
+import geoDetailData from './LocationDetailData.json'
 import {AnalysisData} from './AnalysisItems'
-import LocationData from './LocationDataItems'
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -19,9 +19,11 @@ function Analysis(props){
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
+    const [MyZoom, setMyZoom] = useState(12);
+
       var ApexChartLineOption = {
         chart: {
-          height: 350,
+          height: 300,
           type: "line",
           stacked: false,
           toolbar: {
@@ -170,18 +172,41 @@ function Analysis(props){
         }
     }
 
-    function whenClicked(e, feature) {
+    function whenClicked(e, feature, mode) {
+      if (mode === "normal"){
         setDrawerTitle(feature.properties.EMD_NM);
-        setDrawerOpen(true);
+      }
+      else {
+        setDrawerTitle(feature.properties.TRDAR_NM);
+      }
+      setDrawerOpen(true);
     }
     
     const onEachFeature = (feature, layer) => {
-        if(feature.properties){
-          layer.bindPopup(feature.properties.EMD_NM);
+      if(feature.properties){
+        layer.bindPopup(feature.properties.EMD_NM);
+      }
+      layer.on({
+        click: (e) => {whenClicked(e, feature, "normal")}
+      });
+    }
+
+    const onEachDetailFeature = (feature, layer) => {
+      if(feature.properties){
+        layer.bindPopup(feature.properties.TRDAR_NM);
+      }
+      layer.on({
+        click: (e) => {whenClicked(e, feature, "detail")}
+      });
+    }
+
+    const RenderingGeoJSON = () => {
+      const MyMap  = useMapEvents({
+        zoomend() {
+          setMyZoom(MyMap.getZoom())
         }
-        layer.on({
-          click: (e) => {whenClicked(e, feature)}
-        });
+      })
+      return <GeoJSON data={MyZoom < 15 ? geoData : geoDetailData} onEachFeature={MyZoom < 15 ? onEachFeature : onEachDetailFeature}/>;
     }
 
     useEffect(()=>{
@@ -238,16 +263,17 @@ function Analysis(props){
     return(
         <div>
             <MapContainer
-                center={[37.541, 126.986]}
-                zoom={12}
-                scrollWheelZoom={true}
-                style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
-                <TileLayer
-                    url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-            <GeoJSON data={geoData} onEachFeature={onEachFeature}/>
-        </MapContainer>
+              center={[37.541, 126.986]}
+              zoom={12}
+              scrollWheelZoom={true}
+              zoomstart={()=>console.log("zoomend")}
+              style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
+              <TileLayer
+                  url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <RenderingGeoJSON/>
+            </MapContainer>
 
         <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
           <Drawer.Header>
