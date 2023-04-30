@@ -74,4 +74,46 @@ public class IncomeConsumptionService {
         return res;
 
     }
+
+    public List<IncomeConsumptionVO> getIncomeConsumptionByAllDong(List<Integer> allCommercialCode, String dong) {
+
+        List<IncomeConsumption> all = incomeConsumptionRepository.findByCommercialCodeIn(allCommercialCode);
+
+        Map<String, IncomeConsumptionVO> resultMap = new HashMap<>();
+
+        for (IncomeConsumption incomeConsumption : all) {
+
+            //이미 존재하는 incomeConsumtionVO 인 경우 누적
+            String key = String.valueOf(incomeConsumption.getYear()) + String.valueOf(incomeConsumption.getQuarter());
+            IncomeConsumptionVO incomeConsumptionVO = resultMap.computeIfAbsent(key, k -> {
+                IncomeConsumptionVO newVO = new IncomeConsumptionVO();
+                newVO.setYear(incomeConsumption.getYear());
+                newVO.setQuarter(incomeConsumption.getQuarter());
+                newVO.setDong(dong);
+                //미리 넣어야할 것들 넣고 시작
+                return newVO;
+            } );
+
+            //누적값 계산
+            incomeConsumptionVO.setAverageMonthlyIncome(incomeConsumptionVO.getAverageMonthlyIncome() + incomeConsumption.getAverageMonthlyIncome());
+            incomeConsumptionVO.setTotalAmountSpent(incomeConsumptionVO.getTotalAmountSpent() + incomeConsumption.getTotalAmountSpent());
+        }
+
+        //Map에서 리스트로 꺼내서
+        List<IncomeConsumptionVO> res = new ArrayList<>(resultMap.values());
+        res = res.stream().sorted(Comparator.comparing(IncomeConsumptionVO::getYear).reversed().thenComparing(IncomeConsumptionVO::getQuarter)).collect(Collectors.toList());
+//         상권 코드 개수로 나눈걸로 반환해야함
+        int cnt = allCommercialCode.size();
+        res.stream().forEach(incomeConsumptionVO -> {
+            BigDecimal num = new BigDecimal(Double.toString(incomeConsumptionVO.getAverageMonthlyIncome() / cnt));
+            BigDecimal res1 = num.setScale(4, RoundingMode.HALF_UP);
+            BigDecimal num2 = new BigDecimal(Double.toString(incomeConsumptionVO.getTotalAmountSpent() / cnt));
+            BigDecimal res2 = num2.setScale(4, RoundingMode.HALF_UP);
+            incomeConsumptionVO.setAverageMonthlyIncome(res1.longValue());
+            incomeConsumptionVO.setTotalAmountSpent(res2.longValue());
+        });
+
+        return res;
+
+    }
 }

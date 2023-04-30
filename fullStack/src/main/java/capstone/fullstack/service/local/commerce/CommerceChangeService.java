@@ -33,5 +33,17 @@ public class CommerceChangeService {
         return res;
     }
 
+    public List<CommerceChangeVO> findAlletrics(String dong) {
+        List<CommerceChange> cc = commerceChangeRepository.findByDongStartingWith(dong);
+        List<CommerceChangeVO> res = cc.stream()
+                .sorted(Comparator.comparing(CommerceChange::getDong).reversed()
+                .thenComparing(CommerceChange::getYear).reversed()
+                .thenComparing(CommerceChange::getQuarter))
+                .map(commerceChange -> new CommerceChangeVO(commerceChange.getYear(), commerceChange.getQuarter(), commerceChange.getDong(), commerceChange.getCommerceMetrics()))
+                .collect(Collectors.toList());
+
+        return res;
+    }
+
 
 }

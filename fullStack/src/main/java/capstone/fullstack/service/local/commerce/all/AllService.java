@@ -29,10 +29,6 @@ public class AllService {
         return allCommercialCode;
     }
 
-//    public String findDong(Integer commercialCode) {
-//        Local local = localRepository.findByCommercialCode(commercialCode);
-//        return local.getDong();   //상권코드 -> 행정동
-//    }
 
 
 }

@@ -9,4 +9,5 @@ public interface CommerceChangeRepository extends JpaRepository<CommerceChange, 
 
     List<CommerceChange> findByDong(String dong);
 
+    List<CommerceChange> findByDongStartingWith(String dong);
 }
