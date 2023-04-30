@@ -133,7 +133,6 @@ function Youtube(props){
   const polystyle = (feature) => {
     for (let i = 0; i < YoutubePlace.length; i++){
       if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
-        //item.feature.properties = {...item.feature.properties, color: rgba(0.1 * YoutubePlace[i].data[0], 0, 0, 0.5)};
         return {
           fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
           weight: 2,

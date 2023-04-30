@@ -148,6 +148,13 @@ function Analysis(props){
       }
 
     const MakeChartData = (targetValue, data_type) => {
+      fetch("/api/local-commerce/change?dong=삼성1동", { 
+          "Content-Type": "application/json",
+      })
+        .then(response => {
+          console.log(response.json());
+        });
+
         var year_data = AnalysisData.map((item)=>{
             return item[targetValue];
         });
