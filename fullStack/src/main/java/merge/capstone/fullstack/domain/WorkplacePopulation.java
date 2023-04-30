@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+//@Entity
 @Getter @Setter
 public class WorkplacePopulation {
 
