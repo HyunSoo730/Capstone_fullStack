@@ -12,4 +12,5 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
     List<Resident> findByCommercialCodeIn(List<Integer> code);
 
+    List<Resident> findByCommercialCode(Integer commercialCode);
 }

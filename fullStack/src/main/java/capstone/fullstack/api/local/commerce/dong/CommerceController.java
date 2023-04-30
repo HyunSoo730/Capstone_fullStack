@@ -1,4 +1,4 @@
-package capstone.fullstack.api.local.commerce;
+package capstone.fullstack.api.local.commerce.dong;
 
 import capstone.fullstack.repository.local.commerce.AvgOperationPeriodRepository;
 import capstone.fullstack.repository.local.commerce.IndustryRepository;

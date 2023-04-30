@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -77,7 +78,52 @@ public class IndustryService {
 
         // Map에서 IndustryVO 리스트로 변환
         List<IndustryVO> industryVOList = new ArrayList<>(industryVOMap.values());
+        industryVOList = industryVOList.stream().sorted(Comparator.comparing(IndustryVO::getYear).reversed().thenComparing(IndustryVO::getQuarter)).collect(Collectors.toList());
+
         return industryVOList;
     }
 
+
+    public List<IndustryVO> getIndustryListByAllDong(List<Integer> commercialCodeList, String sn, String dong) {
+        List<Industry> industryList = industryRepository.findByCommercialCodeInAndServiceNameEquals(commercialCodeList, sn);
+
+        Map<String, IndustryVO> industryVOMap = new HashMap<>();
+
+        for (Industry industry : industryList) {
+            String serviceName = industry.getServiceName();
+            int numOfStores = industry.getNumOfStores();
+            int totalNumOfStores = industry.getTotalNumOfStores();
+            int numOfOpenStores = industry.getNumOfOpenStores();
+            int numOfCloseStores = industry.getNumOfCloseStores();
+            int numOfFranchiseStores = industry.getNumOfFranchiseStores();
+//            log.info("잠시 확인 : {}", industry.toString());
+            // 행정동으로 변환
+
+            // 이미 존재하는 IndustryVO인 경우 누적
+            // year, quarter 별로 누적된 IndustryVO 객체를 만들고, Map에 저장
+            String key = String.valueOf(industry.getYear()) + String.valueOf(industry.getQuarter());
+            IndustryVO industryVO = industryVOMap.computeIfAbsent(key, k -> {
+                IndustryVO newIndustryVO = new IndustryVO();
+                newIndustryVO.setYear(industry.getYear());
+                newIndustryVO.setQuarter(industry.getQuarter());
+                newIndustryVO.setDong(dong);
+                newIndustryVO.setServiceName(serviceName);
+
+                return newIndustryVO;
+            });
+
+            // 누적값 계산
+            industryVO.setNumOfStores(industryVO.getNumOfStores() + numOfStores);
+            industryVO.setTotalNumOfStores(industryVO.getTotalNumOfStores() + totalNumOfStores);
+            industryVO.setNumOfOpenStores(industryVO.getNumOfOpenStores() + numOfOpenStores);
+            industryVO.setNumOfCloseStores(industryVO.getNumOfCloseStores() + numOfCloseStores);
+            industryVO.setNumOfFranchiseStores(industryVO.getNumOfFranchiseStores() + numOfFranchiseStores);
+        }
+
+        // Map에서 IndustryVO 리스트로 변환
+        List<IndustryVO> industryVOList = new ArrayList<>(industryVOMap.values());
+        industryVOList = industryVOList.stream().sorted(Comparator.comparing(IndustryVO::getYear).reversed().thenComparing(IndustryVO::getQuarter)).collect(Collectors.toList());
+
+        return industryVOList;
+    }
 }
