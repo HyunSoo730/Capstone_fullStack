@@ -10,4 +10,5 @@ public interface LocalRepository extends JpaRepository<Local, Long> {
 
     Local findFirstByCommercialCode(Integer code);
 
+
 }

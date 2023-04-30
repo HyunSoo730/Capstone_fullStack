@@ -7,8 +7,8 @@ import capstone.fullstack.domain.population.FloatingPopulation;
 import capstone.fullstack.repository.local.commerce.AvgOperationPeriodRepository;
 import capstone.fullstack.repository.local.commerce.RentalFeeRepository;
 import capstone.fullstack.repository.local.commerce.population.FloatingRepository;
+import capstone.fullstack.repository.local.custom.LocalSimpleRepository;
 import capstone.fullstack.resultvo.*;
-import capstone.fullstack.service.local.commerce.all.AllService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ public class LocalCommercialController {
     private final AvgOperationPeriodRepository avgOperationPeriodRepository;
     private final FloatingRepository floatingRepository;
 
-    private final AllService allService;
+    private final LocalSimpleRepository localSimpleRepository;
 
 
     /**
@@ -89,14 +89,14 @@ public class LocalCommercialController {
     }
 
     /**
-     * @param areaName 행정동
+     * @param dongName 행정동
      * @return 행정동에 대한 유동인구 22년, 21년 분기별로
      */
-    @GetMapping("/api/local-commerce/floating/{areaName}")
-    public List<FloatingPopulationVO> getFloatingPopulation(@PathVariable String areaName) {
+    @GetMapping("/api/local-commerce/floating/{guName}/{dongName}")
+    public List<FloatingPopulationVO> getFloatingPopulation(@PathVariable String guName, @PathVariable String dongName) {
 
         //행정동에 대한 상권코드들
-        List<Integer> commercialCodes = allService.findAllCommercialCode(areaName);
+        List<Integer> commercialCodes = localSimpleRepository.findCommercialCodesCustom(guName, dongName);
 
         List<FloatingPopulationVO> result = new ArrayList<>();
 
