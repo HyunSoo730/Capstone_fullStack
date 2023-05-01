@@ -1,8 +1,9 @@
 import './App.css';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
-import HomePage from './HomePage'
+import HomePage from './HomePage';
 import Youtube from './Youtube';
-import Analysis from './Analysis'
+import Analysis from './Analysis';
+import Crawling from './Crawling';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route exact path="/" element={<HomePage />}/>
           <Route path="/youtube" element={<Youtube />}/>
           <Route path="/analysis" element={<Analysis />}/>
+          <Route path="/crawling" element={<Crawling/>}/>
         </Routes>
       </BrowserRouter>
     </div>

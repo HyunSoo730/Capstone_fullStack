@@ -1,5 +1,4 @@
 export const locationData = [
-"가로수길",
 "사직동", 
 "삼청동", 
 "부암동", 
