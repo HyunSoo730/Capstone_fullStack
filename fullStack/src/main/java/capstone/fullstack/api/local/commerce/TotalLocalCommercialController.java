@@ -42,7 +42,7 @@ public class TotalLocalCommercialController {
     public List<RentalFeeVO> getRentalFeeForTotalDong(@PathVariable String guName, @PathVariable String dongName) {
         List<RentalFeeVO> result = new ArrayList<>();
 
-        List<RentalFee> rentalFee = rentalFeeRepository.findRentalFeeForTotalDong(guName, dongName);
+        List<RentalFee> rentalFee = rentalFeeRepository.findRentalFeeForTotalDong(guName, findDongName(dongName));
 
         Map<Integer, List<RentalFee>> groupByYear = rentalFee.stream().collect(Collectors.groupingBy(RentalFee::getYear));
         List<Integer> years = groupByYear.keySet().stream().sorted(Comparator.reverseOrder())
@@ -74,7 +74,7 @@ public class TotalLocalCommercialController {
     @GetMapping("/api/local-commerce/total/operation/{guName}/{dongName}")
     public AvgOperationPeriodVO getAvgOperationPeriodForTotalDong(@PathVariable String guName, @PathVariable String dongName) {
 
-        List<AvgOperationPeriod> periods = avgOperationPeriodRepository.findAvgPeriodByAreaNameForTotalDong(guName, dongName);
+        List<AvgOperationPeriod> periods = avgOperationPeriodRepository.findAvgPeriodByAreaNameForTotalDong(guName, findDongName(dongName));
 
         return new AvgOperationPeriodVO(periods);
     }
@@ -88,7 +88,7 @@ public class TotalLocalCommercialController {
     @GetMapping("/api/local-commerce/total/operation/{guName}/{dongName}/{serviceName}")
     public AvgOperationPeriodVO getAvgOperationPeriodWithServiceNameForTotalDong(@PathVariable String guName, @PathVariable String dongName, @PathVariable String serviceName) {
 
-        List<AvgOperationPeriod> periods = avgOperationPeriodRepository.findAvgPeriodByAreaNameAndServiceNameForTotalDong(guName, dongName, serviceName);
+        List<AvgOperationPeriod> periods = avgOperationPeriodRepository.findAvgPeriodByAreaNameAndServiceNameForTotalDong(guName, findDongName(dongName), serviceName);
 
         return new AvgOperationPeriodVO(periods);
     }
@@ -101,7 +101,7 @@ public class TotalLocalCommercialController {
     public List<FloatingPopulationVO> getFloatingPopulationForTotalDong(@PathVariable String guName, @PathVariable String dongName) {
 
         //행정동에 대한 상권코드들
-        List<Integer> commercialCodes = localSimpleRepository.findCommercialCodesCustom(guName, dongName);
+        List<Integer> commercialCodes = localSimpleRepository.findCommercialCodesCustom(guName, findDongName(dongName));
 
         List<FloatingPopulationVO> result = new ArrayList<>();
 
@@ -130,5 +130,15 @@ public class TotalLocalCommercialController {
         return result;
     }
 
+    public String findDongName(String dong){
+        String findDong;
+        if(dong.equals("여의도")){
+            findDong = dong.substring(0, dong.length() - 2);
+        }
+        else{
+            findDong = dong.substring(0, dong.length() - 1);
+        }
+        return findDong;
+    }
 
 }

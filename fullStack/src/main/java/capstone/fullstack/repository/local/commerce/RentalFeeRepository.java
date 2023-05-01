@@ -24,7 +24,7 @@ public class RentalFeeRepository {
 
     public List<RentalFee> findRentalFeeForTotalDong(String gu, String dong){
 
-        String findDong = dong.substring(0, dong.length()-1) + "%";
+        String findDong = dong + "%";
         List<RentalFee> result = em.createQuery("select f from RentalFee f WHERE f.area_name LIKE :findDong AND f.gu_name = :guName AND f.year IN (2022, 2021)", RentalFee.class)
                 .setParameter("findDong", findDong)
                 .setParameter("guName", gu)

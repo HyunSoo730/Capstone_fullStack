@@ -15,7 +15,7 @@ public class LocalSimpleRepository {
     private final EntityManager em;
 
     public List<Integer> findCommercialCodesCustom(String gu, String dong) {
-        String findDong = dong.substring(0, dong.length()-1) + "%";
+        String findDong = dong + "%";
         List<Integer> result = em.createQuery("select l.commercialCode from Local l WHERE l.borough = :gu AND l.dong LIKE :findDong")
                 .setParameter("gu", gu)
                 .setParameter("findDong", findDong)

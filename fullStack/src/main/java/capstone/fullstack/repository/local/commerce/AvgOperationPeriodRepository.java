@@ -29,7 +29,7 @@ public class AvgOperationPeriodRepository {
     }
 
     public List<AvgOperationPeriod> findAvgPeriodByAreaNameForTotalDong(String guName, String dongName){
-        String findDong = dongName.substring(0, dongName.length()-1) + "%";
+        String findDong = dongName + "%";
         List<AvgOperationPeriod> resultList = em.createQuery("select a from AvgOperationPeriod a WHERE a.area_name Like :findDong AND a.gu_name = :guName AND a.service_name = '전체' AND a.year = 2022 AND a.quarter = 4", AvgOperationPeriod.class)
                 .setParameter("findDong", findDong)
                 .setParameter("guName", guName)
@@ -38,7 +38,7 @@ public class AvgOperationPeriodRepository {
     }
 
     public List<AvgOperationPeriod> findAvgPeriodByAreaNameAndServiceNameForTotalDong(String guName, String dongName, String serviceName){
-        String findDong = dongName.substring(0, dongName.length()-1) + "%";
+        String findDong = dongName + "%";
         List<AvgOperationPeriod> resultList = em.createQuery("select a from AvgOperationPeriod a WHERE a.area_name Like :findDong AND a.gu_name = :guName AND a.service_name = :serviceName AND a.year = 2022 AND a.quarter = 4", AvgOperationPeriod.class)
                 .setParameter("findDong", findDong)
                 .setParameter("guName", guName)
