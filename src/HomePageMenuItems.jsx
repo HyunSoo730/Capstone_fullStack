@@ -18,5 +18,5 @@ export const MenuItems = [
         title: 'Analysis',
         url: 'analysis',
         cName: 'nav-links'
-    }
+    },
 ]

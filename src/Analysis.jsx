@@ -15,6 +15,11 @@ function Analysis(props){
     const [WorkNum, setWorkNum] = useState([]);
     const [WorkEarned, setWorkEarned] = useState([]);
     const [FacilityNum, setFacilityNum] = useState([]);
+    const [SexFloatingPop, setSexFloatingPop] = useState([]);
+    const [AgeFloatingPop, setAgeFloatingPop] = useState([]);
+    const [TimeFloatingPop, setTimeFloatingPop] = useState([]);
+    const [WeekFloatingPop, setWeekFloatingPop] = useState([]);
+    const [RentalFee, setRentalFee] = useState([]);
 
     const [isDrawerOpen, setDrawerOpen] = useState(false);
     const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
@@ -51,6 +56,64 @@ function Analysis(props){
         },
         xaxis: {
           categories: ["2022년 1분기", "2022년 2분기", "2022년 3분기", "2022년 4분기"]
+        },
+        yaxis: {
+            axisBorder: {
+              show: false
+            },
+            axisTicks: {
+              show: false,
+            },
+            labels: {
+              show: false,
+              formatter: function (val) {
+                return val;
+              }
+            }
+        },
+        tooltip: {
+          shared: false,
+          intersect: true,
+          x: {
+            show: false
+          }
+        },
+        legend: {
+          horizontalAlign: "left",
+          offsetX: 40
+        }
+      };
+
+      var ApexChartWeekLineOption = {
+        chart: {
+          height: 350,
+          type: "line",
+          stacked: false,
+          toolbar: {
+            show: false
+          }
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: function (val) {
+              return val;
+            },
+            offsetY: -20,
+            style: {
+              fontSize: '12px',
+              colors: ["#304758"]
+            }
+          },
+        stroke: {
+          width: [4, 4]
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "20%"
+          }
+        },
+        xaxis: {
+          categories: ["월", "화", "수", "목", "금", "토", "일"]
         },
         yaxis: {
             axisBorder: {
@@ -162,7 +225,22 @@ function Analysis(props){
             setCountMarketNum(current => [...current, {name: targetValue, data: year_data}]);
         }
         else if(data_type === "workearned"){
-            setWorkEarned(current => [...current, {name: targetValue, data: year_data}])
+            setWorkEarned(current => [...current, {name: targetValue, data: year_data}]);
+        }
+        else if(data_type === "timepopulation"){
+            setTimeFloatingPop(current => [...current, {name: targetValue, data: year_data}]);
+        }
+        else if(data_type === "fee"){
+            setRentalFee(current => [...current, {name: targetValue, data: year_data}]);
+        }
+    }
+
+    const MakeWeekChartData = (targetValue, data_type) => {
+        var year_data = AnalysisData.map((item)=>{
+          return item[targetValue];
+        });
+        if (data_type === "weekpopulation"){
+            setWeekFloatingPop(current => [...current, {name: targetValue, data: year_data}]);
         }
     }
 
@@ -176,6 +254,12 @@ function Analysis(props){
         }
         else if(data_type === "facility"){
             setFacilityNum(current => [...current, {name: targetValue, data: [CurrentData]}]);
+        }
+        else if(data_type === "sexpopulation"){
+            setSexFloatingPop(current => [...current, {name: targetValue, data: [CurrentData]}]);
+        }
+        else if(data_type === "agepopulation"){
+            setAgeFloatingPop(current => [...current, {name: targetValue, data: [CurrentData]}]);
         }
     }
 
@@ -250,7 +334,7 @@ function Analysis(props){
         MakeCurrentChartData("numOfBank", "facility");
         MakeCurrentChartData("numOfGeneralHospital", "facility");
         MakeCurrentChartData("numOfHospital", "facility");
-        MakeCurrentChartData("numOfPharmacy", "facility");
+        MakeCurrentChartData("numOfPharmacy", "facility");  
         MakeCurrentChartData("numOfKindergarten", "facility");
         MakeCurrentChartData("numOfElementarySchool", "facility");
         MakeCurrentChartData("numOfMiddleSchool", "facility");
@@ -265,6 +349,25 @@ function Analysis(props){
         MakeCurrentChartData("numOfBusTerminal", "facility");
         MakeCurrentChartData("numOfSubway", "facility");
         MakeCurrentChartData("numOfBusStop", "facility");
+        setSexFloatingPop([]);
+        MakeCurrentChartData("maleFloatingPopulation", "sexpopulation");
+        MakeCurrentChartData("femaleFloatingPopulation", "sexpopulation");
+        setAgeFloatingPop([]);
+        MakeCurrentChartData("10FloatingPopulation", "agepopulation");
+        MakeCurrentChartData("20FloatingPopulation", "agepopulation");
+        MakeCurrentChartData("30FloatingPopulation", "agepopulation");
+        MakeCurrentChartData("40FloatingPopulation", "agepopulation");
+        MakeCurrentChartData("50FloatingPopulation", "agepopulation");
+        MakeCurrentChartData("60FloatingPopulation", "agepopulation");
+        setTimeFloatingPop([]);
+        MakeChartData("averageFloatingPopulation", "timepopulation");
+        MakeChartData("totalFloatingPopulation", "timepopulation");
+        setWeekFloatingPop([]);
+        MakeWeekChartData("averageFloatingPopulation", "weekpopulation");
+        MakeWeekChartData("totalFloatingPopulation", "weekpopulation");
+        setRentalFee([]);
+        MakeChartData("averageRentalFee", "fee");
+        MakeChartData("totalRentalFee", "fee");
     }, [DrawerTitle])
 
     return(
@@ -302,6 +405,17 @@ function Analysis(props){
                 <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
                 <div>{DrawerTitle}의 집객시설 개수</div>
                 <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
+                <div>{DrawerTitle}의 성별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 연령층별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 시간대별 유동 인구</div>
+                <ReactApexChart options={ApexChartLineOption} series={TimeFloatingPop} type="line" height={300}  />
+                <div>{DrawerTitle}의 요일별 유동 인구</div>
+                <ReactApexChart options={ApexChartWeekLineOption} series={WeekFloatingPop} type="line" height={300}  />
+                <div>{DrawerTitle}의 분기별 임대료</div>
+                <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
+                <div>{DrawerTitle}의 평균 영업기간은 {AnalysisData[3]['commerceMetrics']}입니다.</div>
             </div>
           </Drawer.Body>
         </Drawer>
