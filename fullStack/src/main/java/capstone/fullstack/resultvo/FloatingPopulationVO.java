@@ -1,6 +1,10 @@
 package capstone.fullstack.resultvo;
 
+import capstone.fullstack.domain.RentalFee;
+import capstone.fullstack.domain.population.FloatingPopulation;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class FloatingPopulationVO {
@@ -36,4 +40,38 @@ public class FloatingPopulationVO {
     private Integer fri_flpop;
     private Integer sat_flpop;
     private Integer sun_flpop;
+
+    public FloatingPopulationVO(){}
+
+    public FloatingPopulationVO(List<FloatingPopulation> populations){
+        this.year = populations.get(0).getYear();
+        this.quarter = populations.get(0).getQuarter();
+
+        int num = populations.size();
+        this.total_flpop = populations.stream().mapToInt(FloatingPopulation::getTotal_flpop).sum()/num;
+        this.male_flpop = populations.stream().mapToInt(FloatingPopulation::getMale_flpop).sum()/num;
+        this.female_flpop = populations.stream().mapToInt(FloatingPopulation::getFemale_flpop).sum()/num;
+
+        this.age_10_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_10_flpop).sum()/num;
+        this.age_20_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_20_flpop).sum()/num;
+        this.age_30_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_30_flpop).sum()/num;
+        this.age_40_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_40_flpop).sum()/num;
+        this.age_50_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_50_flpop).sum()/num;
+        this.age_60_flpop = populations.stream().mapToInt(FloatingPopulation::getAge_60_flpop).sum()/num;
+
+        this.time_1_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_1_flpop).sum()/num;
+        this.time_2_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_2_flpop).sum()/num;
+        this.time_3_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_3_flpop).sum()/num;
+        this.time_4_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_4_flpop).sum()/num;
+        this.time_5_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_5_flpop).sum()/num;
+        this.time_6_flpop = populations.stream().mapToInt(FloatingPopulation::getTime_6_flpop).sum()/num;
+
+        this.mon_flpop = populations.stream().mapToInt(FloatingPopulation::getMon_flpop).sum()/num;
+        this.tue_flpop = populations.stream().mapToInt(FloatingPopulation::getTue_flpop).sum()/num;
+        this.wed_flpop = populations.stream().mapToInt(FloatingPopulation::getWed_flpop).sum()/num;
+        this.thu_flpop = populations.stream().mapToInt(FloatingPopulation::getThu_flpop).sum()/num;
+        this.fri_flpop = populations.stream().mapToInt(FloatingPopulation::getFri_flpop).sum()/num;
+        this.sat_flpop = populations.stream().mapToInt(FloatingPopulation::getSat_flpop).sum()/num;
+        this.sun_flpop = populations.stream().mapToInt(FloatingPopulation::getSun_flpop).sum()/num;
+    }
 }

@@ -12,11 +12,11 @@ public class AvgOperationPeriod {
     @Id
     private Long id;
 
-    private String dong_name;           //행정동 이름
-    private Integer dong_code;          //행정동 코드
+    private String area_name;           //행정동 이름
+    private String gu_name;              //구 이름
     private String service_name;        //업종명
 
-    private Float avg_period;           //평균 영업 기간
+    private Double avg_period;           //평균 영업 기간
 
     private Integer year;                //년도
     private Integer quarter;             //분기
