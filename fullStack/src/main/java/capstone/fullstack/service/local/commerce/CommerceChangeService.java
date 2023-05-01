@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,8 +27,21 @@ public class CommerceChangeService {
 
     public List<CommerceChangeVO> findMetrics(String dong) {
         List<CommerceChange> cc = commerceChangeRepository.findByDong(dong);
-        List<CommerceChangeVO> res = cc.stream().map(commerceChange -> new CommerceChangeVO(commerceChange.getYear(), commerceChange.getQuarter(), commerceChange.getDong(), commerceChange.getCommerceMetrics()))
+        List<CommerceChangeVO> res = cc.stream().sorted(Comparator.comparing(CommerceChange::getYear).reversed().thenComparing(CommerceChange::getQuarter)).map(commerceChange -> new CommerceChangeVO(commerceChange.getYear(), commerceChange.getQuarter(), commerceChange.getDong(), commerceChange.getCommerceMetrics()))
                 .collect(Collectors.toList());
+
+        return res;
+    }
+
+    public List<CommerceChangeVO> findAlletrics(String dong) {
+        List<CommerceChange> cc = commerceChangeRepository.findByDongStartingWith(dong);
+        List<CommerceChangeVO> res = cc.stream()
+                .sorted(Comparator.comparing(CommerceChange::getDong).reversed()
+                .thenComparing(CommerceChange::getYear).reversed()
+                .thenComparing(CommerceChange::getQuarter))
+                .map(commerceChange -> new CommerceChangeVO(commerceChange.getYear(), commerceChange.getQuarter(), commerceChange.getDong(), commerceChange.getCommerceMetrics()))
+                .collect(Collectors.toList());
+
         return res;
     }
 

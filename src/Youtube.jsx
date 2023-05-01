@@ -85,7 +85,7 @@ const ApexChartOption = {
 function Youtube(props){
 
   const [YoutubeItem, setYoutubeItem] = useState([]);
-  const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [1]}, {name: "삼성동", data: [3]}, {name: "연남동", data: [10]}]);
+  const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [5]}, {name: "삼성동", data: [1]}, {name: "연남동", data: [3]}]);
   const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -133,7 +133,6 @@ function Youtube(props){
   const polystyle = (feature) => {
     for (let i = 0; i < YoutubePlace.length; i++){
       if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
-        //item.feature.properties = {...item.feature.properties, color: rgba(0.1 * YoutubePlace[i].data[0], 0, 0, 0.5)};
         return {
           fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
           weight: 2,

@@ -2,6 +2,7 @@
   "name": "fullstack",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://3.39.41.194:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -17,7 +18,7 @@
     "react-leaflet": "^4.2.1",
     "react-native-dotenv": "^3.4.8",
     "react-router-dom": "^6.10.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "rsuite": "^5.32.0",
     "web-vitals": "^2.1.4"
   },

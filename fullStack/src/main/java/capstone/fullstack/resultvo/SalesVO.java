@@ -2,7 +2,8 @@ package capstone.fullstack.resultvo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+
+import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -38,7 +39,8 @@ public class SalesVO {
     private Long age50Sales;
     private Long age60Sales;
     private Long numOfStores;  //매장 수
-
+    //점포 당 평균 매출 컬럼 추가
+    private BigDecimal avgSalesPerQuarter;  //분기당 점포 평균 매출
     public SalesVO() {
         this.year = 0;
         this.quarter = 0;
