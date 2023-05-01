@@ -4,18 +4,24 @@ import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet'
 import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json'
 import geoDetailData from './LocationDetailData.json'
-import {AnalysisData} from './AnalysisItems'
 import {GU_locationData} from './LocationDataGUItems'
+import useDidMountEffect from './UseDidMountEffect';
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
 
 function Analysis(props){
+
   const [CountMarketNum, setCountMarketNum] = useState([]);
   const [ResidentNum, setResidentNum] = useState([]);
   const [WorkNum, setWorkNum] = useState([]);
   const [WorkEarned, setWorkEarned] = useState([]);
   const [FacilityNum, setFacilityNum] = useState([]);
+  const [SexFloatingPop, setSexFloatingPop] = useState([]);
+  const [AgeFloatingPop, setAgeFloatingPop] = useState([]);
+  const [TimeFloatingPop, setTimeFloatingPop] = useState([]);
+  const [WeekFloatingPop, setWeekFloatingPop] = useState([]);
+  const [RentalFee, setRentalFee] = useState([]);
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
@@ -58,30 +64,11 @@ function Analysis(props){
     yaxis: {
         axisBorder: {
           show: false
-        },
-        axisTicks: {
-          show: false,
-        },
-        labels: {
-          show: false,
-          formatter: function (val) {
-            return val;
-          }
-        }
-    },
-    tooltip: {
-      shared: false,
-      intersect: true,
-      x: {
-        show: false
       }
-    },
-    legend: {
-      horizontalAlign: "left",
-      offsetX: 40
     }
   };
 
+ 
   const ApexChartBarOption = {
     chart: {
       height: 350,
@@ -148,7 +135,7 @@ function Analysis(props){
         }
       }
     }
-  }
+  };
   /** 
    * BACK-END POST REQUEST
    * BODY : borough, dong
@@ -227,8 +214,7 @@ function Analysis(props){
         setCountMarketNum(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
       }); 
     }
-
-    if(data_type === "workearned") {
+    else if(data_type === "workearned") {
       let analysis_data = null;
       if (MyZoom < 15){
         analysis_data = MakeAnalysisData("/api/local-commerce/integrated_dong/income_consumption");
@@ -242,6 +228,16 @@ function Analysis(props){
       });
       setWorkEarned(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
       }); 
+    }
+    else if(data_type === "fee"){
+      let analysis_data = null;
+      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/rentalfee/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      analysis_data.then(response => {
+        var year_data = response.map((item)=>{
+          return item[targetValue];
+        });
+      setRentalFee(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+      });
     }
   }
 
@@ -283,6 +279,58 @@ function Analysis(props){
         setFacilityNum(current => [...current, {name: targetValue, data: [current_data]}]);
       });
     }
+    else if(data_type === "timepopulation"){
+      let analysis_data = null;
+      if (MyZoom < 15){
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      else{
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      analysis_data.then(response => {
+        var current_data = response[3][targetValue];
+        setTimeFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      });
+    }
+    else if(data_type === "sexpopulation"){
+      let analysis_data = null;
+      if (MyZoom < 15){
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      else{
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      analysis_data.then(response => {
+      var current_data = response[3][targetValue];
+      setSexFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      });
+    }
+    else if(data_type === "agepopulation"){
+      let analysis_data = null;
+      if (MyZoom < 15){
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      else{
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      analysis_data.then(response => {
+      var current_data = response[3][targetValue];
+      setAgeFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      });
+    }
+    else if (data_type === "weekpopulation"){
+      let analysis_data = null;
+      if (MyZoom < 15){
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      else{
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      }
+      analysis_data.then(response => {
+      var current_data = response[3][targetValue];
+      setWeekFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      });
+    }
   }
 
   function whenClicked(e, feature, mode) {
@@ -314,7 +362,6 @@ function Analysis(props){
       click: (e) => {whenClicked(e, feature, "detail")}
     });
   }
-
   const RenderingGeoJSON = () => {
     const MyMap  = useMapEvents({
       zoomend() {
@@ -324,7 +371,7 @@ function Analysis(props){
     return <GeoJSON data={MyZoom < 15 ? geoData : geoDetailData} onEachFeature={MyZoom < 15 ? onEachFeature : onEachDetailFeature}/>;
   }
 
-  useEffect(()=>{
+  useDidMountEffect(()=>{
       setCountMarketNum([]);
       MakeChartData("numOfStores", "market");
       MakeChartData("totalNumOfStores", "market");
@@ -373,6 +420,34 @@ function Analysis(props){
       MakeCurrentChartData("numOfBusTerminal", "facility");
       MakeCurrentChartData("numOfSubway", "facility");
       MakeCurrentChartData("numOfBusStop", "facility");
+      setSexFloatingPop([]);
+      MakeCurrentChartData("male_flpop", "sexpopulation");
+      MakeCurrentChartData("female_flpop", "sexpopulation");
+      setAgeFloatingPop([]);
+      MakeCurrentChartData("age_10_flpop", "agepopulation");
+      MakeCurrentChartData("age_20_flpop", "agepopulation");
+      MakeCurrentChartData("age_30_flpop", "agepopulation");
+      MakeCurrentChartData("age_40_flpop", "agepopulation");
+      MakeCurrentChartData("age_50_flpop", "agepopulation");
+      MakeCurrentChartData("age_60_flpop", "agepopulation");
+      setTimeFloatingPop([]);
+      MakeCurrentChartData("time_1_flpop", "timepopulation");
+      MakeCurrentChartData("time_2_flpop", "timepopulation");
+      MakeCurrentChartData("time_3_flpop", "timepopulation");
+      MakeCurrentChartData("time_4_flpop", "timepopulation");
+      MakeCurrentChartData("time_5_flpop", "timepopulation");
+      MakeCurrentChartData("time_6_flpop", "timepopulation");
+      setWeekFloatingPop([]);
+      MakeCurrentChartData("mon_flpop", "weekpopulation");
+      MakeCurrentChartData("tue_flpop", "weekpopulation");
+      MakeCurrentChartData("wed_flpop", "weekpopulation");
+      MakeCurrentChartData("thu_flpop", "weekpopulation");
+      MakeCurrentChartData("fri_flpop", "weekpopulation");
+      MakeCurrentChartData("sat_flpop", "weekpopulation");
+      MakeCurrentChartData("sun_flpop", "weekpopulation");
+      setRentalFee([]);
+      //MakeChartData("averageRentalFee", "fee");
+      MakeChartData("rentalfee_total", "fee");
   }, [DrawerTitle])
 
   return(
@@ -400,7 +475,8 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-              <div>2022년 개업 매장 추이는 {AnalysisData[3]['commerceMetrics']}입니다.</div>
+
+              <div>2022년 개업 매장 추이는 {}입니다.</div>
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
               <div>{DrawerTitle}의 거주 구성원</div>
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
@@ -410,10 +486,22 @@ function Analysis(props){
               <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
               <div>{DrawerTitle}의 집객시설 개수</div>
               <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
+              <div>{DrawerTitle}의 성별 유동 인구</div>
+              <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
+              <div>{DrawerTitle}의 연령층별 유동 인구</div>
+              <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
+              <div>{DrawerTitle}의 시간대별 유동 인구</div>
+              <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
+              <div>{DrawerTitle}의 요일별 유동 인구</div>
+              <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
+              <div>{DrawerTitle}의 분기별 임대료</div>
+              <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
+              
           </div>
         </Drawer.Body>
       </Drawer>
     </div>
   );
 }
+//MakeAnalysisData(`/api/local-commerce/operation/${DrawerTitle}`).then(response => {return response[3]["avg_period"]})
 export default Analysis;

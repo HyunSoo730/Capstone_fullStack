@@ -12,7 +12,11 @@ export const AnalysisData = [
         "commerceMetrics": "정체",
 
         "averageMonthlyIncome": 33400379,
-        "totalAmountSpent": 3238675614
+        "totalAmountSpent": 3238675614,
+        "averageFloatingPopulation": 33400379,
+        "totalFloatingPopulation": 3238675614,
+        "averageRentalFee": 33400379,
+        "totalRentalFee": 3238675614
     },
     {
         "year": 2022,
@@ -27,7 +31,11 @@ export const AnalysisData = [
         "commerceMetrics": "정체",
 
         "averageMonthlyIncome": 33400379,
-        "totalAmountSpent": 3238675614
+        "totalAmountSpent": 3238675614,
+        "averageFloatingPopulation": 33400379,
+        "totalFloatingPopulation": 3238675614,
+        "averageRentalFee": 33400379,
+        "totalRentalFee": 3238675614
     },
     {
         "year": 2022,
@@ -42,7 +50,11 @@ export const AnalysisData = [
         "commerceMetrics": "정체",
 
         "averageMonthlyIncome": 33400379,
-        "totalAmountSpent": 3238675614
+        "totalAmountSpent": 3238675614,
+        "averageFloatingPopulation": 33400379,
+        "totalFloatingPopulation": 3238675614,
+        "averageRentalFee": 33400379,
+        "totalRentalFee": 3238675614
     },
     {
         "year": 2022,
@@ -55,6 +67,14 @@ export const AnalysisData = [
         "numOfCloseStores": 0,
         "numOfFranchiseStores": 78,
         "commerceMetrics": "정체",
+        "maleFloatingPopulation": 300000,
+        "femaleFloatingPopulation": 500000,
+        "10FloatingPopulation": 200000,
+        "20FloatingPopulation": 400000,
+        "30FloatingPopulation": 100000,
+        "40FloatingPopulation": 140000,
+        "50FloatingPopulation": 90000,
+        "60FloatingPopulation": 60000,
 
         "totalNumOfResidents": 5171,
         "numOfMenResidents": 2528,
@@ -78,6 +98,10 @@ export const AnalysisData = [
 
         "averageMonthlyIncome": 33400379,
         "totalAmountSpent": 3238675614,
+        "averageFloatingPopulation": 33400379,
+        "totalFloatingPopulation": 3238675614,
+        "averageRentalFee": 33400379,
+        "totalRentalFee": 3238675614,
 
         "numOfFacility": 96,
         "numOfGovernmentOffice": 3,
