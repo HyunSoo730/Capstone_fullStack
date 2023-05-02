@@ -178,7 +178,7 @@ function Analysis(props){
     });
     return analysis_data;
   }
-
+  //음료 바꿀 것
   const MakeChartData = (targetValue, data_type) => {
     if (data_type === "market") {
       let analysis_data = null;
