@@ -464,7 +464,6 @@ function Analysis(props){
         MakeCurrentChartData("sat_flpop", "weekpopulation");
         MakeCurrentChartData("sun_flpop", "weekpopulation");
         setRentalFee([]);
-        //MakeChartData("averageRentalFee", "fee");
         MakeChartData("rentalfee_total", "fee");
         setAvgPeriod();
         MakeCurrentChartData("avg_period", "avgperiod");
