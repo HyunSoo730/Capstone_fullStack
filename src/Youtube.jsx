@@ -83,51 +83,28 @@ const ApexChartOption = {
 }
 
 function Youtube(props){
-
-  const [YoutubeItem, setYoutubeItem] = useState([]);
-  const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [5]}, {name: "삼성동", data: [1]}, {name: "연남동", data: [3]}]);
-  const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+  const [YoutubePlace, setYoutubePlace] = useState([]);
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
-  const CheckYoutubeItem = (items) => {
-    for (let i = 0; i < items.length; i++){
-      if (YoutubeItem.length === 0){
-        setYoutubeItem([items[i]]);
-        CountYoutubePlace(items[i]);
-      }
-      else{
-        for (let j = 0; j < YoutubeItem.length; j++){
-          if (items[i].snippet.title !== YoutubeItem[j].snippet.title){
-            setYoutubeItem([...YoutubeItem, items[i]]);
-            CountYoutubePlace(items[i]);
-          }
-          else{
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  const CountYoutubePlace = (items) => {
-    for (let i = 0; i < locationData.length; i++){
-      if (items.snippet.title.includes(locationData[i])) {
-        var place_name_data = YoutubePlace.map((item) => {
-          return item.name;
-        })
-        var target_index = place_name_data.indexOf(locationData[i]);
-        if (target_index === -1){
-          setYoutubePlace([...YoutubePlace, {name: locationData[i], data: [1]}]);
-        }
-        else {
-          YoutubePlace[target_index].data[0]++;
-        }
-        console.log(YoutubePlace)
-        break;
-      }
-    }
+  const CountYoutubePlace = () => {
+    fetch("api/return", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })  
+    .then(response => {
+      return response.json();
+    })
+    .then(response => {
+      console.log(response)
+      response.map((item)=>{
+        setYoutubePlace(current => [...current, {name: item["dong"], data: [item["count"]]}]);
+      });
+    });
+    console.log(YoutubePlace);
   }
 
   const polystyle = (feature) => {
@@ -166,24 +143,10 @@ function Youtube(props){
   }
 
   useEffect(() => {
-    axios
-      .get(
-        //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
-      )
-      .then((res) => {
-        CheckYoutubeItem(res.data.items);
-      })
-      .catch(() => {console.log("Youtube API mostPopular Error")});
-    axios
-      .get(
-        //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=1&regionCode=KR&key=" + API_KEY
-      )
-      .then((res) => {
-        CheckYoutubeItem(res.data.items);
-      })
-      .catch(() => {console.log("Youtube API 핫플 Error")});
-  }, [YoutubePlace]);
+    CountYoutubePlace();
+  }, [])
 
+  if (YoutubePlace){
   return(
       <div style={style}>
         <MapContainer
@@ -213,6 +176,10 @@ function Youtube(props){
           </Drawer.Body>
         </Drawer>
       </div>
-  );
+    );
+  }
+  else{
+    <div>EMPTY</div>
+  };
 }
 export default Youtube;
