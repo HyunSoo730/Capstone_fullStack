@@ -1,15 +1,16 @@
-import {React, useEffect, useState} from "react"
+import {React, useState} from "react"
 import axios from "axios";
+import { Button } from "react-bootstrap";
 import { locationData } from "./LocationDataItems";
-
+import useDidMountEffect from "./UseDidMountEffect";
+//핫플 Crawling 끝
 const style = {
     backgroundColor : 'white',
     border: '1px solid black',
   }
 
 function Crawling(props) {
-    const [YoutubeItem, setYoutubeItem] = useState([]);
-    const [NextToken, setNextToken] = useState(null);
+    const [NextPageToken, setNextPageToken] = useState(null);
     const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
   
     //api/find-entity/삼성동
@@ -20,62 +21,50 @@ function Crawling(props) {
      * @param {JSON} items Youtube 데이터
      * @returns response 결과
     **/
-    const CheckYoutubeItem = (items) => {
-        console.log(items);
-        for (let i = 0; i < items.length; i++) {
-            if (YoutubeItem.length === 0){
-                setYoutubeItem([items[i]]);
-                SaveYoutubePlace(items[i]);
-            }
-            else {
-                for (let j = 0; j < YoutubeItem.length; j++) {
-                    if (items[i].snippet.title !== YoutubeItem[j].snippet.title) {
-                        setYoutubeItem([...YoutubeItem, items[i]]);
-                        SaveYoutubePlace(items[i]);
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    const SaveYoutubePlace = (items) => {
-      for (let i = 0; i < locationData.length; i++){
-        if (items.snippet.title.includes(locationData[i])) {
-            fetch(`/api/save?dong=${locationData[i]}&name=${items.snippet.title}`)
+    const CheckYoutubeItem = (result) => {
+      let items = result.items;
+      for (let i = 0; i < items.length; i++) {
+        for(let j = 0; j < locationData.length; j++) {
+          if (items[i].snippet.title.includes(locationData[j].slice(0,2))) {
+            fetch(`/api/save?dong=${locationData[j]}&name=${items[i].snippet.title}`)
             .then(response => {
-                console.log("NEW_DATA"+response);
+                console.log("NEW_DATA ADDED\n" + response.json());
             })
-            .catch(console.log("Youtube Data Save Error"));
+            .catch(console.log("YoutubeData Save Error"));
             break;
+          }
         }
       }
+      setNextPageToken(result.nextPageToken);
     }
-  
-    useEffect(() => {
+
+    const whenClicked = (e) => {
       axios
         .get(
-          //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=핫플&pageToken=${NextPageToken}&maxResults=100&regionCode=KR&key=` + API_KEY
         )
         .then((res) => {
-          CheckYoutubeItem(res.data.items);
+          console.log(res)
+          CheckYoutubeItem(res.data);
         })
-        .catch(() => {console.log("Youtube API mostPopular Error")});
+        .catch(() => {console.log("Youtube API 핫플 Error")});
+    }
+    
+    useDidMountEffect(() => {
       axios
         .get(
-          //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=5&regionCode=KR&key=" + API_KEY
+          "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=핫플&maxResults=100&regionCode=KR&key=" + API_KEY
         )
         .then((res) => {
-            console.log(res.data.items);
-          CheckYoutubeItem(res.data.items);
+          console.log(res)
+          CheckYoutubeItem(res.data);
         })
         .catch(() => {console.log("Youtube API 핫플 Error")});
     }, []);
 
     return(
         <div style={style}>
-            <h1>HWLLO</h1>
+          <Button onClick={whenClicked}>다음 페이지</Button>
         </div>
     );
 }
