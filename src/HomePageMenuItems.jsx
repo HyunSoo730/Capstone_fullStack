@@ -19,4 +19,9 @@ export const MenuItems = [
         url: 'analysis',
         cName: 'nav-links'
     },
+    {
+        title: 'Crawling',
+        url: 'crawling',
+        cName: 'nav-links'
+    }
 ]
