@@ -28,15 +28,15 @@ const HomePage = () => {
                     })}
                 </ul>
             </nav>
-            <body id={HomeStyle.body}>
-                <div id={HomeStyle.wrap}>
+            <div id={HomeStyle.wrap}>
+                <body id={HomeStyle.body}>
                     <footer id={HomeStyle.footer}>
                         <span>개발자 : Izony | WHO | WANT | ME </span><br/>
                         <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
                         <span>version : 0.1 </span>
                     </footer>
-                </div>
-            </body>
+                </body>
+            </div>
         </div>
     )
 };
