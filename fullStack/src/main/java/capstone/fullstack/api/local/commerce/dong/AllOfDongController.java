@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,10 +112,21 @@ public class AllOfDongController {
      * 상권변화 엔티티 반환
      */
     @PostMapping("/change")
-    public List<CommerceChangeVO> findAllCC(@RequestBody Request2DTO dto) {
+    public HashMap<String, List<CommerceChangeVO>> findAllCC(@RequestBody Request2DTO dto) {
         String findDong = dto.getDong().substring(0, 2);   //통합 정보 꺼낸 후.
-        List<CommerceChangeVO> res = commerceChangeService.findAlletrics(findDong);
-        return res;
+        List<Local> locals = localRepository.findByBoroughAndDongStartingWith(dto.getBorough(), findDong);
+        List<String> dongs = locals.stream().map(local -> local.getDong()).distinct().collect(Collectors.toList());
+
+//        log.info("dongs : {}", dongs);
+        //이제 원하는 자치구에 속해있는 동을 찾았기에 해당 동들의 상권변화들 반환
+        HashMap<String, List<CommerceChangeVO>> resMap = new HashMap<>();
+        for (String dong : dongs) {
+            List<CommerceChangeVO> cc = commerceChangeService.findAlletrics(dong);
+            resMap.put(dong, cc);
+        }
+//        List<CommerceChangeVO> res = commerceChangeService.findAlletrics(findDong);
+//        return res;
+        return resMap;
     }
 
     /**
