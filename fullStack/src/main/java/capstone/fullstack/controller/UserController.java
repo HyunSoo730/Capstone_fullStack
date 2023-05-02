@@ -38,9 +38,11 @@ public class UserController {
         //발급받은 access token으로 카카오 회원 정보 DB 저장 후 JWT 생성
 
         return jwtToken;
-        //JWT가 담긴 헤더와 200 OK 값을 ResponseEntity에 담아 전달.
     }
 
+    /**
+     * 사용자 정보 요청오면 토큰을 복호화해서 정보 가져온 후에 반환.
+     */
     @PostMapping("/auth/kakao/token")
     public User userInfo(@RequestHeader("Authorization") String token) {
         //JWT 토큰 검증
@@ -49,19 +51,5 @@ public class UserController {
         return user;
     }
 
-//    @GetMapping("/auth/kakao/callback")
-//    public ResponseEntity kakaoCallback(@RequestParam("code") String code) {
-//        //POST방식으로 key=value 데이터를 요청(카카오 쪽으로)
-//        OauthToken oauthToken = userService.getAccessToken(code);
-////        User user = userService.save(oauthToken.getAccess_token());
-//        //발급받은 access token으로 카카오 회원 정보 DB 저장 후 JWT 생성
-//        String jwtToken = userService.saveUserAndGetToken(oauthToken.getAccess_token());
-//        //응답 헤더의 Authorization에 JWT 넣어줌
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-//
-////        return user;
-//        return ResponseEntity.ok().headers(headers).body("success");
-//        //JWT가 담긴 헤더와 200 OK 값을 ResponseEntity에 담아 전달.
-//    }
+
 }
