@@ -334,7 +334,6 @@ function Analysis(props){
       });
     }
     else if (data_type === "avgperiod"){
-      console.log(`/api/local-commerce/operation/${DrawerTitle}`);
       analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/operation/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
       analysis_data.then(response => {
         setAvgPeriod(response[targetValue]);
@@ -438,37 +437,38 @@ function Analysis(props){
       MakeCurrentChartData("numOfBusTerminal", "facility");
       MakeCurrentChartData("numOfSubway", "facility");
       MakeCurrentChartData("numOfBusStop", "facility");
-      //if(MyZoom < 15)
-      setSexFloatingPop([]);
-      MakeCurrentChartData("male_flpop", "sexpopulation");
-      MakeCurrentChartData("female_flpop", "sexpopulation");
-      setAgeFloatingPop([]);
-      MakeCurrentChartData("age_10_flpop", "agepopulation");
-      MakeCurrentChartData("age_20_flpop", "agepopulation");
-      MakeCurrentChartData("age_30_flpop", "agepopulation");
-      MakeCurrentChartData("age_40_flpop", "agepopulation");
-      MakeCurrentChartData("age_50_flpop", "agepopulation");
-      MakeCurrentChartData("age_60_flpop", "agepopulation");
-      setTimeFloatingPop([]);
-      MakeCurrentChartData("time_1_flpop", "timepopulation");
-      MakeCurrentChartData("time_2_flpop", "timepopulation");
-      MakeCurrentChartData("time_3_flpop", "timepopulation");
-      MakeCurrentChartData("time_4_flpop", "timepopulation");
-      MakeCurrentChartData("time_5_flpop", "timepopulation");
-      MakeCurrentChartData("time_6_flpop", "timepopulation");
-      setWeekFloatingPop([]);
-      MakeCurrentChartData("mon_flpop", "weekpopulation");
-      MakeCurrentChartData("tue_flpop", "weekpopulation");
-      MakeCurrentChartData("wed_flpop", "weekpopulation");
-      MakeCurrentChartData("thu_flpop", "weekpopulation");
-      MakeCurrentChartData("fri_flpop", "weekpopulation");
-      MakeCurrentChartData("sat_flpop", "weekpopulation");
-      MakeCurrentChartData("sun_flpop", "weekpopulation");
-      setRentalFee([]);
-      //MakeChartData("averageRentalFee", "fee");
-      MakeChartData("rentalfee_total", "fee");
-      setAvgPeriod();
-      MakeCurrentChartData("avg_period", "avgperiod");
+      if(MyZoom < 15) {
+        setSexFloatingPop([]);
+        MakeCurrentChartData("male_flpop", "sexpopulation");
+        MakeCurrentChartData("female_flpop", "sexpopulation");
+        setAgeFloatingPop([]);
+        MakeCurrentChartData("age_10_flpop", "agepopulation");
+        MakeCurrentChartData("age_20_flpop", "agepopulation");
+        MakeCurrentChartData("age_30_flpop", "agepopulation");
+        MakeCurrentChartData("age_40_flpop", "agepopulation");
+        MakeCurrentChartData("age_50_flpop", "agepopulation");
+        MakeCurrentChartData("age_60_flpop", "agepopulation");
+        setTimeFloatingPop([]);
+        MakeCurrentChartData("time_1_flpop", "timepopulation");
+        MakeCurrentChartData("time_2_flpop", "timepopulation");
+        MakeCurrentChartData("time_3_flpop", "timepopulation");
+        MakeCurrentChartData("time_4_flpop", "timepopulation");
+        MakeCurrentChartData("time_5_flpop", "timepopulation");
+        MakeCurrentChartData("time_6_flpop", "timepopulation");
+        setWeekFloatingPop([]);
+        MakeCurrentChartData("mon_flpop", "weekpopulation");
+        MakeCurrentChartData("tue_flpop", "weekpopulation");
+        MakeCurrentChartData("wed_flpop", "weekpopulation");
+        MakeCurrentChartData("thu_flpop", "weekpopulation");
+        MakeCurrentChartData("fri_flpop", "weekpopulation");
+        MakeCurrentChartData("sat_flpop", "weekpopulation");
+        MakeCurrentChartData("sun_flpop", "weekpopulation");
+        setRentalFee([]);
+        //MakeChartData("averageRentalFee", "fee");
+        MakeChartData("rentalfee_total", "fee");
+        setAvgPeriod();
+        MakeCurrentChartData("avg_period", "avgperiod");
+      }
     }
   }, [DrawerTitle])
 
@@ -478,7 +478,6 @@ function Analysis(props){
         center={[37.541, 126.986]}
         zoom={12}
         scrollWheelZoom={true}
-        zoomstart={()=>console.log("zoomend")}
         style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
         <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -509,19 +508,21 @@ function Analysis(props){
               <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
               <div>{DrawerTitle}의 집객시설 개수</div>
               <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
-              <div>{DrawerTitle}의 성별 유동 인구</div>
-              <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
-              <div>{DrawerTitle}의 연령층별 유동 인구</div>
-              <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
-              <div>{DrawerTitle}의 시간대별 유동 인구</div>
-              <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
-              <div>{DrawerTitle}의 요일별 유동 인구</div>
-              <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
-              <div>{DrawerTitle}의 분기별 임대료</div>
-              <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
-              <div>
-                {DrawerTitle}의 평균 영업시간은 {AvgPeriod}시간 입니다.
-              </div>
+              {MyZoom < 15 ? <>
+                <div>{DrawerTitle}의 성별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 연령층별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 시간대별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 요일별 유동 인구</div>
+                <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
+                <div>{DrawerTitle}의 분기별 임대료</div>
+                <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
+                <div>
+                  {DrawerTitle}의 평균 영업시간은 {AvgPeriod}시간 입니다.
+                </div></> : null
+              }
           </div>
         </Drawer.Body>
       </Drawer>
