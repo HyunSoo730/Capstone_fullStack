@@ -22,11 +22,13 @@ function Analysis(props){
   const [TimeFloatingPop, setTimeFloatingPop] = useState([]);
   const [WeekFloatingPop, setWeekFloatingPop] = useState([]);
   const [RentalFee, setRentalFee] = useState([]);
+  const [AvgPeriod, setAvgPeriod] = useState();
+  const [MarketFuture, setMarketFuture] = useState([]);
 
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
-  const [DrawerDetailCode, setDrawerDetailCode] = useState("DRAWER_DETAIL_CODE_ERROR");
-  const [DrawerGU, setDrawerGU] = useState("강남구");
+  const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERR");
+  const [DrawerDetailCode, setDrawerDetailCode] = useState("DRAWER_CODE_ERR");
+  const [DrawerGU, setDrawerGU] = useState("DRAWER_GU_ERR");
 
   const [MyZoom, setMyZoom] = useState(12);
 
@@ -331,6 +333,19 @@ function Analysis(props){
       setWeekFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
       });
     }
+    else if (data_type === "avgperiod"){
+      console.log(`/api/local-commerce/operation/${DrawerTitle}`);
+      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/operation/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      analysis_data.then(response => {
+        setAvgPeriod(response[targetValue]);
+      });
+    }
+    else if (data_type === "marketfuture"){
+      analysis_data = MakeAnalysisData(`/api/local-commerce/integrated_dong/change`);
+      analysis_data.then(response => {
+          setMarketFuture(Object.values(response));
+      });
+    }
   }
 
   function whenClicked(e, feature, mode) {
@@ -372,6 +387,9 @@ function Analysis(props){
   }
 
   useDidMountEffect(()=>{
+    if (isDrawerOpen === true) {
+      setMarketFuture();
+      MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
       MakeChartData("numOfStores", "market");
       MakeChartData("totalNumOfStores", "market");
@@ -420,6 +438,7 @@ function Analysis(props){
       MakeCurrentChartData("numOfBusTerminal", "facility");
       MakeCurrentChartData("numOfSubway", "facility");
       MakeCurrentChartData("numOfBusStop", "facility");
+      //if(MyZoom < 15)
       setSexFloatingPop([]);
       MakeCurrentChartData("male_flpop", "sexpopulation");
       MakeCurrentChartData("female_flpop", "sexpopulation");
@@ -448,6 +467,9 @@ function Analysis(props){
       setRentalFee([]);
       //MakeChartData("averageRentalFee", "fee");
       MakeChartData("rentalfee_total", "fee");
+      setAvgPeriod();
+      MakeCurrentChartData("avg_period", "avgperiod");
+    }
   }, [DrawerTitle])
 
   return(
@@ -475,8 +497,9 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-
-              <div>2022년 개업 매장 추이는 {}입니다.</div>
+          {MarketFuture && MarketFuture.map((item)=>{return (
+            <div>2022년 {item[3]["dong"]}의 개업 매장 추이는 {item[3]["commerceMetrics"]}입니다.</div>
+          )})}
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
               <div>{DrawerTitle}의 거주 구성원</div>
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
@@ -496,12 +519,13 @@ function Analysis(props){
               <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
               <div>{DrawerTitle}의 분기별 임대료</div>
               <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
-              
+              <div>
+                {DrawerTitle}의 평균 영업시간은 {AvgPeriod}시간 입니다.
+              </div>
           </div>
         </Drawer.Body>
       </Drawer>
     </div>
   );
 }
-//MakeAnalysisData(`/api/local-commerce/operation/${DrawerTitle}`).then(response => {return response[3]["avg_period"]})
 export default Analysis;
