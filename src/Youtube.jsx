@@ -2,6 +2,12 @@ import {React, useEffect, useState} from "react"
 import axios from "axios";
 import { locationData } from "./LocationDataItems";
 import ReactApexChart from "react-apexcharts";
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import geoData from './LocationData.json'
+import { Drawer, Button } from 'rsuite';
+
+import 'leaflet/dist/leaflet.css';
+import "rsuite/dist/rsuite.css";
 
 const style = {
   backgroundColor : 'white',
@@ -12,6 +18,9 @@ const ApexChartOption = {
   chart: {
     height: 350,
     type: 'bar',
+    toolbar: {
+      show: false
+    }
   },
   plotOptions: {
     bar: {
@@ -74,9 +83,13 @@ const ApexChartOption = {
 }
 
 function Youtube(props){
+
   const [YoutubeItem, setYoutubeItem] = useState([]);
-  const [YoutubePlace, setYoutubePlace] = useState([]);
+  const [YoutubePlace, setYoutubePlace] = useState([{name: "성수동", data: [5]}, {name: "삼성동", data: [1]}, {name: "연남동", data: [3]}]);
   const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
   const CheckYoutubeItem = (items) => {
     for (let i = 0; i < items.length; i++){
@@ -117,6 +130,41 @@ function Youtube(props){
     }
   }
 
+  const polystyle = (feature) => {
+    for (let i = 0; i < YoutubePlace.length; i++){
+      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
+        return {
+          fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          weight: 2,
+          opacity: 1,
+          color: 'white',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+    }
+    return {
+      fillColor: 'rgba(10, 0, 0, 0.5)',
+      weight: 2,
+      opacity: 1,
+      color: 'white',  //Outline color
+      fillOpacity: 0.7
+    };
+  }
+
+  function whenClicked(e, feature) {
+    setDrawerTitle(feature.properties.EMD_NM);
+    setDrawerOpen(true);
+  }
+
+  const onEachFeature = (feature, layer) => {
+    if(feature.properties){
+      layer.bindPopup(feature.properties.EMD_NM);
+    }
+    layer.on({
+      click: (e) => {whenClicked(e, feature)}
+    });
+  }
+
   useEffect(() => {
     axios
       .get(
@@ -128,7 +176,7 @@ function Youtube(props){
       .catch(() => {console.log("Youtube API mostPopular Error")});
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=30&regionCode=KR&key=" + API_KEY
+        //"https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=1&regionCode=KR&key=" + API_KEY
       )
       .then((res) => {
         CheckYoutubeItem(res.data.items);
@@ -138,9 +186,32 @@ function Youtube(props){
 
   return(
       <div style={style}>
-        <div>
-          <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625} />
-        </div>
+        <MapContainer
+          center={[37.541, 126.986]}
+          zoom={12}
+          scrollWheelZoom={true}
+          style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
+          <TileLayer
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature}/>
+        </MapContainer>
+
+        <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
+          <Drawer.Header>
+            <Drawer.Title>{DrawerTitle}</Drawer.Title>
+            <Drawer.Actions>
+              <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
+              <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+            </Drawer.Actions>
+          </Drawer.Header>
+          <Drawer.Body>
+            <div>
+              <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625}  />
+            </div>
+          </Drawer.Body>
+        </Drawer>
       </div>
   );
 }
