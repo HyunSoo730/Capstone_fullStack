@@ -5,7 +5,6 @@ import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json'
 import geoDetailData from './LocationDetailData.json'
 import {GU_locationData} from './LocationDataGUItems'
-import useDidMountEffect from './UseDidMountEffect';
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -385,7 +384,7 @@ function Analysis(props){
     return <GeoJSON data={MyZoom < 15 ? geoData : geoDetailData} onEachFeature={MyZoom < 15 ? onEachFeature : onEachDetailFeature}/>;
   }
 
-  useDidMountEffect(()=>{
+  useEffect(()=>{
     if (isDrawerOpen === true) {
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
