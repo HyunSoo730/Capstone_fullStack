@@ -1,6 +1,5 @@
 package capstone.fullstack.api.local.commerce;
 
-import capstone.fullstack.repository.local.commerce.population.FloatingRepository;
 import capstone.fullstack.repository.local.rank.floating.FloatingGroupDto;
 import capstone.fullstack.repository.local.rank.floating.FloatingRankRepository;
 import capstone.fullstack.repository.local.rank.floating.FloatingRankDto;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RankController {
 
-    private final FloatingRepository floatingRepository;
     private final FloatingRankRepository floatingRankRepository;
     private final RentalFeeRankRepository rentalFeeRankRepository;
 
