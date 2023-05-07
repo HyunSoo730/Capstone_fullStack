@@ -13,5 +13,8 @@ public interface SalesRepository extends JpaRepository<Sales, Long> {
 
     List<Sales> findByCommercialCodeInAndServiceNameEquals(List<Integer> commercialCodeList, String serviceName);  //코드 하나라도 일치하면서 서비스 업종명 동일.
 
+    List<Sales> findByServiceNameAndYearAndQuarter(String serviceName, Integer year, Integer quarter);
+
+    List<Sales> findByCommercialCodeInAndServiceNameAndYearAndQuarter(List<Integer> code, String serviceName, Integer year, Integer quarter);
 
 }
