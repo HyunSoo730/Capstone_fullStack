@@ -1,0 +1,22 @@
+.youtubeBorder {
+    position: absolute;
+    float: left;
+    display:flex;
+    background-color: rgb(236, 20, 20);
+    width: 500px;
+    height: 10%;
+}
+
+.youtubeImage {
+    display:flex;
+}
+
+.youtubeTitle {
+    display:flex;
+    width: 80%;
+}
+
+.youtubeChannel {
+    top: 10px;
+    left: 10px;
+}
