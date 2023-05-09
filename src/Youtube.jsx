@@ -2,6 +2,7 @@ import {React, useEffect, useState} from "react"
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import geoData from './LocationData.json'
 import { Drawer, Button } from 'rsuite';
+import { locationData } from "./LocationDataItems";
 
 import "rsuite/dist/rsuite.css";
 import './YoutubeVideoStyle.css';
@@ -13,7 +14,7 @@ function Youtube(props){
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
   const CountYoutubePlace = () => {
-    fetch("api/return", {
+    fetch("api/youtube/return", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +24,6 @@ function Youtube(props){
       return response.json();
     })
     .then(response => {
-      console.log(response)
       response.map((item)=>{
         setYoutubePlace(current => [...current, {name: item["dong"], data: [item["count"]]}]);
       });
@@ -52,9 +52,26 @@ function Youtube(props){
   }
 
   function whenClicked(e, feature) {
+    setVideoList([])
     setDrawerTitle(feature.properties.EMD_NM);
     setDrawerOpen(true);
-    //setVideoList([...VideoList, ...result.items]);
+    for(let i = 0; i < locationData.length; i++) {
+      if (feature.properties.EMD_NM.includes(locationData[i].slice(0,2))) {
+        fetch(`/api/youtube/find-entity/${locationData[i]}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })  
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          setVideoList([...VideoList, ...response]);
+        });
+        break;
+      }
+    }
   }
 
   const onEachFeature = (feature, layer) => {
@@ -95,17 +112,16 @@ function Youtube(props){
             </Drawer.Actions>
           </Drawer.Header>
           <Drawer.Body>
-            <div>
+            <ul className='youtubeList'>
             {VideoList.map((video) => {
             return (
               <li className='youtubeBorder'>
-                <img className='youtubeImage' src={video.snippet.thumbnails.default.url} alt=""></img>
-                <h5 className='youtubeTitle'>{video.snippet.title}</h5>
-                <div className='youtubeChannel'>{video.snippet.channelTitle}</div>
+                <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                <h5 className='youtubeTitle'>{video.name}</h5>
               </li>
               )
             })}
-            </div>
+            </ul>
           </Drawer.Body>
         </Drawer>
         </div>
