@@ -1,28 +1,13 @@
-package capstone.fullstack.domain.youtube;
+package capstone.fullstack.api.youtube;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-/**
- * 유튜브에서 정보를 받아와 저장할 엔티티
- */
-public class Youtube {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Data
+@AllArgsConstructor
+public class YoutubeDto {
 
     private String dong;  //돟 정보
     //-> 동의 구분. 페이징 -> 모든 동에 리스트에 저장해서 json 형식으로
@@ -42,4 +27,7 @@ public class Youtube {
     //만약 시간 정보가 필요하다면 LocalDateTime으로 변경
     private String food;  //음식
 
+    public YoutubeDto() {
+
+    }
 }
