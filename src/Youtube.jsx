@@ -1,90 +1,14 @@
 import {React, useEffect, useState} from "react"
-import axios from "axios";
-import { locationData } from "./LocationDataItems";
-import ReactApexChart from "react-apexcharts";
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import geoData from './LocationData.json'
 import { Drawer, Button } from 'rsuite';
 
-import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
-
-const style = {
-  backgroundColor : 'white',
-  border: '1px solid black',
-}
-
-const ApexChartOption = {
-  chart: {
-    height: 350,
-    type: 'bar',
-    toolbar: {
-      show: false
-    }
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 10,
-      dataLabels: {
-        position: 'top', // top, center, bottom
-      },
-    }
-  },
-  dataLabels: {
-    enabled: true,
-    formatter: function (val) {
-      return val;
-    },
-    offsetY: -20,
-    style: {
-      fontSize: '12px',
-      colors: ["#304758"]
-    }
-  },
-  xaxis: {
-    categories: ["누적 수치"],
-    position: 'top',
-    axisBorder: {
-      show: false
-    },
-    axisTicks: {
-      show: false
-    },
-    crosshairs: {
-      fill: {
-        type: 'gradient',
-        gradient: {
-          colorFrom: '#D8E3F0',
-          colorTo: '#BED1E6',
-          stops: [0, 100],
-          opacityFrom: 0.4,
-          opacityTo: 0.5,
-        }
-      }
-    },
-    tooltip: {
-      enabled: true,
-    }
-  },
-  yaxis: {
-    axisBorder: {
-      show: false
-    },
-    axisTicks: {
-      show: false,
-    },
-    labels: {
-      show: false,
-      formatter: function (val) {
-        return val;
-      }
-    }
-  }
-}
+import './YoutubeVideoStyle.css';
 
 function Youtube(props){
   const [YoutubePlace, setYoutubePlace] = useState([]);
-
+  const [VideoList, setVideoList] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
@@ -104,7 +28,6 @@ function Youtube(props){
         setYoutubePlace(current => [...current, {name: item["dong"], data: [item["count"]]}]);
       });
     });
-    console.log(YoutubePlace);
   }
 
   const polystyle = (feature) => {
@@ -131,6 +54,7 @@ function Youtube(props){
   function whenClicked(e, feature) {
     setDrawerTitle(feature.properties.EMD_NM);
     setDrawerOpen(true);
+    //setVideoList([...VideoList, ...result.items]);
   }
 
   const onEachFeature = (feature, layer) => {
@@ -147,8 +71,9 @@ function Youtube(props){
   }, [])
 
   if (YoutubePlace){
-  return(
-      <div style={style}>
+    return(
+      <div>
+        <div>
         <MapContainer
           center={[37.541, 126.986]}
           zoom={12}
@@ -171,10 +96,19 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <div>
-              <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625}  />
+            {VideoList.map((video) => {
+            return (
+              <li className='youtubeBorder'>
+                <img className='youtubeImage' src={video.snippet.thumbnails.default.url} alt=""></img>
+                <h5 className='youtubeTitle'>{video.snippet.title}</h5>
+                <div className='youtubeChannel'>{video.snippet.channelTitle}</div>
+              </li>
+              )
+            })}
             </div>
           </Drawer.Body>
         </Drawer>
+        </div>
       </div>
     );
   }
