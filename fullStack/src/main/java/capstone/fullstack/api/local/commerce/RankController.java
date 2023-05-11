@@ -1,12 +1,13 @@
 package capstone.fullstack.api.local.commerce;
 
+import capstone.fullstack.domain.rank.FloatingRentalFeeRank;
 import capstone.fullstack.repository.local.rank.floating.FloatingGroupDto;
 import capstone.fullstack.repository.local.rank.floating.FloatingRankRepository;
 import capstone.fullstack.repository.local.rank.floating.FloatingRankDto;
-import capstone.fullstack.repository.local.rank.floatingrentalfee.FloatingRentalFeeRankDto;
 import capstone.fullstack.repository.local.rank.rentalfee.RentalFeeGroupDto;
 import capstone.fullstack.repository.local.rank.rentalfee.RentalFeeRankDto;
 import capstone.fullstack.repository.local.rank.rentalfee.RentalFeeRankRepository;
+import capstone.fullstack.service.local.commerce.rank.FloatingRentalFeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ public class RankController {
 
     private final FloatingRankRepository floatingRankRepository;
     private final RentalFeeRankRepository rentalFeeRankRepository;
+    private final FloatingRentalFeeService floatingRentalFeeService;
 
     @GetMapping("/api/rank/floating")
     public List<FloatingRankDto> findFloatingRank(){
@@ -39,31 +41,38 @@ public class RankController {
     }
 
     @GetMapping("/api/rank/floating-rentalfee")
-    public List<FloatingRentalFeeRankDto> findFloatingRentalFrrRank(){
+    public List<FloatingRentalFeeRank> findFloatingRentalFrrRank(){
+        return floatingRentalFeeService.getFloatingRentalFeeRanks();
+    }
+
+    @GetMapping("/api/rank/floating-rentalfee/update")
+    public Integer setFloatingRentalFrrRank(){
         List<FloatingGroupDto> allFloatings = floatingRankRepository.findFloatingGroupLastYear();
         List<RentalFeeGroupDto> allRentalFees = rentalFeeRankRepository.findRentalFeeGroupLastYear();
 
         Map<String, List<FloatingGroupDto>> floatingMap = allFloatings.stream().collect(Collectors.groupingBy(FloatingGroupDto::getDong));
         Map<String, List<RentalFeeGroupDto>> rentalFeeMap = allRentalFees.stream().collect(Collectors.groupingBy(RentalFeeGroupDto::getAreaName));
 
-        List<FloatingRentalFeeRankDto> resultList = new ArrayList<>();
+        List<FloatingRentalFeeRank> resultList = new ArrayList<>();
         for(String dong : floatingMap.keySet()){
             List<FloatingGroupDto> floatingGroups = floatingMap.get(dong);
             List<RentalFeeGroupDto> rentalFeeGroups = rentalFeeMap.get(dong);
 
             float value = (float)floatingGroups.get(0).getTotalFlpop() / rentalFeeGroups.get(0).getRentalFee();
 
-            resultList.add(new FloatingRentalFeeRankDto(dong, value));
+            resultList.add(new FloatingRentalFeeRank(dong, value));
         }
         // 정렬
         Collections.sort(resultList, Collections.reverseOrder());
 
         int rank = 1;
-        for (FloatingRentalFeeRankDto dong : resultList) {
-            dong.setRank(rank++);
+        for (FloatingRentalFeeRank area : resultList) {
+            area.setRanking(rank++);
         }
 
-        return resultList;
+        int num = floatingRentalFeeService.savaAll(resultList);
+
+        return num;
     }
 
     private static List<FloatingRankDto> getFloatingRank(List<FloatingGroupDto> allFloatings) {
