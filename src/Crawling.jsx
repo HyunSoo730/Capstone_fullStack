@@ -9,7 +9,6 @@ import "./YoutubeVideoStyle.css";
 //서울 놀거리 끝
 //서울 맛집 끝
 //서울 여행 끝
-//서울 인싸
 const style = {
     backgroundColor : 'white',
     border: '1px solid black',
@@ -90,7 +89,7 @@ function Crawling(props) {
   const whenClicked = (e) => {
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 인싸&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
       )
       .then((res) => {
         CheckYoutubeItem(res.data);
@@ -101,7 +100,7 @@ function Crawling(props) {
   useDidMountEffect(() => {
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 인싸&maxResults=100&regionCode=KR&key=" + API_KEY
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&maxResults=100&regionCode=KR&key=" + API_KEY
         )
       .then((res) => {
         CheckYoutubeItem(res.data);

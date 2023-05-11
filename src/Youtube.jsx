@@ -34,9 +34,9 @@ function Youtube(props){
 
   const polystyle = (feature) => {
     for (let i = 0; i < YoutubePlace.length; i++){
-      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
+      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name.slice(0,2))){
         return {
-          fillColor: 'rgba(' + 3 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          fillColor: 'rgba(' + YoutubePlace[i].data[0] + '0, 0, 0.5)',
           weight: 2,
           opacity: 1,
           color: 'white',  //Outline color
@@ -116,13 +116,18 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <ul className='youtubeList'>
-            {VideoList.map((video) => {
+              {console.log(VideoList)}
+            {VideoList.length !== 0 ? VideoList.map((video) => {
               const videoId = video.videoLink;
             return (
               <div>
                 <li className='youtubeBorder' >
                   <img className='youtubeImage' src={video.thumbnail} alt=""></img>
-                  <h5 className='youtubeTitle'>{video.name}</h5>
+                  <h5 className='youtubeTitle'>{video.name}<br/>
+                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                    <h6 className='youtubeView'> 👀{video.views}</h6>
+                  </h5>
+                  
                   <button 
                     onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
                     {isToggleOn.includes(videoId) ? "-":"+"}
@@ -139,7 +144,7 @@ function Youtube(props){
                 </div>
               </div>
               )
-            })}
+            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
             </ul>
           </Drawer.Body>
         </Drawer>
