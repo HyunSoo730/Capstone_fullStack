@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from "react"
+import {React, useEffect, useState, useCallback} from "react"
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import geoData from './LocationData.json'
 import { Drawer, Button } from 'rsuite';
@@ -12,6 +12,8 @@ function Youtube(props){
   const [VideoList, setVideoList] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
+
+  const [isToggleOn, setToggle] = useState([]);
 
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
@@ -34,7 +36,7 @@ function Youtube(props){
     for (let i = 0; i < YoutubePlace.length; i++){
       if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
         return {
-          fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          fillColor: 'rgba(' + 3 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
           weight: 2,
           opacity: 1,
           color: 'white',  //Outline color
@@ -43,7 +45,7 @@ function Youtube(props){
       }
     }
     return {
-      fillColor: 'rgba(10, 0, 0, 0.5)',
+      fillColor: 'rgba(0, 0, 0, 0.5)',
       weight: 2,
       opacity: 1,
       color: 'white',  //Outline color
@@ -52,7 +54,8 @@ function Youtube(props){
   }
 
   function whenClicked(e, feature) {
-    setVideoList([])
+    setVideoList([]);
+    setToggle([]);
     setDrawerTitle(feature.properties.EMD_NM);
     setDrawerOpen(true);
     for(let i = 0; i < locationData.length; i++) {
@@ -86,7 +89,7 @@ function Youtube(props){
   useEffect(() => {
     CountYoutubePlace();
   }, [])
-
+  
   if (YoutubePlace){
     return(
       <div>
@@ -114,11 +117,27 @@ function Youtube(props){
           <Drawer.Body>
             <ul className='youtubeList'>
             {VideoList.map((video) => {
+              const videoId = video.videoLink;
             return (
-              <li className='youtubeBorder'>
-                <img className='youtubeImage' src={video.thumbnail} alt=""></img>
-                <h5 className='youtubeTitle'>{video.name}</h5>
-              </li>
+              <div>
+                <li className='youtubeBorder' >
+                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                  <h5 className='youtubeTitle'>{video.name}</h5>
+                  <button 
+                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                    {isToggleOn.includes(videoId) ? "-":"+"}
+                  </button>
+                </li>
+                <div>
+                {isToggleOn.includes(videoId) && <iframe 
+                  width="90%" height="auto"
+                  src={`https://www.youtube.com/embed/${videoId}`}
+                  title="YouTube video player" frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; 
+                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                }
+                </div>
+              </div>
               )
             })}
             </ul>
