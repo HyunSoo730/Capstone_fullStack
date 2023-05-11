@@ -21,6 +21,7 @@ public class Sales {
     private Integer commercialCode;  //상권 코드
     private String serviceName;   //서비스 업종 명
     private Long salesPerQuarter;  //분기당 매출
+
     private Long weeklySales;   //주간 매출
     private Long weekendSales;  //주말 매출
     private Long monSales;      //요일별 매출 월~일
@@ -45,4 +46,6 @@ public class Sales {
     private Long age50Sales;
     private Long age60Sales;
     private Long numOfStores;  //매장 수
+
+    private String dong;  //일단 동 컬럼 추가
 }

@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
+import { MenuItems } from "./HomePageMenuItems";
 import HomeStyle from './HomePage.css';
-import { MenuItems } from "./HomePageMenuItems.jsx";
-import "./HomePageNavbar.css"
+import HomeNavStyle from "./HomePageNavbar.css"
 
 const HomePage = () => {
     const [clicked, setClicked] = useState(false);
@@ -12,8 +12,8 @@ const HomePage = () => {
 
     return (
         <div>
-            <nav className="Navbar">
-                <div className="menu-icon" onClick={handleClick}>
+            <nav className='Navbar'>
+                <div className='menu-icon' onClick={handleClick}>
                     <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
                 <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>

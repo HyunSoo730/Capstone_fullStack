@@ -1,5 +1,6 @@
 package capstone.fullstack.api.local.commerce.dong;
 
+import capstone.fullstack.domain.rank.SalesGrowthRate;
 import capstone.fullstack.repository.local.commerce.AvgOperationPeriodRepository;
 import capstone.fullstack.repository.local.commerce.IndustryRepository;
 import capstone.fullstack.repository.local.commerce.RentalFeeRepository;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -164,15 +164,22 @@ public class CommerceController {
         //해결. 연도 -> 분기 -> 해당 행정동에 대한 누계
     }
 
+    @GetMapping("/test")
+    public Map<String, List<SalesGrowthRate>> setDong(String serviceName) {
+//        List<String> dongs = salesService.setDong(serviceName);
+//        List<List<Sales>> lists = salesService.setDong("커피-음료");
+//        return lists;
+        List<String> list = Arrays.asList("한식음식점", "중식음식점", "일식음식점", "양식음식점", "제과점", "패스트푸드점", "치킨전문점", "분식전문점", "호프-간이주점", "커피-음료");
+        Map<String, List<SalesGrowthRate>> resMap = new HashMap<>();
+        for (String sn : list) {
+            List<SalesGrowthRate> salesGrowthRates = salesService.saveAllDong(sn);
+            resMap.put(sn, salesGrowthRates);
+        }
 
-    //    @GetMapping("/test")
-//    public HashMap<String, Integer> test(@RequestParam String dong) {
-//        HashMap<String, Integer> r = new HashMap<>();
-//        r.put(dong, 1);
-//        return r;
-//    }
+//        List<SalesGrowthRate> res = salesService.setDong("커피-음료");
+//        return res;
+        return resMap;
+        //        return dongs;
 
-
-
-
+    }
 }

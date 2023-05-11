@@ -381,7 +381,7 @@ function Analysis(props){
         setMyZoom(MyMap.getZoom())
       }
     })
-    return <GeoJSON data={MyZoom < 15 ? geoData : geoDetailData} onEachFeature={MyZoom < 15 ? onEachFeature : onEachDetailFeature}/>;
+    return <GeoJSON data={MyZoom < 15 ? geoData : geoDetailData} onEachFeature={MyZoom < 15 ? onEachFeature : onEachDetailFeature} color={MyZoom < 15 ? "BLUE" : "RED"}/>;
   }
 
   useEffect(()=>{
@@ -502,7 +502,7 @@ function Analysis(props){
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
               <div>{DrawerTitle}의 직장 구성원</div>
               <ReactApexChart options={ApexChartBarOption} series={WorkNum} type="bar" height={300}  />
-              <div>2022년 직장 인구 소득 추이</div>
+              <div>2022년 상권 내 소득 및 지출</div>
               <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
               <div>{DrawerTitle}의 집객시설 개수</div>
               <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
