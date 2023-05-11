@@ -30,25 +30,55 @@ function Crawling(props) {
     for (let i = 0; i < items.length; i++) {
       for(let j = 0; j < locationData.length; j++) {
         if (items[i].snippet.title.includes(locationData[j].slice(0,2))) {
-          fetch("/api/youtube/save", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              dong: locationData[j],
-              name: items[i].snippet.title,
-              views: 1,
-              videoLink: items[i].id.videoId,
-              likes: 1,
-              date: items[i].snippet.publishTime,
-              thumbnail: items[i].snippet.thumbnails.default.url
-            }),
-          })
-          .then(response => {
-              console.log("Youtube_DATA ADDED\n" + response.json());
-          })
-          .catch(console.log("YoutubeData Save Error"));
+          axios
+          .get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${items[i].id.videoId}&maxResults=1&key=`+API_KEY)
+          .then((res) => {
+            try{
+              const viewCount = res.data.items[0].statistics.viewCount;
+              const likeCount = res.data.items[0].statistics.likeCount;
+              fetch("/api/youtube/save", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  dong: locationData[j],
+                  name: items[i].snippet.title,
+                  views: viewCount,
+                  videoLink: items[i].id.videoId,
+                  likes: likeCount,
+                  date: items[i].snippet.publishTime,
+                  thumbnail: items[i].snippet.thumbnails.default.url
+                }),
+              })
+              .then(response => {
+                  console.log("Youtube_DATA ADDED\n" + response.json());
+              })
+              .catch(console.log("YoutubeData Save Error"));
+            }
+            catch{
+              fetch("/api/youtube/save", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  dong: locationData[j],
+                  name: items[i].snippet.title,
+                  views: 1,
+                  videoLink: items[i].id.videoId,
+                  likes: 1,
+                  date: items[i].snippet.publishTime,
+                  thumbnail: items[i].snippet.thumbnails.default.url
+                }),
+              })
+              .then(response => {
+                  console.log("Youtube_DATA ADDED\n" + response.json());
+              })
+              .catch(console.log("YoutubeData Save Error"));
+            }
+
+          });
           break;
         }
       }
@@ -59,7 +89,7 @@ function Crawling(props) {
   const whenClicked = (e) => {
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 여행&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
       )
       .then((res) => {
         CheckYoutubeItem(res.data);
@@ -70,8 +100,8 @@ function Crawling(props) {
   useDidMountEffect(() => {
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 여행&maxResults=100&regionCode=KR&key=" + API_KEY
-      )
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&maxResults=100&regionCode=KR&key=" + API_KEY
+        )
       .then((res) => {
         CheckYoutubeItem(res.data);
       })

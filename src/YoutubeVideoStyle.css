@@ -1,10 +1,10 @@
-.youtubeList {
-    float: left;
+.youtubeEmpty {
+    display: flex;
+    justify-content: center;
 }
 
 .youtubeBorder {
     background-color: rgb(249, 249, 249);
-    float: left;
     display: flex;
     height: 10%;
     width: 90%;
@@ -13,11 +13,16 @@
 }
 
 .youtubeImage {
-    display:flex;
+    display: flex;
+}
+
+.youtubeView {
+    display:inline;
+    align-self: flex-end;
 }
 
 .youtubeTitle {
-    display:inline-block;
+    display: inline-block;
     width: 300px;
     margin-left: 5px;
 
@@ -25,3 +30,4 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
