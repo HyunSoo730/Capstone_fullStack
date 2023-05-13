@@ -1,7 +1,8 @@
-import {React, useEffect, useState} from "react"
+import {React, useEffect, useState, useCallback} from "react"
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
 import geoData from './LocationData.json'
 import { Drawer, Button } from 'rsuite';
+import { locationData } from "./LocationDataItems";
 
 import "rsuite/dist/rsuite.css";
 import './YoutubeVideoStyle.css';
@@ -12,8 +13,10 @@ function Youtube(props){
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
+  const [isToggleOn, setToggle] = useState([]);
+
   const CountYoutubePlace = () => {
-    fetch("api/return", {
+    fetch("api/youtube/return", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +26,6 @@ function Youtube(props){
       return response.json();
     })
     .then(response => {
-      console.log(response)
       response.map((item)=>{
         setYoutubePlace(current => [...current, {name: item["dong"], data: [item["count"]]}]);
       });
@@ -32,9 +34,9 @@ function Youtube(props){
 
   const polystyle = (feature) => {
     for (let i = 0; i < YoutubePlace.length; i++){
-      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name)){
+      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name.slice(0,2))){
         return {
-          fillColor: 'rgba(' + 5 * YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          fillColor: 'rgba(' + YoutubePlace[i].data[0] + '0, 0, 0.5)',
           weight: 2,
           opacity: 1,
           color: 'white',  //Outline color
@@ -43,7 +45,7 @@ function Youtube(props){
       }
     }
     return {
-      fillColor: 'rgba(10, 0, 0, 0.5)',
+      fillColor: 'rgba(0, 0, 0, 0.5)',
       weight: 2,
       opacity: 1,
       color: 'white',  //Outline color
@@ -52,9 +54,27 @@ function Youtube(props){
   }
 
   function whenClicked(e, feature) {
+    setVideoList([]);
+    setToggle([]);
     setDrawerTitle(feature.properties.EMD_NM);
     setDrawerOpen(true);
-    //setVideoList([...VideoList, ...result.items]);
+    for(let i = 0; i < locationData.length; i++) {
+      if (feature.properties.EMD_NM.includes(locationData[i].slice(0,2))) {
+        fetch(`/api/youtube/find-entity/${locationData[i]}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })  
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          setVideoList([...VideoList, ...response]);
+        });
+        break;
+      }
+    }
   }
 
   const onEachFeature = (feature, layer) => {
@@ -69,7 +89,7 @@ function Youtube(props){
   useEffect(() => {
     CountYoutubePlace();
   }, [])
-
+  
   if (YoutubePlace){
     return(
       <div>
@@ -95,17 +115,37 @@ function Youtube(props){
             </Drawer.Actions>
           </Drawer.Header>
           <Drawer.Body>
-            <div>
-            {VideoList.map((video) => {
+            <ul className='youtubeList'>
+              {console.log(VideoList)}
+            {VideoList.length !== 0 ? VideoList.map((video) => {
+              const videoId = video.videoLink;
             return (
-              <li className='youtubeBorder'>
-                <img className='youtubeImage' src={video.snippet.thumbnails.default.url} alt=""></img>
-                <h5 className='youtubeTitle'>{video.snippet.title}</h5>
-                <div className='youtubeChannel'>{video.snippet.channelTitle}</div>
-              </li>
+              <div>
+                <li className='youtubeBorder' >
+                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                  <h5 className='youtubeTitle'>{video.name}<br/>
+                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                    <h6 className='youtubeView'> 👀{video.views}</h6>
+                  </h5>
+                  
+                  <button 
+                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                    {isToggleOn.includes(videoId) ? "-":"+"}
+                  </button>
+                </li>
+                <div>
+                {isToggleOn.includes(videoId) && <iframe 
+                  width="90%" height="auto"
+                  src={`https://www.youtube.com/embed/${videoId}`}
+                  title="YouTube video player" frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; 
+                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                }
+                </div>
+              </div>
               )
-            })}
-            </div>
+            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+            </ul>
           </Drawer.Body>
         </Drawer>
         </div>
