@@ -84,7 +84,9 @@ public class RankController {
 
             float rate = (float)(dongs.get(0).getTotalFlpop() - dongs.get(1).getTotalFlpop()) / dongs.get(1).getTotalFlpop() * 100;
             log.info("rate={}", rate);
-            resultList.add(new FloatingRankDto(dong, rate));
+            long f22 = dongs.get(0).getTotalFlpop() / dongs.get(0).getCount();
+            long f21 = dongs.get(1).getTotalFlpop() / dongs.get(1).getCount();
+            resultList.add(new FloatingRankDto(dong, rate, f21, f22));
         }
 
         // 정렬
@@ -105,12 +107,17 @@ public class RankController {
         for(String area : collect.keySet()){
             List<RentalFeeGroupDto> areas = collect.get(area);
 
-            float rate = 0.f;
-            if(areas.size() > 1)
-                rate = (float) (areas.get(0).getRentalFee() - areas.get(1).getRentalFee()) / areas.get(1).getRentalFee() * 100;
+            if(areas.size() <= 1)
+                continue;
+
+            float rate = (float) (areas.get(0).getRentalFee() - areas.get(1).getRentalFee()) / areas.get(1).getRentalFee() * 100;
             if(Float.isNaN(rate))
-                rate = 0.0f;
-            resultList.add(new RentalFeeRankDto(area, rate));
+                continue;
+
+            int fee22 = areas.get(0).getRentalFee() / 4;
+            int fee21 = areas.get(1).getRentalFee() / 4;
+
+            resultList.add(new RentalFeeRankDto(area, rate, fee21, fee22));
         }
         // 정렬
         Collections.sort(resultList, Collections.reverseOrder());

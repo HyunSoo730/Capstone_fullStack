@@ -9,11 +9,13 @@ public class FloatingGroupDto {
     private String dong;
     private Long totalFlpop;
 
+    private Long count;  //분기수 * 상권수
 
-    public FloatingGroupDto(int year, String dong, Long totalFlpop) {
+    public FloatingGroupDto(int year, String dong, Long totalFlpop, Long count) {
         this.year = year;
         this.dong = dong;
         this.totalFlpop = totalFlpop;
+        this.count = count;
     }
 
 }
