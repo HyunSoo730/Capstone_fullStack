@@ -502,7 +502,7 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-          {MarketFuture && MarketFuture.map((item)=>{return (
+          {MarketFuture && MyZoom > 15 && MarketFuture.map((item)=>{return (
             <div>2022년 {item[3]["dong"]}의 개업 매장 추이는 {item[3]["commerceMetrics"]}입니다.</div>
           )})}
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />

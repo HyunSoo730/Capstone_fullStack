@@ -86,6 +86,14 @@ function Youtube(props){
     });
   }
 
+  const onPointLayer = (feature, layer) => {
+      layer.bindPopup(feature.properties.EMD_NM);
+
+    layer.on({
+      mouseover: () => {layer.setStyle({ fillColor: 'red' })}
+    });
+  }
+
   useEffect(() => {
     CountYoutubePlace();
   }, [])
@@ -103,7 +111,7 @@ function Youtube(props){
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature}/>
+          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature} pointToLayer={onPointLayer}/>
         </MapContainer>
 
         <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -116,9 +124,10 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <ul className='youtubeList'>
-              {console.log(VideoList)}
+              <div>인기 동영상 TOP 10</div>
             {VideoList.length !== 0 ? VideoList.map((video) => {
               const videoId = video.videoLink;
+              const tagList = video.tag.split('#');
             return (
               <div>
                 <li className='youtubeBorder' >
@@ -134,17 +143,31 @@ function Youtube(props){
                   </button>
                 </li>
                 <div>
-                {isToggleOn.includes(videoId) && <iframe 
-                  width="90%" height="auto"
+                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
+                {tagList.map((item, index) => {
+                    if (item === ""){
+                      return null;
+                    }
+                    else{
+                      return(
+                        <button className='youtubeTag' key={index}>{'#' + item}</button>
+                        )
+                      }
+                    }
+                  )} 
+                  <iframe 
+                  className='iframe16To9'
                   src={`https://www.youtube.com/embed/${videoId}`}
                   title="YouTube video player" frameborder="0" 
                   allow="accelerometer; autoplay; clipboard-write; 
                   encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
                 }
                 </div>
-              </div>
+                </div>
               )
             }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+            <div>인기 급상승 동영상 TOP 3</div>
             </ul>
           </Drawer.Body>
         </Drawer>
