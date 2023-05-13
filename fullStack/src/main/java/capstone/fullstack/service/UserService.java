@@ -1,15 +1,12 @@
 package capstone.fullstack.service;
 
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.KakaoProfile;
 import capstone.fullstack.dto.OauthToken;
 import capstone.fullstack.repository.UserRepository;
 import capstone.fullstack.util.JwtTokenUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

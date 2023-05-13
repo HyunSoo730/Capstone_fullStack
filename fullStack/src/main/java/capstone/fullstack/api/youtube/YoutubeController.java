@@ -1,12 +1,9 @@
 package capstone.fullstack.api.youtube;
 
-import capstone.fullstack.domain.User;
 import capstone.fullstack.domain.youtube.VideoCount;
 import capstone.fullstack.domain.youtube.Youtube;
-import capstone.fullstack.dto.KakaoProfile;
 import capstone.fullstack.repository.youtube.VideoCountRepository;
 import capstone.fullstack.repository.youtube.YoutubeRepository;
-import capstone.fullstack.service.UserService;
 import capstone.fullstack.service.youtube.YoutubeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
