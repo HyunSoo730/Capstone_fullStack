@@ -12,13 +12,18 @@ import lombok.Setter;
 public class FloatingRentalFeeRank implements Comparable<FloatingRentalFeeRank>{
 
     @Id
-    private int ranking;
-    private String areaName;
-    private float value;
+    private int ranking;        //랭킹
+    private String areaName;      //지역 이름
+    private float value;        // 유동인구 / 임대료 값
 
-    public FloatingRentalFeeRank(String areaName, float value) {
+    private Long floating;      // 22년 평균 유동인구
+    private int rentalFee;      // 22년 평균 임대료
+
+    public FloatingRentalFeeRank(String areaName, float value, Long floating, int rentalFee) {
         this.areaName = areaName;
         this.value = value;
+        this.floating = floating;
+        this.rentalFee = rentalFee;
     }
 
     @Override
