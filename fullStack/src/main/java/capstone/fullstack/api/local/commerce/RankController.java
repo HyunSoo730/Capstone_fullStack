@@ -46,7 +46,7 @@ public class RankController {
     }
 
     @GetMapping("/api/rank/floating-rentalfee/update")
-    public Integer setFloatingRentalFrrRank(){
+    public Integer setFloatingRentalFeeRank(){
         List<FloatingGroupDto> allFloatings = floatingRankRepository.findFloatingGroupLastYear();
         List<RentalFeeGroupDto> allRentalFees = rentalFeeRankRepository.findRentalFeeGroupLastYear();
 
@@ -59,8 +59,9 @@ public class RankController {
             List<RentalFeeGroupDto> rentalFeeGroups = rentalFeeMap.get(dong);
 
             float value = (float)floatingGroups.get(0).getTotalFlpop() / rentalFeeGroups.get(0).getRentalFee();
-
-            resultList.add(new FloatingRentalFeeRank(dong, value));
+            long floating = floatingGroups.get(0).getTotalFlpop() / floatingGroups.get(0).getCount();
+            int rentalFee = rentalFeeGroups.get(0).getRentalFee() / 4;
+            resultList.add(new FloatingRentalFeeRank(dong, value, floating, rentalFee));
         }
         // 정렬
         Collections.sort(resultList, Collections.reverseOrder());
