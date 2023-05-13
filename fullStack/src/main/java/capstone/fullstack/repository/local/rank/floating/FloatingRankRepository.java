@@ -17,7 +17,7 @@ public class FloatingRankRepository {
     // GROUP BY year, dong;
     public List<FloatingGroupDto> findAllFloatingGroup(){
 
-        return em.createQuery("SELECT new capstone.fullstack.repository.local.rank.floating.FloatingGroupDto(f.year, l.dong, SUM(f.total_flpop)) FROM FloatingPopulation f " +
+        return em.createQuery("SELECT new capstone.fullstack.repository.local.rank.floating.FloatingGroupDto(f.year, l.dong, SUM(f.total_flpop), COUNT(f.commercial_code)) FROM FloatingPopulation f " +
                         "JOIN Local l ON f.commercial_code = l.commercialCode " +
                         "WHERE f.year IN (2021, 2022) " +
                         "GROUP BY f.year, l.dong")
@@ -27,7 +27,7 @@ public class FloatingRankRepository {
 
     public List<FloatingGroupDto> findFloatingGroupLastYear(){
 
-        return em.createQuery("SELECT new capstone.fullstack.repository.local.rank.floating.FloatingGroupDto(f.year, l.dong, SUM(f.total_flpop)) FROM FloatingPopulation f " +
+        return em.createQuery("SELECT new capstone.fullstack.repository.local.rank.floating.FloatingGroupDto(f.year, l.dong, SUM(f.total_flpop), COUNT(f.commercial_code)) FROM FloatingPopulation f " +
                         "JOIN Local l ON f.commercial_code = l.commercialCode " +
                         "WHERE f.year = 2022 " +
                         "GROUP BY l.dong")

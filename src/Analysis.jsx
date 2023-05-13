@@ -5,6 +5,7 @@ import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json'
 import geoDetailData from './LocationDetailData.json'
 import {GU_locationData} from './LocationDataGUItems'
+import {locationData} from './LocationDataItems'
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -30,6 +31,13 @@ function Analysis(props){
   const [DrawerGU, setDrawerGU] = useState("DRAWER_GU_ERR");
 
   const [MyZoom, setMyZoom] = useState(12);
+
+  const findDong = (val) => {
+    for(let i = 0; i < locationData.length; i++) {
+      if (locationData[i].includes(val.slice(0,2))) 
+        return locationData[i];
+    }
+  }
 
   var ApexChartLineOption = {
     chart: {
@@ -151,7 +159,7 @@ function Analysis(props){
       },
       body: JSON.stringify({
         borough: GU_locationData[DrawerGU.slice(0, 5)],
-        dong: DrawerTitle,
+        dong: findDong(DrawerTitle),
       }),
     })  
     .then(response => { 
@@ -232,7 +240,7 @@ function Analysis(props){
     }
     else if(data_type === "fee"){
       let analysis_data = null;
-      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/rentalfee/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/rentalfee/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       analysis_data.then(response => {
         var year_data = response.map((item)=>{
           return item[targetValue];
@@ -283,10 +291,10 @@ function Analysis(props){
     else if(data_type === "timepopulation"){
       let analysis_data = null;
       if (MyZoom < 15){
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       else{
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       analysis_data.then(response => {
         var current_data = response[3][targetValue];
@@ -296,10 +304,10 @@ function Analysis(props){
     else if(data_type === "sexpopulation"){
       let analysis_data = null;
       if (MyZoom < 15){
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       else{
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
@@ -309,10 +317,10 @@ function Analysis(props){
     else if(data_type === "agepopulation"){
       let analysis_data = null;
       if (MyZoom < 15){
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       else{
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
@@ -322,10 +330,10 @@ function Analysis(props){
     else if (data_type === "weekpopulation"){
       let analysis_data = null;
       if (MyZoom < 15){
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       else{
-        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+        analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/floating/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
@@ -333,7 +341,7 @@ function Analysis(props){
       });
     }
     else if (data_type === "avgperiod"){
-      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/operation/${GU_locationData[DrawerGU.slice(0, 5)]}/${DrawerTitle}`);
+      analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/operation/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       analysis_data.then(response => {
         setAvgPeriod(response[targetValue]);
       });
@@ -494,7 +502,7 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-          {MarketFuture && MarketFuture.map((item)=>{return (
+          {MarketFuture && MyZoom > 15 && MarketFuture.map((item)=>{return (
             <div>2022년 {item[3]["dong"]}의 개업 매장 추이는 {item[3]["commerceMetrics"]}입니다.</div>
           )})}
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
