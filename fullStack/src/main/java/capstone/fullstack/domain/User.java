@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -27,6 +29,23 @@ public class User {
 
     @CreationTimestamp
     private Timestamp createTime;
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> postList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
+    //== 연관관계 메서드 ==//
+    public void addPost(Post post){
+        //post의 writer 설정은 post에서 함
+        postList.add(post);
+    }
+
+    public void addComment(Comment comment){
+        //comment의 writer 설정은 comment에서 함
+        commentList.add(comment);
+    }
 
     @Builder
     public User(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
