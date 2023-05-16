@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
-import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
 import { Drawer, Button } from 'rsuite';
-import geoData from './LocationData.json'
-import geoDetailData from './LocationDetailData.json'
-import {GU_locationData} from './LocationDataGUItems'
-import {locationData} from './LocationDataItems'
+import geoData from './LocationData.json';
+import geoDetailData from './LocationDetailData.json';
+import {GU_locationData} from './LocationDataGUItems';
+import {locationData} from './LocationDataItems';
+import Sidebar from './Jaehyeok_Lee/Sidebar';
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -479,19 +480,25 @@ function Analysis(props){
   }, [DrawerTitle])
 
   return(
-    <div>
-      <MapContainer
-        center={[37.541, 126.986]}
-        zoom={12}
-        scrollWheelZoom={true}
-        style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
-        <TileLayer
-            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <RenderingGeoJSON/>
-      </MapContainer>
-
+    <div >
+      <div style={{display: "flex"}}>
+        <MapContainer
+          center={[37.541, 126.986]}
+          zoom={12}
+          scrollWheelZoom={true}
+          style={{ width: "100%", height: "calc(100vh - 0rem)", position: "relative"}}>
+          <div style={{position:"absolute"}}>
+              <Sidebar></Sidebar>
+          </div>
+          <TileLayer
+              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          >
+            
+          </TileLayer>
+          <RenderingGeoJSON/>
+        </MapContainer>
+      </div>
       <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
         <Drawer.Header>
           <Drawer.Title>{DrawerTitle}</Drawer.Title>
