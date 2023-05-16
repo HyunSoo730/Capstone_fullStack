@@ -27,6 +27,7 @@ public class UserController {
     }
 
     /**
+     * 사용자 정보 반환. 카카오 정보 + 닉네임
      * 사용자 정보 요청오면 토큰을 복호화해서 정보 가져온 후에 반환.
      */
     @PostMapping("/auth/kakao/token")
@@ -36,5 +37,6 @@ public class UserController {
         User user = userService.validateToken(token);
         return user;
     }
+
 
 }

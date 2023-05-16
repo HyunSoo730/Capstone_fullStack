@@ -28,10 +28,15 @@ public class User {
 
     private String kakaoEmail;
 
+    private String username;  //닉네임
+
 //    private String userRole;
 
     @CreationTimestamp
     private Timestamp createTime;
+
+    //상권에 대한 정보, 행정동에 대한 분석정보
+
 
     @Builder
     public User(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
