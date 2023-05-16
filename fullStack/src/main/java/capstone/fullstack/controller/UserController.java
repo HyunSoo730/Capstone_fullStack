@@ -1,25 +1,11 @@
 package capstone.fullstack.controller;
 
-import capstone.fullstack.domain.User;
-import capstone.fullstack.dto.KakaoProfile;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.OauthToken;
-import capstone.fullstack.jwt.JwtProperties;
 import capstone.fullstack.service.UserService;
-import capstone.fullstack.util.JwtTokenUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 
 @RestController
@@ -41,6 +27,7 @@ public class UserController {
     }
 
     /**
+     * 사용자 정보 반환. 카카오 정보 + 닉네임
      * 사용자 정보 요청오면 토큰을 복호화해서 정보 가져온 후에 반환.
      */
     @PostMapping("/auth/kakao/token")
