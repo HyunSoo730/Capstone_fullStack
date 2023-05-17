@@ -11,7 +11,9 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user")
+@Builder
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +32,11 @@ public class User {
     @CreationTimestamp
     private Timestamp createTime;
 
+    @Builder.Default
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
@@ -47,7 +51,7 @@ public class User {
         commentList.add(comment);
     }
 
-    @Builder
+    //@Builder
     public User(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
                 String kakaoEmail) {
 

@@ -5,9 +5,7 @@ import capstone.fullstack.domain.User;
 import capstone.fullstack.dto.post.*;
 import capstone.fullstack.exception.PostException;
 import capstone.fullstack.exception.PostExceptionType;
-import capstone.fullstack.repository.PostRepository;
-import capstone.fullstack.repository.UserRepository;
-import capstone.fullstack.service.UserService;
+import capstone.fullstack.repository.post.PostRepository;
 import capstone.fullstack.service.file.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostServiceImpl implements PostService{
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
-    private final UserService userService;
     private final FileService fileService;
 
 
@@ -67,12 +63,15 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public PostInfoDto getPostInfo(Long id) {
-        return null;
+
+        return new PostInfoDto(postRepository.findWithWriterById(id)
+                .orElseThrow(()->new PostException(PostExceptionType.POST_NOT_FOUND)));
     }
 
     @Override
     public PostPagingDto getPostList(Pageable pageable, PostSearchCondition postSearchCondition) {
-        return null;
+
+        return new PostPagingDto(postRepository.search(postSearchCondition, pageable));
     }
 
     private void checkAuthority(User user, Post post, PostExceptionType postExceptionType){
