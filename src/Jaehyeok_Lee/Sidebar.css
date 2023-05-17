@@ -1,6 +1,6 @@
- .sidebar {
+.sidebar {
     background-color : #FFFFFF;
-    display : flex;
+    display : absolute;
     flex-direction : column;
     align-items : center;
     justify-content : center;
