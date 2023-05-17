@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
-import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMapEvents} from 'react-leaflet';
 import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json';
 import geoDetailData from './LocationDetailData.json';
@@ -481,24 +481,29 @@ function Analysis(props){
 
   return(
     <div >
-      <div style={{display: "flex"}}>
-        <MapContainer
-          center={[37.541, 126.986]}
-          zoom={12}
-          scrollWheelZoom={true}
-          style={{ width: "100%", height: "calc(100vh - 0rem)", position: "relative"}}>
-          <div style={{position:"absolute"}}>
-              <Sidebar></Sidebar>
-          </div>
-          <TileLayer
-              url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          >
-            
-          </TileLayer>
-          <RenderingGeoJSON/>
-        </MapContainer>
+      <div
+        calssName='sidebar'
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 10000
+        }}>
+        <Sidebar/>
       </div>
+      <MapContainer
+        center={[37.541, 126.986]}
+        zoom={12}
+        scrollWheelZoom={true}
+        style={{ width: "100%", height: "calc(100vh - 0rem)", position: "absolute", top: 0, left: 0}}>
+        <TileLayer
+            zIndex={0}
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'/>
+        <RenderingGeoJSON/>
+      </MapContainer>
+
+
       <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
         <Drawer.Header>
           <Drawer.Title>{DrawerTitle}</Drawer.Title>
