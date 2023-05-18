@@ -7,6 +7,7 @@ import geoDetailData from './LocationDetailData.json';
 import {GU_locationData} from './LocationDataGUItems';
 import {locationData} from './LocationDataItems';
 import Sidebar from './Jaehyeok_Lee/Sidebar';
+import Select from 'react-select';
 
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
@@ -33,12 +34,27 @@ function Analysis(props){
 
   const [MyZoom, setMyZoom] = useState(12);
 
+  const [MarketSelection, setMarketSelection] = useState("한식음식점");
+
   const findDong = (val) => {
     for(let i = 0; i < locationData.length; i++) {
       if (locationData[i].includes(val.slice(0,2))) 
         return locationData[i];
     }
   }
+
+  var SelectOption = [
+    { value: '한식음식점', label: '한식음식점' },
+    { value: '중식음식점', label: '중식음식점' },
+    { value: '일식음식점', label: '일식음식점' },
+    { value: '양식음식점', label: '양식음식점' },
+    { value: '제과점', label: '제과점' },
+    { value: '패스트푸드점', label: '패스트푸드점' },
+    { value: '치킨전문점', label: '치킨전문점' },
+    { value: '분식전문점', label: '분식전문점' },
+    { value: '호프-간이주점', label: '호프-간이주점' },
+    { value: '커피-음료', label: '커피-음료' },
+  ];
 
   var ApexChartLineOption = {
     chart: {
@@ -199,7 +215,7 @@ function Analysis(props){
           body: JSON.stringify({
             borough: GU_locationData[DrawerGU.slice(0, 5)],
             dong: DrawerTitle,
-            serviceName: '커피-음료'
+            serviceName: MarketSelection
           }),
         })  
         .then(response => { 
@@ -207,7 +223,7 @@ function Analysis(props){
         });
       }
       else {
-        analysis_data = fetch(`/api/single_commerce/industry?commercialCode=${DrawerDetailCode}&serviceName=커피-음료`, {
+        analysis_data = fetch(`/api/single_commerce/industry?commercialCode=${DrawerDetailCode}&serviceName=${MarketSelection}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -218,10 +234,12 @@ function Analysis(props){
         });
       }
       analysis_data.then(response => {
+        if(Array.isArray(response)){
         var year_data = response.map((item)=>{
           return item[targetValue];
         });
         setCountMarketNum(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+      }
       }); 
     }
     else if(data_type === "workearned") {
@@ -233,20 +251,24 @@ function Analysis(props){
         analysis_data = MakeAnalysisDetailData(`/api/single_commerce/income_consumption?commercialCode=${DrawerDetailCode}`);
       }
       analysis_data.then(response => {
-      var year_data = response.map((item)=>{
-        return item[targetValue];
-      });
-      setWorkEarned(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+        if(Array.isArray(response)){
+        var year_data = response.map((item)=>{
+          return item[targetValue];
+        });
+        setWorkEarned(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+      }
       }); 
     }
     else if(data_type === "fee"){
       let analysis_data = null;
       analysis_data = MakeAnalysisDetailData(`/api/local-commerce/total/rentalfee/${GU_locationData[DrawerGU.slice(0, 5)]}/${findDong(DrawerTitle)}`);
       analysis_data.then(response => {
+        if(Array.isArray(response)){
         var year_data = response.map((item)=>{
           return item[targetValue];
         });
       setRentalFee(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+        }
       });
     }
   }
@@ -395,6 +417,7 @@ function Analysis(props){
 
   useEffect(()=>{
     if (isDrawerOpen === true) {
+      console.log(MarketSelection)
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
@@ -477,7 +500,7 @@ function Analysis(props){
         MakeCurrentChartData("avg_period", "avgperiod");
       }
     }
-  }, [DrawerTitle])
+  }, [DrawerTitle, MarketSelection])
 
   return(
     <div >
@@ -514,7 +537,9 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-          {MarketFuture && MyZoom > 15 && MarketFuture.map((item)=>{return (
+            <Select options={SelectOption} defaultValue={SelectOption[0]} onChange={(value) => setMarketSelection(value["value"])}></Select>
+            <br></br>
+          {MarketFuture && MyZoom < 15 && MarketFuture.map((item)=>{return (
             <div>2022년 {item[3]["dong"]}의 개업 매장 추이는 {item[3]["commerceMetrics"]}입니다.</div>
           )})}
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
