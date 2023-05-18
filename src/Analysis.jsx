@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useLayoutEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
 import { MapContainer, TileLayer, GeoJSON, useMapEvents} from 'react-leaflet';
 import { Drawer, Button } from 'rsuite';
@@ -40,6 +40,10 @@ function Analysis(props){
     for(let i = 0; i < locationData.length; i++) {
       if (locationData[i].includes(val.slice(0,2))) 
         return locationData[i];
+      else if (val.length >= 4){
+        if (locationData[i].includes(val.slice(1,3))) 
+          return locationData[i];
+      }
     }
   }
 
@@ -390,20 +394,31 @@ function Analysis(props){
   }
   
   const onEachFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.EMD_NM);
-    }
-    layer.on({
-      click: (e) => {whenClicked(e, feature, "normal")}
+    layer.on('click', function (e) {
+      whenClicked(e, feature, "normal");
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseover', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseout', function (e) {
+      layer.setStyle({ fillColor: 'blue' });
     });
   }
 
   const onEachDetailFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.TRDAR_NM);
-    }
-    layer.on({
-      click: (e) => {whenClicked(e, feature, "detail")}
+    layer.on('click', function (e) {
+      whenClicked(e, feature, "detail");
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
+    });
+    layer.on('mouseover', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
+    });
+    layer.on('mouseout', function (e) {
+      layer.setStyle({ fillColor: 'red' });
     });
   }
   const RenderingGeoJSON = () => {

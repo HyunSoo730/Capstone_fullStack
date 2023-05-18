@@ -15,6 +15,8 @@ function Youtube(props){
 
   const [isToggleOn, setToggle] = useState([]);
 
+  const [SaveColor, setSaveColor] = useState();
+
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
       method: "GET",
@@ -78,25 +80,30 @@ function Youtube(props){
   }
 
   const onEachFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.EMD_NM);
-    }
     layer.on({
       click: (e) => {whenClicked(e, feature)}
     });
-  }
-
-  const onPointLayer = (feature, layer) => {
-      layer.bindPopup(feature.properties.EMD_NM);
-
-    layer.on({
-      mouseover: () => {layer.setStyle({ fillColor: 'red' })}
+    layer.on('click', function (e) {
+      whenClicked(e, feature)
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseover', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseout', function (e) {
+      setSaveColor(feature.properties.EMD_NM);
     });
   }
 
   useEffect(() => {
     CountYoutubePlace();
   }, [])
+
+  useEffect(() => {
+    CountYoutubePlace();
+  }, [SaveColor])
   
   if (YoutubePlace){
     return(
@@ -111,7 +118,7 @@ function Youtube(props){
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
-          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature} pointToLayer={onPointLayer}/>
+          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature}/>
         </MapContainer>
 
         <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>

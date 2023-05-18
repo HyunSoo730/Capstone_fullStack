@@ -235,8 +235,7 @@ function Sidebar() {
                                 return(
                                     <div>
                                         {idx}. 
-                                        {recommendIndexRank[idx - 1]}/
-                                        {Math.round(recommendIndex[idx - 1] * 10) / 10}
+                                        {recommendIndexRank[idx - 1]}
                                     </div>
                                 )
                             })}
