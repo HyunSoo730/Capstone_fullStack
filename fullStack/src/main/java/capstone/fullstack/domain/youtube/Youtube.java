@@ -42,4 +42,10 @@ public class Youtube {
     //만약 시간 정보가 필요하다면 LocalDateTime으로 변경
     private String food;  //음식
 
+    private String tag; //영상 태그
+
+    //빈 컬럼 3개
+    private String col1;  
+    private String col2;
+    private String col3;
 }

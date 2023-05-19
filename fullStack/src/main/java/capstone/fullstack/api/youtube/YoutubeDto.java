@@ -27,6 +27,12 @@ public class YoutubeDto {
     //만약 시간 정보가 필요하다면 LocalDateTime으로 변경
     private String food;  //음식
 
+    private String tag;  //영상 태그
+
+    private String col1;
+    private String col2;
+    private String col3;
+
     public YoutubeDto() {
 
     }

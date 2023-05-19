@@ -23,11 +23,14 @@ public class YoutubeController {
 
     /**
      * 프론트로부터 행정동 정보를 받으면 해당 행정동의 유튜브 엔티티 모두 반환.
+     * 모든 정보 반환에서 -> top 10만 반환
      */
     @GetMapping("/find-entity/{dong}")
     public List<Youtube> findAllEntity(@PathVariable String dong) {
         List<Youtube> res = youtubeService.findAllByDong(dong);
-        return res;
+        List<Youtube> temp = res.stream().sorted(Comparator.comparing(Youtube::getViews).reversed()).collect(Collectors.toList());
+        List<Youtube> top10 = temp.subList(0, Math.min(10, temp.size()));
+        return top10;
     }
 
 
@@ -45,9 +48,15 @@ public class YoutubeController {
         youtube.setThumbnail(dto.getThumbnail());
         youtube.setVideoLink(dto.getVideoLink());
         youtube.setViews(dto.getViews());
+        //새로 추가 -> 태크 + 빈 컬럼 3개
+        youtube.setTag(dto.getTag());
+        youtube.setCol1(dto.getCol1());
+        youtube.setCol2(dto.getCol2());
+        youtube.setCol3(dto.getCol3());
 
         //DB에 넣을 유튜브 엔티티 생성 완료.
         youtubeRepository.save(youtube);  //DB에 저장
+        //현재 유튜브 엔티티 저장까지는 됨.
 
         //이제 저장한 후에 해당 행정동의 영상 개수 갱신
         VideoCount videoCount = videoCountRepository.findById(dto.getDong()).get();
@@ -55,9 +64,9 @@ public class YoutubeController {
 
         //영상 최대 조회수 갱신
         if (youtube.getViews() > getMaxViews(videoCount))
-            videoCount.setMaxVies(youtube.getViews());
+            videoCount.setMaxViews(youtube.getViews());
         // 지표값 갱신
-        videoCount.setMetrics(Long.valueOf(videoCount.getCount() * videoCount.getMaxVies()));
+        videoCount.setMetrics(Long.valueOf(videoCount.getCount() * videoCount.getMaxViews()));
         //다시 DB에 저장 (갱신)
         videoCountRepository.save(videoCount);
 
@@ -89,10 +98,9 @@ public class YoutubeController {
 //    }
 
     public Integer getMaxViews(VideoCount vc) {
-        if (vc.getMaxVies() == null)
+        if (vc.getMaxViews() == null)
             return 0;
-        return vc.getMaxVies();
+        return vc.getMaxViews();
     }
-
 
 }

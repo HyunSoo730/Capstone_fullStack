@@ -6,9 +6,9 @@ import useDidMountEffect from "./UseDidMountEffect";
 import "./YoutubeVideoStyle.css";
 //서울 핫플 끝
 //서울 카페 끝
-//서울 놀거리 끝
 //서울 맛집 끝
 //서울 여행 끝
+//서울 데이트...
 const style = {
     backgroundColor : 'white',
     border: '1px solid black',
@@ -36,7 +36,11 @@ function Crawling(props) {
             try{
               const viewCount = res.data.items[0].statistics.viewCount;
               const likeCount = res.data.items[0].statistics.likeCount;
-              fetch("/api/youtube/save", {
+              let tags = "";
+              for (let i = 0; i < res.data.items[0].snippet.tags.length; i++){
+                tags = tags + '#' + res.data.items[0].snippet.tags[i] + ' ';
+              }
+              fetch(`/api/youtube/save`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -48,16 +52,14 @@ function Crawling(props) {
                   videoLink: items[i].id.videoId,
                   likes: likeCount,
                   date: items[i].snippet.publishTime,
-                  thumbnail: items[i].snippet.thumbnails.default.url
+                  thumbnail: items[i].snippet.thumbnails.default.url,
+                  tag: tags
                 }),
-              })
-              .then(response => {
-                  console.log("Youtube_DATA ADDED\n" + response.json());
               })
               .catch(console.log("YoutubeData Save Error"));
             }
             catch{
-              fetch("/api/youtube/save", {
+              fetch(`/api/youtube/save`, {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
@@ -69,11 +71,9 @@ function Crawling(props) {
                   videoLink: items[i].id.videoId,
                   likes: 1,
                   date: items[i].snippet.publishTime,
-                  thumbnail: items[i].snippet.thumbnails.default.url
+                  thumbnail: items[i].snippet.thumbnails.default.url,
+                  tag:""
                 }),
-              })
-              .then(response => {
-                  console.log("Youtube_DATA ADDED\n" + response.json());
               })
               .catch(console.log("YoutubeData Save Error"));
             }
@@ -89,7 +89,7 @@ function Crawling(props) {
   const whenClicked = (e) => {
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 데이트&pageToken=${NextPageToken}&maxResults=1000&regionCode=KR&key=` + API_KEY
       )
       .then((res) => {
         CheckYoutubeItem(res.data);
@@ -100,7 +100,7 @@ function Crawling(props) {
   useDidMountEffect(() => {
     axios
       .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 놀거리&maxResults=100&regionCode=KR&key=" + API_KEY
+        "https://www.googleapis.com/youtube/v3/search?part=snippet&publishedAfter=2022-01-01T00:00:00Z&q=서울 데이트&maxResults=10&regionCode=KR&key=" + API_KEY
         )
       .then((res) => {
         CheckYoutubeItem(res.data);
