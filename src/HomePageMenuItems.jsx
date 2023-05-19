@@ -6,7 +6,7 @@ export const MenuItems = [
     },
     {
         title: 'Sign in',
-        url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`,
+        url: `/login`,
         cName: 'nav-links'
     },
     {
@@ -22,6 +22,11 @@ export const MenuItems = [
     {
         title: 'Crawling',
         url: 'crawling',
+        cName: 'nav-links'
+    },
+    {
+        title: 'My page',
+        url: 'mypage',
         cName: 'nav-links'
     }
 ]

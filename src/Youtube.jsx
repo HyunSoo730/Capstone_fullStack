@@ -15,6 +15,8 @@ function Youtube(props){
 
   const [isToggleOn, setToggle] = useState([]);
 
+  const [SaveColor, setSaveColor] = useState();
+
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
       method: "GET",
@@ -78,17 +80,30 @@ function Youtube(props){
   }
 
   const onEachFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.EMD_NM);
-    }
     layer.on({
       click: (e) => {whenClicked(e, feature)}
+    });
+    layer.on('click', function (e) {
+      whenClicked(e, feature)
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseover', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseout', function (e) {
+      setSaveColor(feature.properties.EMD_NM);
     });
   }
 
   useEffect(() => {
     CountYoutubePlace();
   }, [])
+
+  useEffect(() => {
+    CountYoutubePlace();
+  }, [SaveColor])
   
   if (YoutubePlace){
     return(
@@ -116,9 +131,10 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <ul className='youtubeList'>
-              {console.log(VideoList)}
+              <div>인기 동영상 TOP 10</div>
             {VideoList.length !== 0 ? VideoList.map((video) => {
               const videoId = video.videoLink;
+              const tagList = video.tag.split('#');
             return (
               <div>
                 <li className='youtubeBorder' >
@@ -134,17 +150,31 @@ function Youtube(props){
                   </button>
                 </li>
                 <div>
-                {isToggleOn.includes(videoId) && <iframe 
-                  width="90%" height="auto"
+                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
+                {tagList.map((item, index) => {
+                    if (item === ""){
+                      return null;
+                    }
+                    else{
+                      return(
+                        <button className='youtubeTag' key={index}>{'#' + item}</button>
+                        )
+                      }
+                    }
+                  )} 
+                  <iframe 
+                  className='iframe16To9'
                   src={`https://www.youtube.com/embed/${videoId}`}
                   title="YouTube video player" frameborder="0" 
                   allow="accelerometer; autoplay; clipboard-write; 
                   encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
                 }
                 </div>
-              </div>
+                </div>
               )
             }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+            <div>인기 급상승 동영상 TOP 3</div>
             </ul>
           </Drawer.Body>
         </Drawer>

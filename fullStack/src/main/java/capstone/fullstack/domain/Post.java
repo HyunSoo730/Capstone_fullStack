@@ -1,5 +1,6 @@
 package capstone.fullstack.domain;
 
+import capstone.fullstack.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 

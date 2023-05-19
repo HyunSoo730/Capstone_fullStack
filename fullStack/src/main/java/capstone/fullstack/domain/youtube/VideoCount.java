@@ -17,7 +17,7 @@ public class VideoCount {
 
     private Integer count;  //영상 개수
 
-    private Integer maxVies; //해당 행정동 중 최대 조회수
+    private Integer maxViews; //해당 행정동 중 최대 조회수
 
     private Long metrics;  //히트맵에 제시해줄 지표 값. (최대 조회수 * 영상 개수)
 
