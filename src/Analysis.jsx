@@ -395,7 +395,6 @@ function Analysis(props){
 
   useEffect(()=>{
     if (isDrawerOpen === true) {
-      
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
