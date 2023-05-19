@@ -1,7 +1,9 @@
 package capstone.fullstack.api.youtube;
 
+import capstone.fullstack.domain.youtube.PopularVideo;
 import capstone.fullstack.domain.youtube.VideoCount;
 import capstone.fullstack.domain.youtube.Youtube;
+import capstone.fullstack.repository.youtube.PopularVideoRepository;
 import capstone.fullstack.repository.youtube.VideoCountRepository;
 import capstone.fullstack.repository.youtube.YoutubeRepository;
 import capstone.fullstack.service.youtube.YoutubeService;
@@ -20,6 +22,10 @@ public class YoutubeController {
     private final YoutubeService youtubeService;
     private final YoutubeRepository youtubeRepository;
     private final VideoCountRepository videoCountRepository;
+
+    //실시간 급상승 유튜브 영상을 위해
+    private final PopularVideoRepository popularVideoRepository;
+
 
     /**
      * 프론트로부터 행정동 정보를 받으면 해당 행정동의 유튜브 엔티티 모두 반환.
@@ -82,6 +88,19 @@ public class YoutubeController {
         List<VideoCount> collect = res.stream().sorted(Comparator.comparing(VideoCount::getMetrics).reversed()).collect(Collectors.toList());
 
         return collect;
+    }
+
+    /**
+     * 실시간 급상승 동영상. 행정동 파라미터로 받고 모든 정보 반환.
+     */
+    @GetMapping("/find-popular/{dong}")
+    public List<PopularVideo> findPopular(@PathVariable String dong) {
+        List<PopularVideo> res = popularVideoRepository.findByDong(dong)
+                .stream().sorted(Comparator.comparing(PopularVideo::getViews).reversed())
+                .collect(Collectors.toList());
+        List<PopularVideo> top3 = res.subList(0, Math.min(3, res.size()));
+
+        return top3;
     }
 
 //    @GetMapping("/delete")
