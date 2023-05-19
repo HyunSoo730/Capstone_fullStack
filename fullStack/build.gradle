@@ -30,7 +30,7 @@ plugins {
 		implementation 'org.springframework.boot:spring-boot-devtools'
 
 		compileOnly 'org.projectlombok:lombok'
-	//	runtimeOnly 'com.h2database:h2'
+		runtimeOnly 'com.h2database:h2'
 		//mysql 연결
 		implementation 'org.springframework.boot:spring-boot-starter'
 		implementation 'mysql:mysql-connector-java:8.0.32'  //mysql로 연결 시작.

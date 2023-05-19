@@ -17,7 +17,7 @@ public class PostPagingDto {
     private long totalElementCount;         //존재하는 게시글의 총 개수
     private int currentPageElementsCount;   //현재 페이지에 존재하는 게시글 수
 
-    private List<BriefPostInfo> simpleLectureDtoList = new ArrayList<>();
+    private List<BriefPostInfo> simpleLectureDtoList = new ArrayList<>();      //게시글 리스트
 
     public PostPagingDto(Page<Post> searchResults) {
         this.totalPageCount = searchResults.getTotalPages();

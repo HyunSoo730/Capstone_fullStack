@@ -38,7 +38,7 @@ public class PostInfoDto {
          * 댓글과 대댓글을 그룹짓기
          * post.getCommentList()는 댓글과 대댓글이 모두 조회된다.
          */
-
+        // 대댓글이 없는 댓글 처리 필요
         Map<Comment, List<Comment>> commentListMap = post.getCommentList().stream()
                 .filter(comment -> comment.getParent() != null)
                 .collect(Collectors.groupingBy(Comment::getParent));
