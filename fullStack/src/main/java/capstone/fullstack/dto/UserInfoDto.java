@@ -1,6 +1,6 @@
 package capstone.fullstack.dto;
 
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

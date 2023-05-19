@@ -1,7 +1,7 @@
 package capstone.fullstack.service.post;
 
 import capstone.fullstack.domain.Post;
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.post.*;
 import capstone.fullstack.exception.PostException;
 import capstone.fullstack.exception.PostExceptionType;
