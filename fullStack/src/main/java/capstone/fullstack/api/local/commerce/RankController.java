@@ -31,18 +31,37 @@ public class RankController {
     @GetMapping("/api/rank/floating")
     public List<FloatingRankDto> findFloatingRank(){
         List<FloatingGroupDto> allFloatings = floatingRankRepository.findAllFloatingGroup();
-        return getFloatingRank(allFloatings);
+        return getFloatingTopRank(allFloatings);
+    }
+
+    @GetMapping("/api/rank/floating/lower")
+    public List<FloatingRankDto> findFloatingLowerRank(){
+        List<FloatingGroupDto> allFloatings = floatingRankRepository.findAllFloatingGroup();
+        return getFloatingLowerRank(allFloatings);
     }
 
     @GetMapping("/api/rank/rentalfee")
     public List<RentalFeeRankDto> findRentalFeeRank(){
         List<RentalFeeGroupDto> allRentalFees = rentalFeeRankRepository.findAllRentalFeeGroup();
-        return getRentalFeeRank(allRentalFees);
+        return getRentalFeeTopRank(allRentalFees);
+    }
+
+    @GetMapping("/api/rank/rentalfee/lower")
+    public List<RentalFeeRankDto> findRentalFeeLowerRank(){
+        List<RentalFeeGroupDto> allRentalFees = rentalFeeRankRepository.findAllRentalFeeGroup();
+        return getRentalFeeLowerRank(allRentalFees);
     }
 
     @GetMapping("/api/rank/floating-rentalfee")
-    public List<FloatingRentalFeeRank> findFloatingRentalFrrRank(){
-        return floatingRentalFeeService.getFloatingRentalFeeRanks();
+    public List<FloatingRentalFeeRank> findFloatingRentalFeeRank(){
+        return getFloatingRentalfeeTopRank(floatingRentalFeeService.getFloatingRentalFeeRanks());
+    }
+
+
+
+    @GetMapping("/api/rank/floating-rentalfee/lower")
+    public List<FloatingRentalFeeRank> findFloatingRentalFeeLowerRank(){
+        return getFloatingRentalfeeLowerRank(floatingRentalFeeService.getFloatingRentalFeeRanks());
     }
 
     @GetMapping("/api/rank/floating-rentalfee/update")
@@ -76,7 +95,51 @@ public class RankController {
         return num;
     }
 
-    private static List<FloatingRankDto> getFloatingRank(List<FloatingGroupDto> allFloatings) {
+    private List<FloatingRentalFeeRank> getFloatingRentalfeeTopRank(List<FloatingRentalFeeRank> floatingRentalFeeRanks) {
+        return floatingRentalFeeRanks.subList(0, 10);
+    }
+
+    private List<FloatingRentalFeeRank> getFloatingRentalfeeLowerRank(List<FloatingRentalFeeRank> floatingRentalFeeRanks) {
+        Collections.sort(floatingRentalFeeRanks);
+
+        int rank = 1;
+        for(int i=0; i<10; i++){
+            floatingRentalFeeRanks.get(i).setRanking(rank++);
+        }
+        return floatingRentalFeeRanks.subList(0, 10);
+    }
+
+    private static List<FloatingRankDto> getFloatingTopRank(List<FloatingGroupDto> allFloatings) {
+        List<FloatingRankDto> resultList = getFloatingRankDtos(allFloatings);
+
+        // 정렬
+        Collections.sort(resultList, Collections.reverseOrder());
+
+        int rank = 1;
+        for (FloatingRankDto dong : resultList) {
+            dong.setRank(rank++);
+            if(rank > 10) break;
+        }
+
+        return resultList.subList(0, 10);
+    }
+
+    private static List<FloatingRankDto> getFloatingLowerRank(List<FloatingGroupDto> allFloatings) {
+        List<FloatingRankDto> resultList = getFloatingRankDtos(allFloatings);
+
+        // 정렬
+        Collections.sort(resultList);
+
+        int rank = 1;
+        for (FloatingRankDto dong : resultList) {
+            dong.setRank(rank++);
+            if(rank > 10) break;
+        }
+
+        return resultList.subList(0, 10);
+    }
+
+    private static List<FloatingRankDto> getFloatingRankDtos(List<FloatingGroupDto> allFloatings) {
         Map<String, List<FloatingGroupDto>> collect = allFloatings.stream().collect(Collectors.groupingBy(FloatingGroupDto::getDong));
         // 유동인구 상승률 구하기
         List<FloatingRankDto> resultList = new ArrayList<>();
@@ -89,19 +152,34 @@ public class RankController {
             long f21 = dongs.get(1).getTotalFlpop() / dongs.get(1).getCount();
             resultList.add(new FloatingRankDto(dong, rate, f21, f22));
         }
+        return resultList;
+    }
 
+    private static List<RentalFeeRankDto> getRentalFeeTopRank(List<RentalFeeGroupDto> allRentalFees) {
+        List<RentalFeeRankDto> resultList = getRentalFeeRankDtos(allRentalFees);
         // 정렬
         Collections.sort(resultList, Collections.reverseOrder());
 
         int rank = 1;
-        for (FloatingRankDto dong : resultList) {
-            dong.setRank(rank++);
+        for (RentalFeeRankDto area : resultList) {
+            area.setRank(rank++);
         }
-
-        return resultList;
+        return resultList.subList(0, 10);
     }
 
-    private static List<RentalFeeRankDto> getRentalFeeRank(List<RentalFeeGroupDto> allRentalFees) {
+    private static List<RentalFeeRankDto> getRentalFeeLowerRank(List<RentalFeeGroupDto> allRentalFees) {
+        List<RentalFeeRankDto> resultList = getRentalFeeRankDtos(allRentalFees);
+        // 정렬
+        Collections.sort(resultList);
+
+        int rank = 1;
+        for (RentalFeeRankDto area : resultList) {
+            area.setRank(rank++);
+        }
+        return resultList.subList(0, 10);
+    }
+
+    private static List<RentalFeeRankDto> getRentalFeeRankDtos(List<RentalFeeGroupDto> allRentalFees) {
         Map<String, List<RentalFeeGroupDto>> collect = allRentalFees.stream().collect(Collectors.groupingBy(RentalFeeGroupDto::getAreaName));
 
         List<RentalFeeRankDto> resultList = new ArrayList<>();
@@ -119,13 +197,6 @@ public class RankController {
             int fee21 = areas.get(1).getRentalFee() / 4;
 
             resultList.add(new RentalFeeRankDto(area, rate, fee21, fee22));
-        }
-        // 정렬
-        Collections.sort(resultList, Collections.reverseOrder());
-
-        int rank = 1;
-        for (RentalFeeRankDto area : resultList) {
-            area.setRank(rank++);
         }
         return resultList;
     }
