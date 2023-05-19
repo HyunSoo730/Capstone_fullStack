@@ -1,15 +1,11 @@
 package capstone.fullstack.repository.post;
 
 import capstone.fullstack.domain.Post;
-import capstone.fullstack.domain.QPost;
-import capstone.fullstack.domain.QUser;
 import capstone.fullstack.dto.post.PostSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -19,7 +15,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static capstone.fullstack.domain.QPost.*;
-import static capstone.fullstack.domain.QUser.*;
+import static capstone.fullstack.domain.user.QUser.*;
 
 
 @Repository

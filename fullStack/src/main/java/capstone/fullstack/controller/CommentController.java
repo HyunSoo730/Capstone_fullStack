@@ -1,6 +1,6 @@
 package capstone.fullstack.controller;
 
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.comment.CommentSaveDto;
 import capstone.fullstack.dto.comment.CommentUpdateDto;
 import capstone.fullstack.service.UserService;

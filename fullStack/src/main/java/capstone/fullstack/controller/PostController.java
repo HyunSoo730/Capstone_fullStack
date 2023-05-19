@@ -1,6 +1,6 @@
 package capstone.fullstack.controller;
 
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.post.PostSaveDto;
 import capstone.fullstack.dto.post.PostSearchCondition;
 import capstone.fullstack.dto.post.PostUpdateDto;
@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

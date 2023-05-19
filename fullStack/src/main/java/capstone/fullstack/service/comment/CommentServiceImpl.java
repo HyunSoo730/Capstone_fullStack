@@ -1,7 +1,7 @@
 package capstone.fullstack.service.comment;
 
 import capstone.fullstack.domain.Comment;
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.comment.CommentSaveDto;
 import capstone.fullstack.dto.comment.CommentUpdateDto;
 import capstone.fullstack.exception.CommentException;

@@ -1,6 +1,6 @@
 package capstone.fullstack.service.post;
 
-import capstone.fullstack.domain.User;
+import capstone.fullstack.domain.user.User;
 import capstone.fullstack.dto.post.*;
 import org.springframework.data.domain.Pageable;
 
