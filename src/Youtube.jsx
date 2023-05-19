@@ -80,9 +80,6 @@ function Youtube(props){
   }
 
   const onEachFeature = (feature, layer) => {
-    layer.on({
-      click: (e) => {whenClicked(e, feature)}
-    });
     layer.on('click', function (e) {
       whenClicked(e, feature)
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
