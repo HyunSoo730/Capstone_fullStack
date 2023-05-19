@@ -163,7 +163,7 @@ public class UserService {
     public OauthToken getAccessToken(String code) {
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-//        headers.add("Authorization", "Bearer " + token); //(1-4)
+//        headers.add("Authorization", "Bearer " + token);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         //HttpBody 오브젝트 생성

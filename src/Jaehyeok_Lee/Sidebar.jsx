@@ -27,7 +27,7 @@ function Sidebar() {
 
     const [recommendIndexRank, setRecommendIndexRank] = useState([]);
 
-   const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     const findSalesRankUp = () => {
         fetch('/api/local-commerce/커피-음료/top_rank', {
@@ -334,7 +334,7 @@ function Sidebar() {
                 <button value = "sales" className = {"container" + (btnActivate == "sales" ? " activated" : "")} onClick={toggleActivate}>매출</button>
                 <button value = "floating" className = {"container" + (btnActivate == "floating" ? " activated" : "")} onClick={toggleActivate}>유동인구</button>
                 <button value = "rental" className = {"container" + (btnActivate == "rental" ? " activated" : "")} onClick={toggleActivate}>임대료</button>
-                {<button value = "recommend" className = {"container" + (btnActivate == "recommend" ? " activated" : "")} onClick={toggleActivate}>추천 지역</button>}
+                <button value = "recommend" className = {"container" + (btnActivate == "recommend" ? " activated" : "")} onClick={toggleActivate}>추천 지역</button>
             </div>
 
             <div className = "side_rankup">
@@ -399,6 +399,83 @@ function Sidebar() {
                     btnActivate === "recommend" ?
                     <div>
                         <h5>창업 추천 지역 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {recommendIndexRank[idx - 1]}
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+            </div>
+
+            <div className = "side_rankdown">
+                {
+                    btnActivate === "sales" ?
+                    <div>
+                        <h5>매출 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {salesRankDown[idx - 1]}/
+                                        {Math.round(salesDown[idx - 1] / 100000000)}억원/
+                                        {Math.round(salesDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "floating" ?
+                    <div>
+                        <h5>유동 인구 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {floatingPopRankDown[idx - 1]}/
+                                        {Math.round(floatingPopDown[idx - 1] / 10000)}만명/
+                                        {Math.round(floatingPopDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "rental" ?
+                    <div>
+                        <h5>임대료 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {rentalFeeRankDown[idx - 1]}/
+                                        {rentalFeeDown[idx - 1]}원/
+                                        {Math.round(rentalFeeDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "recommend" ?
+                    <div>
+                        <h5>창업 비추천 지역 랭킹 TOP10</h5>
                         <p>
                             {data.map((idx) => { 
                                 return(
