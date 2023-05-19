@@ -25,9 +25,9 @@ function Sidebar() {
     const [rentalFeeDown, setRentalFeeDown] = useState([]);
     const [rentalFeeDecreased, setRentalFeeDecreased] = useState([]);
 
-    // const [recommendIndexRank, setRecommendIndexRank] = useState([]);
+    const [recommendIndexRank, setRecommendIndexRank] = useState([]);
 
-	const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     const findSalesRankUp = () => {
         fetch('/api/local-commerce/커피-음료/top_rank', {
@@ -35,9 +35,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setSalesRankUp(current => [...current, rank.dong]);
-        })})
+        })}
+        })
     }
 
     const findSalesUp = () => {
@@ -46,9 +49,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setSalesUp(current => [...current, value.quarterFourTotal]);
-        })})
+        })}
+    })
     }
 
     const findSalesIncreased = () => {
@@ -57,9 +63,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((increased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((increased)=>{
             setSalesIncreased(current => [...current, increased.growthRateFigures]);
-        })})
+        })}
+    })
     }
 
     const findSalesRankDown = () => {
@@ -68,9 +77,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setSalesRankDown(current => [...current, rank.dong]);
-        })})
+        })}
+    })
     }
 
     const findSalesDown = () => {
@@ -79,9 +91,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setSalesDown(current => [...current, value.quarterFourTotal]);
-        })})
+        })}
+    })
     }
 
     const findSalesDecreased = () => {
@@ -90,9 +105,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((decreased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((decreased)=>{
             setSalesDecreased(current => [...current, decreased.growthRateFigures]);
-        })})
+        })}
+    })
     }
 
     const findFloatingPopRankUp = () => {
@@ -101,9 +119,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setFloatingPopRankUp(current => [...current, rank.areaName]);
-        })})
+        })}
+    })
     }
 
     const findFloatingPopUp = () => {
@@ -112,9 +133,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setFloatingPopUp(current => [...current, value.floating2022]);
-        })})
+        })}
+    })
     }
 
     const findFloatingPopIncreased = () => {
@@ -123,9 +147,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((increased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((increased)=>{
             setFloatingPopIncreased(current => [...current, increased.riseRate]);
-        })})
+        })
+    }})
     }
 
     const findFloatingPopRankDown = () => {
@@ -134,9 +161,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setFloatingPopRankDown(current => [...current, rank.areaName]);
-        })})
+        })}
+    })
     }
 
     const findFloatingPopDown = () => {
@@ -145,9 +175,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setFloatingPopDown(current => [...current, value.floating2022]);
-        })})
+        })}
+    })
     }
 
     const findFloatingPopDecreased = () => {
@@ -156,9 +189,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((decreased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((decreased)=>{
             setFloatingPopDecreased(current => [...current, decreased.riseRate]);
-        })})
+        })}
+    })
     }
 
     const findRentalFeeRankUp = () => {
@@ -167,9 +203,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setRentalFeeRankUp(current => [...current, rank.areaName]);
-        })})
+        })}
+    })
     }
 
     const findRentalFeeUp = () => {
@@ -178,9 +217,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setRentalFeeUp(current => [...current, value.rentalFee22]);
-        })})
+        })
+    }})
     }
 
     const findRentalFeeIncreased = () => {
@@ -189,9 +231,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((increased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((increased)=>{
             setRentalFeeIncreased(current => [...current, increased.riseRate]);
-        })})
+        })}
+    })
     }
 
     const findRentalFeeRankDown = () => {
@@ -200,9 +245,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setRentalFeeRankDown(current => [...current, rank.areaName]);
-        })})
+        })}
+    })
     }
 
     const findRentalFeeDown = () => {
@@ -211,9 +259,12 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((value)=>{
             setRentalFeeDown(current => [...current, value.rentalFee22]);
-        })})
+        })}
+    })
     }
 
     const findRentalFeeDecreased = () => {
@@ -222,23 +273,29 @@ function Sidebar() {
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((decreased)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((decreased)=>{
             setRentalFeeDecreased(current => [...current, decreased.riseRate]);
-        })})
+        })}
+    })
     }
 
-    /*
+    
     const findRecommendIndexRank = () => {
         fetch('/api/rank/floating-rentalfee', {
             method : "GET",
             headers : {"Content-Type" : "application/json"},
         })
         .then(response => {return response.json()})
-        .then(response => {response.map((rank)=>{
+        .then(response => {
+            if(Array.isArray(response)){
+            response.map((rank)=>{
             setRecommendIndexRank(current => [...current, rank.areaName]);
-        })})
+        })}
+    })
     }
-    */
+    
 
     useEffect(() => {
         findSalesRankUp()
@@ -262,10 +319,10 @@ function Sidebar() {
         findRentalFeeDown()
         findRentalFeeDecreased()
 
-        //findRecommendIndexRank()
+        findRecommendIndexRank()
     },[])
 
-    const [btnActivate, setBtnActivate] = useState("");
+    const [btnActivate, setBtnActivate] = useState("sales");
     const toggleActivate = (e) => {
         setBtnActivate((prev) => {return e.target.value;});
     };
@@ -277,7 +334,7 @@ function Sidebar() {
                 <button value = "sales" className = {"container" + (btnActivate == "sales" ? " activated" : "")} onClick={toggleActivate}>매출</button>
                 <button value = "floating" className = {"container" + (btnActivate == "floating" ? " activated" : "")} onClick={toggleActivate}>유동인구</button>
                 <button value = "rental" className = {"container" + (btnActivate == "rental" ? " activated" : "")} onClick={toggleActivate}>임대료</button>
-                {/*<button value = "recommend" className = {"container" + (btnActivate == "recommend" ? " activated" : "")} onClick={toggleActivate}>추천 지역</button>*/}
+                <button value = "recommend" className = {"container" + (btnActivate == "recommend" ? " activated" : "")} onClick={toggleActivate}>추천 지역</button>
             </div>
 
             <div className = "side_rankup">
@@ -338,7 +395,7 @@ function Sidebar() {
                     </div>
                     : null
                 }
-                {/*
+                {
                     btnActivate === "recommend" ?
                     <div>
                         <h5>창업 추천 지역 랭킹 TOP10</h5>
@@ -354,7 +411,7 @@ function Sidebar() {
                         </p>
                     </div>
                     : null
-                */}
+                }
             </div>
 
             <div className = "side_rankdown">
@@ -415,7 +472,7 @@ function Sidebar() {
                     </div>
                     : null
                 }
-                {/*
+                {
                     btnActivate === "recommend" ?
                     <div>
                         <h5>창업 비추천 지역 랭킹 TOP10</h5>
@@ -431,11 +488,88 @@ function Sidebar() {
                         </p>
                     </div>
                     : null
-                */}
+                }
+            </div>
+
+            <div className = "side_rankdown">
+                {
+                    btnActivate === "sales" ?
+                    <div>
+                        <h5>매출 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {salesRankDown[idx - 1]}/
+                                        {Math.round(salesDown[idx - 1] / 100000000)}억원/
+                                        {Math.round(salesDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "floating" ?
+                    <div>
+                        <h5>유동 인구 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {floatingPopRankDown[idx - 1]}/
+                                        {Math.round(floatingPopDown[idx - 1] / 10000)}만명/
+                                        {Math.round(floatingPopDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "rental" ?
+                    <div>
+                        <h5>임대료 감소량 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {rentalFeeRankDown[idx - 1]}/
+                                        {rentalFeeDown[idx - 1]}원/
+                                        {Math.round(rentalFeeDecreased[idx - 1] * 10) / 10}%↑
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
+                {
+                    btnActivate === "recommend" ?
+                    <div>
+                        <h5>창업 비추천 지역 랭킹 TOP10</h5>
+                        <p>
+                            {data.map((idx) => { 
+                                return(
+                                    <div>
+                                        {idx}. 
+                                        {recommendIndexRank[idx - 1]}
+                                    </div>
+                                )
+                            })}
+                        </p>
+                    </div>
+                    : null
+                }
             </div>
 
         </div>
     )
 }
 
-export default Sidebar;            
+export default Sidebar;

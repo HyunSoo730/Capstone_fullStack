@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useLayoutEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
 import { MapContainer, TileLayer, GeoJSON, useMapEvents} from 'react-leaflet';
 import { Drawer, Button } from 'rsuite';
@@ -38,13 +38,11 @@ function Analysis(props){
 
   const findDong = (val) => {
     for(let i = 0; i < locationData.length; i++) {
-      if (locationData[i].includes(val.slice(0,2))) 
+      if (locationData[i].includes(val.slice(0,2))){
         return locationData[i];
-      else if (val.length >= 4){
-        if (locationData[i].includes(val.slice(1,3))) 
-          return locationData[i];
       }
     }
+    return "성수동";
   }
 
   var SelectOption = [
@@ -394,9 +392,12 @@ function Analysis(props){
   }
   
   const onEachFeature = (feature, layer) => {
-    layer.on('click', function (e) {
-      whenClicked(e, feature, "normal");
+    if(feature.properties){
       layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    }
+    layer.on('click', function (e) {
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+      whenClicked(e, feature, "normal");
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
@@ -408,10 +409,13 @@ function Analysis(props){
   }
 
   const onEachDetailFeature = (feature, layer) => {
+    if(feature.properties){
+      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
+    }
     layer.on('click', function (e) {
+      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
       whenClicked(e, feature, "detail");
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
-      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
