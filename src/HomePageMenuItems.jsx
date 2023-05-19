@@ -23,5 +23,10 @@ export const MenuItems = [
         title: 'Crawling',
         url: 'crawling',
         cName: 'nav-links'
+    },
+    {
+        title: 'My page',
+        url: 'mypage',
+        cName: 'nav-links'
     }
 ]

@@ -4,6 +4,7 @@ import HomePage from './HomePage';
 import Youtube from './Youtube';
 import Analysis from './Analysis';
 import Crawling from './Crawling';
+import MyPage from './Jaehyeok_Lee/MyPage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/youtube" element={<Youtube />}/>
           <Route path="/analysis" element={<Analysis />}/>
           <Route path="/crawling" element={<Crawling/>}/>
+          <Route path="/mypage" element={<MyPage/>}/>
         </Routes>
       </BrowserRouter>
     </div>
