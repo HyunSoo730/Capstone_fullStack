@@ -22,7 +22,7 @@ public class Comment extends BaseTimeEntity{
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "writer_id")
     private User writer;
 
     @Lob
@@ -30,7 +30,7 @@ public class Comment extends BaseTimeEntity{
     private String content; //댓글 내용
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "posts_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,10 +44,10 @@ public class Comment extends BaseTimeEntity{
 
 
     //== 연관관계 편의 메서드 ==//
-//    public void confirmWriter(User writer) {
-//        this.writer = writer;
-//        writer.addComment(this);
-//    }
+    public void confirmWriter(User writer) {
+        this.writer = writer;
+        writer.addComment(this);
+    }
 
     public void confirmPost(Post post) {
         this.post = post;
