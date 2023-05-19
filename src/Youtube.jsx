@@ -1,147 +1,189 @@
-import {React, useEffect, useState} from "react"
-import axios from "axios";
+import {React, useEffect, useState, useCallback} from "react"
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import geoData from './LocationData.json'
+import { Drawer, Button } from 'rsuite';
 import { locationData } from "./LocationDataItems";
-import ReactApexChart from "react-apexcharts";
 
-const style = {
-  backgroundColor : 'white',
-  border: '1px solid black',
-}
-
-const ApexChartOption = {
-  chart: {
-    height: 350,
-    type: 'bar',
-  },
-  plotOptions: {
-    bar: {
-      borderRadius: 10,
-      dataLabels: {
-        position: 'top', // top, center, bottom
-      },
-    }
-  },
-  dataLabels: {
-    enabled: true,
-    formatter: function (val) {
-      return val;
-    },
-    offsetY: -20,
-    style: {
-      fontSize: '12px',
-      colors: ["#304758"]
-    }
-  },
-  xaxis: {
-    categories: ["누적 수치"],
-    position: 'top',
-    axisBorder: {
-      show: false
-    },
-    axisTicks: {
-      show: false
-    },
-    crosshairs: {
-      fill: {
-        type: 'gradient',
-        gradient: {
-          colorFrom: '#D8E3F0',
-          colorTo: '#BED1E6',
-          stops: [0, 100],
-          opacityFrom: 0.4,
-          opacityTo: 0.5,
-        }
-      }
-    },
-    tooltip: {
-      enabled: true,
-    }
-  },
-  yaxis: {
-    axisBorder: {
-      show: false
-    },
-    axisTicks: {
-      show: false,
-    },
-    labels: {
-      show: false,
-      formatter: function (val) {
-        return val;
-      }
-    }
-  }
-}
+import "rsuite/dist/rsuite.css";
+import './YoutubeVideoStyle.css';
 
 function Youtube(props){
-  const [YoutubeItem, setYoutubeItem] = useState([]);
   const [YoutubePlace, setYoutubePlace] = useState([]);
-  const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+  const [VideoList, setVideoList] = useState([]);
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
-  const CheckYoutubeItem = (items) => {
-    for (let i = 0; i < items.length; i++){
-      if (YoutubeItem.length === 0){
-        setYoutubeItem([items[i]]);
-        CountYoutubePlace(items[i]);
-      }
-      else{
-        for (let j = 0; j < YoutubeItem.length; j++){
-          if (items[i].snippet.title !== YoutubeItem[j].snippet.title){
-            setYoutubeItem([...YoutubeItem, items[i]]);
-            CountYoutubePlace(items[i]);
-          }
-          else{
-            break;
-          }
-        }
-      }
-    }
+  const [isToggleOn, setToggle] = useState([]);
+
+  const [SaveColor, setSaveColor] = useState();
+
+  const CountYoutubePlace = () => {
+    fetch("api/youtube/return", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })  
+    .then(response => {
+      return response.json();
+    })
+    .then(response => {
+      response.map((item)=>{
+        setYoutubePlace(current => [...current, {name: item["dong"], data: [item["count"]]}]);
+      });
+    });
   }
 
-  const CountYoutubePlace = (items) => {
-    for (let i = 0; i < locationData.length; i++){
-      if (items.snippet.title.includes(locationData[i])) {
-        var place_name_data = YoutubePlace.map((item) => {
-          return item.name;
+  const polystyle = (feature) => {
+    for (let i = 0; i < YoutubePlace.length; i++){
+      if (feature.properties.EMD_NM.includes(YoutubePlace[i].name.slice(0,2))){
+        return {
+          fillColor: 'rgba(' + YoutubePlace[i].data[0] + '0, 0, 0.5)',
+          weight: 2,
+          opacity: 1,
+          color: 'white',  //Outline color
+          fillOpacity: 0.7
+        };
+      }
+    }
+    return {
+      fillColor: 'rgba(0, 0, 0, 0.5)',
+      weight: 2,
+      opacity: 1,
+      color: 'white',  //Outline color
+      fillOpacity: 0.7
+    };
+  }
+
+  function whenClicked(e, feature) {
+    setVideoList([]);
+    setToggle([]);
+    setDrawerTitle(feature.properties.EMD_NM);
+    setDrawerOpen(true);
+    for(let i = 0; i < locationData.length; i++) {
+      if (feature.properties.EMD_NM.includes(locationData[i].slice(0,2))) {
+        fetch(`/api/youtube/find-entity/${locationData[i]}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })  
+        .then(response => {
+          return response.json()
         })
-        var target_index = place_name_data.indexOf(locationData[i]);
-        if (target_index === -1){
-          setYoutubePlace([...YoutubePlace, {name: locationData[i], data: [1]}]);
-        }
-        else {
-          YoutubePlace[target_index].data[0]++;
-        }
-        console.log(YoutubePlace)
+        .then(response => {
+          setVideoList([...VideoList, ...response]);
+        });
         break;
       }
     }
   }
 
-  useEffect(() => {
-    axios
-      .get(
-        //"https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=5&regionCode=KR&key=" + API_KEY
-      )
-      .then((res) => {
-        CheckYoutubeItem(res.data.items);
-      })
-      .catch(() => {console.log("Youtube API mostPopular Error")});
-    axios
-      .get(
-        "https://www.googleapis.com/youtube/v3/search?part=snippet&q=핫플&maxResults=30&regionCode=KR&key=" + API_KEY
-      )
-      .then((res) => {
-        CheckYoutubeItem(res.data.items);
-      })
-      .catch(() => {console.log("Youtube API 핫플 Error")});
-  }, [YoutubePlace]);
+  const onEachFeature = (feature, layer) => {
+    layer.on({
+      click: (e) => {whenClicked(e, feature)}
+    });
+    layer.on('click', function (e) {
+      whenClicked(e, feature)
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseover', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+    });
+    layer.on('mouseout', function (e) {
+      setSaveColor(feature.properties.EMD_NM);
+    });
+  }
 
-  return(
-      <div style={style}>
+  useEffect(() => {
+    CountYoutubePlace();
+  }, [])
+
+  useEffect(() => {
+    CountYoutubePlace();
+  }, [SaveColor])
+  
+  if (YoutubePlace){
+    return(
+      <div>
         <div>
-          <ReactApexChart options={ApexChartOption} series={YoutubePlace} type="bar" height={625} />
+        <MapContainer
+          center={[37.541, 126.986]}
+          zoom={12}
+          scrollWheelZoom={true}
+          style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
+          <TileLayer
+            url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <GeoJSON data={geoData} style={polystyle} onEachFeature={onEachFeature}/>
+        </MapContainer>
+
+        <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
+          <Drawer.Header>
+            <Drawer.Title>{DrawerTitle}</Drawer.Title>
+            <Drawer.Actions>
+              <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
+              <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+            </Drawer.Actions>
+          </Drawer.Header>
+          <Drawer.Body>
+            <ul className='youtubeList'>
+              <div>인기 동영상 TOP 10</div>
+            {VideoList.length !== 0 ? VideoList.map((video) => {
+              const videoId = video.videoLink;
+              const tagList = video.tag.split('#');
+            return (
+              <div>
+                <li className='youtubeBorder' >
+                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                  <h5 className='youtubeTitle'>{video.name}<br/>
+                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                    <h6 className='youtubeView'> 👀{video.views}</h6>
+                  </h5>
+                  
+                  <button 
+                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                    {isToggleOn.includes(videoId) ? "-":"+"}
+                  </button>
+                </li>
+                <div>
+                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
+                {tagList.map((item, index) => {
+                    if (item === ""){
+                      return null;
+                    }
+                    else{
+                      return(
+                        <button className='youtubeTag' key={index}>{'#' + item}</button>
+                        )
+                      }
+                    }
+                  )} 
+                  <iframe 
+                  className='iframe16To9'
+                  src={`https://www.youtube.com/embed/${videoId}`}
+                  title="YouTube video player" frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; 
+                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
+                }
+                </div>
+                </div>
+              )
+            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+            <div>인기 급상승 동영상 TOP 3</div>
+            </ul>
+          </Drawer.Body>
+        </Drawer>
         </div>
       </div>
-  );
+    );
+  }
+  else{
+    <div>EMPTY</div>
+  };
 }
 export default Youtube;

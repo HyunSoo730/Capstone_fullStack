@@ -1,7 +1,7 @@
 import { React, useState } from 'react';
+import { MenuItems } from "./HomePageMenuItems";
 import HomeStyle from './HomePage.css';
-import { MenuItems } from "./HomePageMenuItems.jsx";
-import "./HomePageNavbar.css"
+import HomeNavStyle from "./HomePageNavbar.css"
 
 const HomePage = () => {
     const [clicked, setClicked] = useState(false);
@@ -12,8 +12,8 @@ const HomePage = () => {
 
     return (
         <div>
-            <nav className="Navbar">
-                <div className="menu-icon" onClick={handleClick}>
+            <nav className='Navbar'>
+                <div className='menu-icon' onClick={handleClick}>
                     <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
                 <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
@@ -28,15 +28,15 @@ const HomePage = () => {
                     })}
                 </ul>
             </nav>
-            <body id={HomeStyle.body}>
-                <div id={HomeStyle.wrap}>
+            <div id={HomeStyle.wrap}>
+                <body id={HomeStyle.body}>
                     <footer id={HomeStyle.footer}>
                         <span>개발자 : Izony | WHO | WANT | ME </span><br/>
                         <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
                         <span>version : 0.1 </span>
                     </footer>
-                </div>
-            </body>
+                </body>
+            </div>
         </div>
     )
 };
