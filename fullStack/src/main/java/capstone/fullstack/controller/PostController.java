@@ -8,7 +8,6 @@ import capstone.fullstack.service.UserService;
 import capstone.fullstack.service.post.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -28,9 +26,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
     public void save(@RequestHeader("Authorization") String token, @Valid @ModelAttribute PostSaveDto postSaveDto) {
-        log.info("token={}", token);
         User user = userService.validateToken(token);
-        log.info("user={}", user);
         postService.save(user, postSaveDto);
     }
 
