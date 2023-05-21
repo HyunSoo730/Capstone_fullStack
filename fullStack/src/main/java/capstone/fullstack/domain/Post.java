@@ -48,7 +48,7 @@ public class Post extends BaseTimeEntity{
     public void confirmWriter(User writer) {
         //writer는 변경이 불가능하므로 이렇게만 해주어도 될듯
         this.writer = writer;
-        writer.addPost(this);
+        this.writer.addPost(this);
     }
     public void addComment(Comment comment){
         //comment의 Post 설정은 comment에서 함

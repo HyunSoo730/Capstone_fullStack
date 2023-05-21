@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -59,12 +61,15 @@ public class PostServiceImpl implements PostService{
                 new PostException(PostExceptionType.POST_NOT_FOUND));
 
         checkAuthority(user, post, PostExceptionType.NOT_AUTHORITY_DELETE_POST);
+
+        postRepository.delete(post);
     }
 
     @Override
     public PostInfoDto getPostInfo(Long id) {
-
-        return new PostInfoDto(postRepository.findWithWriterById(id)
+        Optional<Post> post = postRepository.findWithWriterById(id);
+        post.ifPresent(p->p.setView(p.getView()+1));
+        return new PostInfoDto(post
                 .orElseThrow(()->new PostException(PostExceptionType.POST_NOT_FOUND)));
     }
 

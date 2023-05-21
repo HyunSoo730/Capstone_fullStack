@@ -7,6 +7,7 @@ import capstone.fullstack.service.UserService;
 import capstone.fullstack.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +19,15 @@ public class CommentController {
 
     @PostMapping("/comment/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     public void commentSave(@RequestHeader("Authorization") String token, @PathVariable("postId") Long postId, CommentSaveDto commentSaveDto) {
         User user = userService.validateToken(token);
         commentService.save(user, postId, commentSaveDto);
     }
 
-    @PostMapping("/comment/{postId}/{commnetId}")
+    @PostMapping("/comment/{postId}/{commentId}")
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     public void reCommentSave(@RequestHeader("Authorization") String token,
                               @PathVariable("postId") Long postId,
                               @PathVariable("commentId") Long commentId,
