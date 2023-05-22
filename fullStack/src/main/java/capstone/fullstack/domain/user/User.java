@@ -1,7 +1,5 @@
 package capstone.fullstack.domain.user;
 
-import capstone.fullstack.domain.Comment;
-import capstone.fullstack.domain.Post;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -36,6 +34,7 @@ public class User {
     @CreationTimestamp
     private Timestamp createTime;
 
+    /*
     @Builder.Default
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
@@ -54,6 +53,7 @@ public class User {
         //comment의 writer 설정은 comment에서 함
         commentList.add(comment);
     }
+    */
 
     //@Builder
     public User(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
