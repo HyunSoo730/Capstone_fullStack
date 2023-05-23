@@ -436,7 +436,6 @@ function Analysis(props){
 
   useEffect(()=>{
     if (isDrawerOpen === true) {
-      console.log(MarketSelection)
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
@@ -527,8 +526,8 @@ function Analysis(props){
         calssName='sidebar'
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: 10,
+          left: 50,
           zIndex: 10000
         }}>
         <Sidebar/>

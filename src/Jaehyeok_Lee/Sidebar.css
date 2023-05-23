@@ -1,63 +1,67 @@
 .sidebar {
-    background-color: #FFFFFF; /* 배경색 */
+    background-color: unset; /* 배경색 */
     display: flex; /* 잘 모르겠음 */
     flex-direction: column; /* display flex 일 때 수직 정렬 */
     align-items: center; /* 잘 모르겠음 */
     justify-content: center; /* 잘 모르겠음 */
     width: 400px;
-    height: 600px;
+    height: max-content;
 }
 
 .side_filter {
     display: flex;
-    border-top: 3px solid white;
-    border-right: 3px solid white;
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
+    margin-bottom: 5px;
+    background-color: white;
+    border-radius: 10px;
     flex-direction: row; /* display flex 일 때 수평 정렬 */
     justify-content: center;
     width: 100%;
-    height: 20%;
+    height: 50px;
+    box-shadow: 2px 2px 5px gray;
 }
 
-.container {
-    background-color: rebeccapurple;
-    color: white; /* 글자색 */
-    border-top: 3px solid white; /* 테두리 방향별 두께(합쳐서 border-width로도 사용) */
-    border-right: 3px solid white;
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
+.filter_button {
+    background-color: lightgray;
+    color: black; /* 글자색 */
+    font: bold;
+    border: 5px solid white;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 25%;
     height: 100%;
-    &.activated {background-color: orange;} /* 클릭으로 인한 활성화 시 배경 색 변경 */
+    &.activated { /* 클릭으로 인한 활성화 시 배경 색 변경 */
+        color: white;
+        background-color: #22a002;
+    }
 }
 
-.side_rankup {
-    background-color: skyblue;
+.side_rank {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-block-start: 10px;
+    background-color: white;
     display: flex;
-    border-right: 3px solid white;
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
+    border-radius: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 80%;
+    height: 320px;
+    box-shadow: 2px 2px 5px gray;
 }
 
-.side_rankdown {
-    background-color: plum;
+.side_inside {
     display: flex;
-    border-right: 3px solid white;
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
     justify-content: center;
-    width: 100%;
-    height: 80%;
+    align-items: center;
+}
+
+.side_index {
+    margin-right: 12px;
+    margin-left: 12px;
+    width: max-content;
 }
