@@ -232,12 +232,17 @@ export const locationOption = [
     "둔촌동",
     "암사동",
     "길동"
-    ]
+]
 
-    export const categoryOption = [
-        {value: "drink", name: "커피-음료"},
-        {value: "a", name: "A"},
-        {value: "b", name: "B"},
-        {value: "c", name: "C"},
-        {value: "d", name: "D"},
-    ];
+export const categoryOption = [
+    {value: "korean", name: "한식음식점"},
+    {value: "chinese", name: "중식음식점"},
+    {value: "japanese", name: "일식음식점"},
+    {value: "western", name: "양식음식점"},
+    {value: "bakery", name: "제과점"},
+    {value: "fastfood", name: "패스트푸드점"},
+    {value: "chicken", name: "치킨전문점"},
+    {value: "flourbasedfood", name: "분식전문점"},
+    {value: "bar", name: "호프-간이주점"},
+    {value: "drink", name: "커피-음료"},
+];
