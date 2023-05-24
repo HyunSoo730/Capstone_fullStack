@@ -75,7 +75,7 @@ public class UserService {
         log.info("찾은 userId = {}", userId);
 
         User findUser = userRepository.findByUserId(userId);
-        log.info("User 정보 {}", findUser);
+        log.info("User 정보 {}", findUser.getKakaoNickname());
         return findUser;
     }
 
@@ -182,6 +182,8 @@ public class UserService {
                 kakaoTokenRequest,
                 String.class
         );
+
+        //HTTP 응답 (JSON) -> 액세스 토큰 파싱.
         //ObjectMapper를 통해 객체로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         OauthToken oauthToken = null;
@@ -192,7 +194,8 @@ public class UserService {
         }
 
         log.info("카카오 엑세스 토큰 {}", oauthToken.getAccess_token());
-
+        log.info("카카오 refresh {}", oauthToken.getRefresh_token());
+        log.info("카카오 다른거 {}", oauthToken.getToken_type());
         return oauthToken;
     }
 

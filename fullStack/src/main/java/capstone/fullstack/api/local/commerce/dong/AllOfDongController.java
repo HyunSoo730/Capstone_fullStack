@@ -149,7 +149,6 @@ public class AllOfDongController {
         String findDong = dto.getDong().substring(0, 2);   //통합 정보 꺼낸 후.
         List<Local> locals = localRepository.findByBoroughAndDongStartingWith(dto.getBorough(), findDong);
         List<Integer> codes = locals.stream().map(local -> local.getCommercialCode()).distinct().collect(Collectors.toList());
-
         List<IncomeConsumptionVO> res = incomeConsumptionService.getIncomeConsumptionByAllDong(codes, dto.getDong());
         return res;
     }
