@@ -10,6 +10,7 @@ import './YoutubeVideoStyle.css';
 function Youtube(props){
   const [YoutubePlace, setYoutubePlace] = useState([]);
   const [VideoList, setVideoList] = useState([]);
+  const [TrendVideoList, setTrendVideoList] = useState([]);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [DrawerTitle, setDrawerTitle] = useState("DRAWER_TITLE_ERROR");
 
@@ -57,6 +58,7 @@ function Youtube(props){
 
   function whenClicked(e, feature) {
     setVideoList([]);
+    setTrendVideoList([]);
     setToggle([]);
     setDrawerTitle(feature.properties.EMD_NM);
     setDrawerOpen(true);
@@ -74,6 +76,18 @@ function Youtube(props){
         .then(response => {
           setVideoList([...VideoList, ...response]);
         });
+      fetch(`/api/youtube/find-popular/${locationData[i]}`, {
+        method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(response => {
+          return response.json()
+        })
+        .then(response => {
+          setTrendVideoList([...TrendVideoList, ...response])
+        })
         break;
       }
     }
@@ -128,7 +142,7 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <ul className='youtubeList'>
-              <div>인기 동영상 TOP 10</div>
+              <h5>인기 동영상 TOP 10</h5>
             {VideoList.length !== 0 ? VideoList.map((video) => {
               const videoId = video.videoLink;
               const tagList = video.tag.split('#');
@@ -171,7 +185,49 @@ function Youtube(props){
                 </div>
               )
             }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
-            <div>인기 급상승 동영상 TOP 3</div>
+            <h5>인기 급상승 동영상 TOP 3</h5>
+            {TrendVideoList.length !== 0 ? TrendVideoList.map((video) => {
+              const videoId = video.videoLink;
+              const tagList = video.tag.split('#');
+            return (
+              <div>
+                <li className='youtubeBorder' >
+                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                  <h5 className='youtubeTitle'>{video.name}<br/>
+                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                    <h6 className='youtubeView'> 👀{video.views}</h6>
+                  </h5>
+                  
+                  <button 
+                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                    {isToggleOn.includes(videoId) ? "-":"+"}
+                  </button>
+                </li>
+                <div>
+                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
+                {tagList.map((item, index) => {
+                    if (item === ""){
+                      return null;
+                    }
+                    else{
+                      return(
+                        <button className='youtubeTag' key={index}>{'#' + item}</button>
+                        )
+                      }
+                    }
+                  )} 
+                  <iframe 
+                  className='iframe16To9'
+                  src={`https://www.youtube.com/embed/${videoId}`}
+                  title="YouTube video player" frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; 
+                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                  </div>
+                }
+                </div>
+                </div>
+              )
+            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
             </ul>
           </Drawer.Body>
         </Drawer>

@@ -392,12 +392,10 @@ function Analysis(props){
   }
   
   const onEachFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.EMD_NM).openPopup();
-    }
     layer.on('click', function (e) {
-      layer.bindPopup(feature.properties.EMD_NM).openPopup();
       whenClicked(e, feature, "normal");
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
@@ -409,13 +407,10 @@ function Analysis(props){
   }
 
   const onEachDetailFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
-    }
     layer.on('click', function (e) {
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
       layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
       whenClicked(e, feature, "detail");
-      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
@@ -436,7 +431,6 @@ function Analysis(props){
 
   useEffect(()=>{
     if (isDrawerOpen === true) {
-      console.log(MarketSelection)
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
@@ -527,8 +521,8 @@ function Analysis(props){
         calssName='sidebar'
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: 10,
+          left: 50,
           zIndex: 10000
         }}>
         <Sidebar/>
