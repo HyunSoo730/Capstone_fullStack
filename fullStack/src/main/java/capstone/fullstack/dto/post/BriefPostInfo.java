@@ -14,6 +14,7 @@ public class BriefPostInfo {
     private String content;
     private String writerName;
     private String createdDate;
+    private Integer viewCount;
 
     public BriefPostInfo(Post post) {
         this.postId = post.getId();
@@ -21,5 +22,6 @@ public class BriefPostInfo {
         this.content = post.getContent();
         this.writerName = post.getWriter().getKakaoNickname();
         this.createdDate = post.getCreatedDate().toString();
+        this.viewCount = post.getView();
     }
 }
