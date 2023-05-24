@@ -10,7 +10,7 @@ public class ReCommentInfoDto {
     private final static String DEFAULT_DELETE_MESSAGE="삭제된 댓글입니다.";
 
     private Long postId;
-    private Long parentId;
+//    private Long parentId;
 
     private Long reCommentId;
     private String content;
@@ -21,7 +21,7 @@ public class ReCommentInfoDto {
 
     public ReCommentInfoDto(Comment reComment){
         this.postId = reComment.getId();
-        this.parentId = reComment.getParent().getId();
+//        this.parentId = reComment.getParent().getId();
         this.reCommentId = reComment.getId();
         this.content = reComment.getContent();
 

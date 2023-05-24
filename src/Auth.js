@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {React, useEffect} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useDidMountEffect from './UseDidMountEffect';
 
 
 const Auth = () => {
@@ -9,13 +10,15 @@ const Auth = () => {
     const params = new URLSearchParams(location.search);
     const AUTH_CODE = params.get('code');
 
-    useEffect(() => {
-      console.log(`http://3.39.41.194:8080/auth/kakao/callback?code=${AUTH_CODE}`)
-        fetch(`/auth/kakao/callback?code=${AUTH_CODE}`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        })
-        .then(res => {console.log(res)})
+    useDidMountEffect(() => {
+      fetch(`/auth/kakao/callback?code=${AUTH_CODE}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(res=> {return res.text()})
+      .then(res=> localStorage.setItem('login-token', res))
       }, []);
     return (
         <div>

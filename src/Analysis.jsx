@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import ReactApexChart from "react-apexcharts";
-import { MapContainer, TileLayer, GeoJSON, useMapEvents} from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMapEvents, Marker, Popup} from 'react-leaflet';
 import { Drawer, Button } from 'rsuite';
 import geoData from './LocationData.json';
 import geoDetailData from './LocationDetailData.json';
@@ -33,6 +33,7 @@ function Analysis(props){
   const [DrawerGU, setDrawerGU] = useState("DRAWER_GU_ERR");
 
   const [MyZoom, setMyZoom] = useState(12);
+  const [MyLayer, setMyLayer] = useState();
 
   const [MarketSelection, setMarketSelection] = useState("한식음식점");
 
@@ -57,6 +58,11 @@ function Analysis(props){
     { value: '호프-간이주점', label: '호프-간이주점' },
     { value: '커피-음료', label: '커피-음료' },
   ];
+
+  var changeName = {
+    "numOfFranchiseStore" : "프랜차이즈 매장 수",
+    "totalNumOfStores" : "모든 매장 수",
+  }
 
   var ApexChartLineOption = {
     chart: {
@@ -380,6 +386,7 @@ function Analysis(props){
   }
 
   function whenClicked(e, feature, mode) {
+    setDrawerOpen(true);
     if (mode === "normal"){
       setDrawerTitle(feature.properties.EMD_NM);
       setDrawerGU(feature.properties.EMD_CD);
@@ -388,16 +395,14 @@ function Analysis(props){
       setDrawerTitle(feature.properties.TRDAR_NM);
       setDrawerDetailCode(feature.properties.TRDAR_NO);
     }
-    setDrawerOpen(true);
   }
   
   const onEachFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.EMD_NM).openPopup();
-    }
     layer.on('click', function (e) {
-      layer.bindPopup(feature.properties.EMD_NM).openPopup();
+      setMyLayer(e);
       whenClicked(e, feature, "normal");
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
+      layer.bindPopup(feature.properties.EMD_NM).openPopup();
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
@@ -409,13 +414,11 @@ function Analysis(props){
   }
 
   const onEachDetailFeature = (feature, layer) => {
-    if(feature.properties){
-      layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
-    }
     layer.on('click', function (e) {
+      setMyLayer(e);
+      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
       layer.bindPopup(feature.properties.TRDAR_NM).openPopup();
       whenClicked(e, feature, "detail");
-      layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
     });
     layer.on('mouseover', function (e) {
       layer.setStyle({ fillColor: 'rgba(1,1,1,0)' });
@@ -436,7 +439,6 @@ function Analysis(props){
 
   useEffect(()=>{
     if (isDrawerOpen === true) {
-      console.log(MarketSelection)
       setMarketFuture();
       MakeCurrentChartData("commerceMetrics", "marketfuture")
       setCountMarketNum([]);
@@ -527,8 +529,8 @@ function Analysis(props){
         calssName='sidebar'
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
+          top: 10,
+          left: 50,
           zIndex: 10000
         }}>
         <Sidebar/>
@@ -544,7 +546,6 @@ function Analysis(props){
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'/>
         <RenderingGeoJSON/>
       </MapContainer>
-
 
       <Drawer placement='right' open={isDrawerOpen} onClose={() => setDrawerOpen(false)}>
         <Drawer.Header>

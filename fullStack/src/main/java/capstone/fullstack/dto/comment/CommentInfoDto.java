@@ -18,7 +18,7 @@ public class CommentInfoDto {
     private String content;     //내용 (삭제되었으면 "삭제된 댓글입니다." 출력)
     private boolean isRemoved;  //삭제 여부
 
-    private UserInfoDto writerDro;      //작성자 정보들
+    private UserInfoDto writerDto;      //작성자 정보들
 
     private List<ReCommentInfoDto> reCommentListDtoList;    //대댓글 정보들
 
@@ -32,7 +32,8 @@ public class CommentInfoDto {
             this.content = DEFAULT_DELETE_MESSAGE;
 
         this.isRemoved = comment.isRemoved();
-        this.writerDro = new UserInfoDto(comment.getWriter());
-        this.reCommentListDtoList = reCommentList.stream().map(ReCommentInfoDto::new).toList();
+        this.writerDto = new UserInfoDto(comment.getWriter());
+        if(reCommentList != null)
+            this.reCommentListDtoList = reCommentList.stream().map(ReCommentInfoDto::new).toList();
     }
 }

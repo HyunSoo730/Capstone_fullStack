@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
     public void update(User user, Long id, CommentUpdateDto commentUpdateDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
-        if(!comment.getWriter().equals(user)){
+        if(!comment.getWriter().getUserId().equals(user.getUserId())){
             throw new CommentException((CommentExceptionType.NOT_AUTHORITY_UPDATE_COMMENT));
         }
         commentUpdateDto.content().ifPresent(comment::updateContent);
@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
     public void remove(User user, Long id) throws CommentException {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
-        if(!comment.getWriter().equals(user)){
+        if(!comment.getWriter().getUserId().equals(user.getUserId())){
             throw new CommentException(CommentExceptionType.NOT_AUTHORITY_DELETE_COMMENT);
         }
 
