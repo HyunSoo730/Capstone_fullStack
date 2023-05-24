@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,6 +20,8 @@ public class QUser extends EntityPathBase<User> {
 
     public static final QUser user = new QUser("user");
 
+    public final ListPath<capstone.fullstack.domain.Comment, capstone.fullstack.domain.QComment> commentList = this.<capstone.fullstack.domain.Comment, capstone.fullstack.domain.QComment>createList("commentList", capstone.fullstack.domain.Comment.class, capstone.fullstack.domain.QComment.class, PathInits.DIRECT2);
+
     public final DateTimePath<java.sql.Timestamp> createTime = createDateTime("createTime", java.sql.Timestamp.class);
 
     public final StringPath kakaoEmail = createString("kakaoEmail");
@@ -28,6 +31,8 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath kakaoNickname = createString("kakaoNickname");
 
     public final StringPath kakaoProfileImg = createString("kakaoProfileImg");
+
+    public final ListPath<capstone.fullstack.domain.Post, capstone.fullstack.domain.QPost> postList = this.<capstone.fullstack.domain.Post, capstone.fullstack.domain.QPost>createList("postList", capstone.fullstack.domain.Post.class, capstone.fullstack.domain.QPost.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
