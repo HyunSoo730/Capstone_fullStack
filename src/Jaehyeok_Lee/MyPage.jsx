@@ -1,72 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Select from 'react-select';
 
-import { categoryOption } from './Option';
 import './MyPage.css';
 
 function MyPage(props) {
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    const [profileImg, setProfileImg] = useState("");
+    const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [region, setRegion] = useState("");
+    const [borough, setBorough] = useState("");
     const [dong, setDong] = useState("");
-    const [category, setCategory] = useState("");
-    const { postId } = useParams();
+    const [choiced, setChoiced] = useState("");
+    const tokenreceive = localStorage.getItem('login-token');
 
-    const categoryOption = [
-        {value: "drink", name: "커피-음료"},
-        {value: "a", name: "A"},
-        {value: "b", name: "B"},
-        {value: "c", name: "C"},
-        {value: "d", name: "D"},
+    var categoryOption = [
+        { value: '한식음식점', label: '한식음식점' },
+        { value: '중식음식점', label: '중식음식점' },
+        { value: '일식음식점', label: '일식음식점' },
+        { value: '양식음식점', label: '양식음식점' },
+        { value: '제과점', label: '제과점' },
+        { value: '패스트푸드점', label: '패스트푸드점' },
+        { value: '치킨전문점', label: '치킨전문점' },
+        { value: '분식전문점', label: '분식전문점' },
+        { value: '호프-간이주점', label: '호프-간이주점' },
+        { value: '커피-음료', label: '커피-음료' },
     ];
 
-    const findName = () => {
-        fetch('${API}login', {
-            method : "GET",
-            headers : {
-                "Content-Type" : "application/json",
-                Authorization: localStorage.getItem('login-token')
-            },
-        })
-        .then(response => {return response.json()})
-        .then(response => setName(current => [...current, response.kakaoNickname]))
+    const findInfo = () => {
+
     }
 
-    const findEmail = () => {
-        fetch('/mypage/users/me', {
-            method : "GET",
-            headers : {"Content-Type" : "application/json"},
-        })
-        .then(response => {return response.json()})
-        .then(response => {response.map((value)=>{
-            setEmail(current => [...current, value.kakaoEmail]);
-        })})
-    }
-
-    const handleChangeName = (event) => {
-        setName(event.target.value);
+    const handleChangeNickname = (event) => {
+        setNickname(event.target.value);
     };
 
-    const handleChangeEmail = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const handleChangePassword = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleChangeRegion = (event) => {
-        setRegion(event.target.value);
+    const handleChangeBorough = (event) => {
+        setBorough(event.target.value);
     };
 
     const handleChangeDong = (event) => {
         setDong(event.target.value);
-    };
-
-    const handleChangeCategory = (event) => {
-        setCategory(event.target.value);
     };
 
     const handleSubmit = (event) => {
@@ -75,6 +49,11 @@ function MyPage(props) {
         event.preventDefault();
     };
 
+    useEffect(() => {
+        console.log("token " + tokenreceive);
+        findInfo();
+    })
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="Wrapper">
@@ -82,38 +61,31 @@ function MyPage(props) {
                     <div className="PostContainer">
                         <h3>기본 정보</h3>
                         <div className="Label">
-                            이　　름　
-                            <input style={{width: "180px", height: "30px"}} type="text" defaultValue={name} onChange={handleChangeName}/>
+                            <div className="tag">닉 네 임</div>
+                            <input className="write" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
                         </div>
                         <div className="Label">
-                            이 메 일　
-                            <input style={{width: "180px", height: "30px"}} type="text" defaultValue={"이메일"} onChange={handleChangeEmail} />
-                        </div>
-                        <div className="Label">
-                            비밀번호　
-                            <input style={{width: "180px", height: "30px"}} type="password" defaultValue={"패스워드"} onChange={handleChangePassword} />
+                            <div className="tag">이 메 일</div>
+                            <div className="write" type="text">{email}</div>
                         </div>
                         <p>　</p>
+
                         <h3>창업 정보</h3>
                         <div className="Label">
-                            자 치 구　
-                            <input style={{width: "180px", height: "30px"}} type="text" defaultValue={"광진구"} onChange={handleChangeRegion} />
+                            <div className="tag">자 치 구</div>
+                            <input className="write" type="text" defaultValue={borough} onChange={handleChangeBorough} />
                         </div>
                         <div className="Label">
-                            행 정 동　
-                            <input style={{width: "180px", height: "30px"}} type="text" defaultValue={"화양동"} onChange={handleChangeDong} />
+                            <div className="tag">행 정 동</div>
+                            <input className="write" type="text" defaultValue={dong} onChange={handleChangeDong} />
                         </div>
                         <div className="Label">
-                            희망업종　
-                            <select options={categoryOption} style={{width: "180px", height: "30px"}} defaultValue={"커피-음료"}>
-                                {categoryOption.map((option) => (
-                                    <option value={option.value}>{option.name}</option>
-                                ))}
-                            </select>
+                            <div className="tag">희망업종</div>
+                            <Select className="write" options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>  
                         </div>
                     </div>
                     <div className="PhotoContainer">
-                        <div className="Photo"></div>
+                        <div className="Photo"/>
                         <div
                             className="Button"
                             type="submit"

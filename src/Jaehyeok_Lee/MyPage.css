@@ -1,6 +1,5 @@
 .Wrapper {
-    background-color: aliceblue;
-    padding: 20px;
+    background-color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,8 +7,9 @@
 }
 
 .Container {
-    height: 550px;
-    width: 500px;
+    background-color: gold;
+    height: 100%;
+    width: 25%;
     display: flex;
     flex-direction: row;
     align-items:flex-start;
@@ -25,14 +25,16 @@
 }
 
 .PostContainer {
-    height: 500px;
-    width: 300px;
+    background-color: greenyellow;
+    height: 100%;
+    width: 100%;
     padding: 25px 16px;
 }
 
 .PhotoContainer {
-    height: 200px;
-    width: 150px;
+    background-color: dodgerblue;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,8 +53,30 @@
 }
 
 .Label {
+    background-color: coral;
     font-size: 16px; /* 글자 크기 */
-    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: max-content;
+    height: 30px;
+}
+
+.tag {
+    background-color: aquamarine;
+    text-align:unset;
+    margin-right: 10px;
+    width: 70px;
+    height: 100%;
+}
+
+.write {
+    background-color: plum;
+    text-align: start;
+    width: 180px;
+    height: 100%;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
 .Button {
