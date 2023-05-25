@@ -1,6 +1,5 @@
 .Wrapper {
-    background-color: aliceblue;
-    padding: 20px;
+    background-color: blanchedalmond;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,14 +7,13 @@
 }
 
 .Container {
-    height: 550px;
+    height: 600px;
     width: 500px;
     display: flex;
     flex-direction: row;
     align-items:flex-start;
     justify-content: center;
     margin-bottom: 10px;
-    border: 2px solid gray; /* 테두리 두께 및 색 */
     border-radius: 20px; /* 꼭짓점 둥근 정도 */
     & > * { /* 각 항목별 간격(?) → 잘 모르겠음 */
         :not(:last-child) {
@@ -25,14 +23,14 @@
 }
 
 .PostContainer {
-    height: 500px;
-    width: 300px;
+    height: 100%;
+    width: 70%;
     padding: 25px 16px;
 }
 
 .PhotoContainer {
-    height: 200px;
-    width: 150px;
+    height: 40%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,7 +50,29 @@
 
 .Label {
     font-size: 16px; /* 글자 크기 */
-    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: max-content;
+    height: 40px;
+}
+
+.tag {
+    font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10px;
+    width: 75px;
+    height: 100%;
+}
+
+.write {
+    text-align: start;
+    width: 220px;
+    height: 100%;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
 .Button {
