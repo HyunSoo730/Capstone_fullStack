@@ -12,7 +12,7 @@ function MyPage(props) {
     const [borough, setBorough] = useState("");
     const [dong, setDong] = useState("");
     const [choiced, setChoiced] = useState("");
-    const tokenreceive = localStorage.getItem('login-token');
+    const wowfuck = localStorage.getItem('login-token');
 
     var categoryOption = [
         { value: '한식음식점', label: '한식음식점' },
@@ -27,8 +27,24 @@ function MyPage(props) {
         { value: '커피-음료', label: '커피-음료' },
     ];
 
-    const findInfo = () => {
-
+    const sendToken = () => {
+        fetch('/mypage/users/me', {
+            method : "GET",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : localStorage.getItem('login-token'),
+            },
+        })
+        .then(response => {return response.json()})
+        .then(response => {
+            console.log("꺄르르륵" + response.kakaoEmail);
+            setProfileImg(current => [...current, response.kakaoProfileImg]);
+            setNickname(response.kakaoNickname);
+            setEmail(current => [...current, response.kakaoEmail]);
+            setBorough(current => [...current, response.borough]);
+            setDong(current => [...current, response.dong]);
+            setChoiced(current => [...current, response.serviceName]);
+        })
     }
 
     const handleChangeNickname = (event) => {
@@ -39,7 +55,7 @@ function MyPage(props) {
         setBorough(event.target.value);
     };
 
-    const handleChangeDong = (event) => {
+    const handleChangeDong = (event) => {        
         setDong(event.target.value);
     };
 
@@ -50,9 +66,15 @@ function MyPage(props) {
     };
 
     useEffect(() => {
-        console.log("token " + tokenreceive);
-        findInfo();
-    })
+        sendToken();
+        console.log("이런 미친 " + wowfuck);
+        console.log("꾸웨에에엑" + profileImg);
+        console.log("꾸웨에에엑" + nickname);
+        console.log("꾸웨에에엑" + email);
+        console.log("꾸웨에에엑" + borough);
+        console.log("꾸웨에에엑" + dong);
+        console.log("꾸웨에에엑" + choiced);
+    },[])
 
     return (
         <form onSubmit={handleSubmit}>
