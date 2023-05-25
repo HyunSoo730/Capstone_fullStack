@@ -7,10 +7,12 @@ import capstone.fullstack.repository.youtube.PopularVideoRepository;
 import capstone.fullstack.repository.youtube.VideoCountRepository;
 import capstone.fullstack.repository.youtube.YoutubeRepository;
 import capstone.fullstack.service.youtube.YoutubeService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,20 +105,55 @@ public class YoutubeController {
         return top3;
     }
 
-//    @GetMapping("/delete")
-//    public void deleteAllVideoCount() {
-//        List<VideoCount> all = videoCountRepository.findAll();
-//        List<VideoCount> res = all.stream().map(videoCount -> {
-//            videoCount.setMaxVies(0);
-//            videoCount.setCount(0);
-//            videoCount.setMetrics(0L);
-//            return videoCount;
-//        }).collect(Collectors.toList());
-//
-//        videoCountRepository.saveAll(res);
-//    }
+
+    /**
+    @GetMapping("/test")
+    public List<Youtube> findAfterDate() {
+        List<Youtube> res = youtubeService.findSearch();
+        List<PopularVideo> collect = res.stream().map(youtube -> {
+            PopularVideo pv = new PopularVideo();
+            pv.setDong(youtube.getDong());
+            pv.setName(youtube.getName());
+            pv.setViews(youtube.getViews());
+            pv.setVideoLink(youtube.getVideoLink());
+            pv.setLikes(youtube.getLikes());
+            pv.setThumbnail(youtube.getThumbnail());
+            pv.setDate(youtube.getDate());
+            pv.setFood(youtube.getFood());
+            pv.setTag(youtube.getTag());
+            return pv;
+        }).collect(Collectors.toList());
+
+        popularVideoRepository.saveAll(collect);
+
+        return res;
+    }
+
+    @Data
+    static class Temp {
+        HashMap<String, Integer> map;
+        int count;
+    }
+
+
+    @GetMapping("/test2")
+    public Temp check() {
+        List<Youtube> all = youtubeService.findSearch();
+        HashMap<String, Integer> resMap = new HashMap<>();
+        for (Youtube youtube : all) {
+            resMap.put(youtube.getDong(), resMap.getOrDefault(youtube.getDong(), 0) + 1);
+        }
+
+        Temp temp = new Temp();
+        temp.setMap(resMap);
+        temp.setCount(resMap.size());
+
+        return temp;
+    }
+    **/
 
     public Integer getMaxViews(VideoCount vc) {
+
         if (vc.getMaxViews() == null)
             return 0;
         return vc.getMaxViews();

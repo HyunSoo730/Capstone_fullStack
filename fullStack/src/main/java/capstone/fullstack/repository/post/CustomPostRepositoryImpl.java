@@ -1,5 +1,6 @@
 package capstone.fullstack.repository.post;
 
+import capstone.fullstack.domain.*;
 import capstone.fullstack.domain.Post;
 import capstone.fullstack.dto.post.PostSearchCondition;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -14,9 +15,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static capstone.fullstack.domain.QPost.*;
 import static capstone.fullstack.domain.user.QUser.*;
+import static capstone.fullstack.domain.QPost.*;
 
+
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class CustomPostRepositoryImpl implements CustomPostRepository{

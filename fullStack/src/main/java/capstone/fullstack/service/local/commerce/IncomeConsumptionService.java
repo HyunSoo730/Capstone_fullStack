@@ -7,6 +7,7 @@ import capstone.fullstack.repository.local.commerce.LocalRepository;
 import capstone.fullstack.resultvo.IncomeConsumptionVO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class IncomeConsumptionService {
 
     private final IncomeConsumptionRepository incomeConsumptionRepository;
@@ -34,6 +36,7 @@ public class IncomeConsumptionService {
     public List<IncomeConsumptionVO> getIncomeConsumptionByDong(List<Integer> allCommercialCode) {
 
         List<IncomeConsumption> all = incomeConsumptionRepository.findByCommercialCodeIn(allCommercialCode);
+        log.info("코드 확인 {}", all.stream().collect(Collectors.toList()));
 
         Map<String, IncomeConsumptionVO> resultMap = new HashMap<>();
 
@@ -82,6 +85,10 @@ public class IncomeConsumptionService {
         Map<String, IncomeConsumptionVO> resultMap = new HashMap<>();
 
         for (IncomeConsumption incomeConsumption : all) {
+
+            if (incomeConsumption.getAverageMonthlyIncome() == null){
+                continue;
+            }
 
             //이미 존재하는 incomeConsumtionVO 인 경우 누적
             String key = String.valueOf(incomeConsumption.getYear()) + String.valueOf(incomeConsumption.getQuarter());

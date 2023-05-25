@@ -15,7 +15,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/auth/kakao/callback")
     public String kakaoCallback(@RequestParam("code") String code) {
         //POST방식으로 key=value 데이터를 요청(카카오 쪽으로)

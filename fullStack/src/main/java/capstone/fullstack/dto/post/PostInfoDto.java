@@ -1,6 +1,6 @@
 package capstone.fullstack.dto.post;
 
-import capstone.fullstack.domain.Comment;
+import capstone.fullstack.domain.*;
 import capstone.fullstack.domain.Post;
 import capstone.fullstack.dto.UserInfoDto;
 import capstone.fullstack.dto.comment.CommentInfoDto;
