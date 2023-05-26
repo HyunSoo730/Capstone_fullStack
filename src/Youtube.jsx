@@ -4,6 +4,13 @@ import geoData from './LocationData.json'
 import { Drawer, Button } from 'rsuite';
 import { locationData } from "./LocationDataItems";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
+
+import { MenuItems } from "./HomePageMenuItems";
+
+import "swiper/css";
+import "swiper/css/navigation";
 import "rsuite/dist/rsuite.css";
 import './YoutubeVideoStyle.css';
 
@@ -17,6 +24,16 @@ function Youtube(props){
   const [isToggleOn, setToggle] = useState([]);
 
   const [SaveColor, setSaveColor] = useState();
+
+  const [SlideIndex, setSlideIndex] = useState(0);
+  const [Slider, setSlider] = useState(null);
+
+  const [clicked, setClicked] = useState(false);
+
+    const handleClick = () => {
+        setClicked(!clicked);
+    }
+
 
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
@@ -109,6 +126,12 @@ function Youtube(props){
   }
 
   useEffect(() => {
+    if(Slider){
+      Slider.slideTo(SlideIndex);
+    }
+  }, [SlideIndex])
+
+  useEffect(() => {
     CountYoutubePlace();
   }, [])
 
@@ -119,12 +142,28 @@ function Youtube(props){
   if (YoutubePlace){
     return(
       <div>
+        <nav className='Navbar' style={{position: "static"}}>
+          <div className='menu-icon' onClick={handleClick}>
+              <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+          </div>
+          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+              {MenuItems.map((item, index)=>{
+                return (
+                  <li key={index}>
+                      <a className={item.cName} href={item.url}>
+                          {item.title}
+                      </a>
+                  </li>
+                )
+              })}
+          </ul>
+        </nav>
         <div>
         <MapContainer
           center={[37.541, 126.986]}
           zoom={12}
           scrollWheelZoom={true}
-          style={{ width: "100%", height: "calc(100vh - 0rem)" }}>
+          style={{ position: "static", width: "100%", height: "calc(100vh - 80px)" }}>
           <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -142,92 +181,109 @@ function Youtube(props){
           </Drawer.Header>
           <Drawer.Body>
             <ul className='youtubeList'>
-              <h5>인기 동영상 TOP 10</h5>
-            {VideoList.length !== 0 ? VideoList.map((video) => {
-              const videoId = video.videoLink;
-              const tagList = video.tag.split('#');
-            return (
-              <div>
-                <li className='youtubeBorder' >
-                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
-                  <h5 className='youtubeTitle'>{video.name}<br/>
-                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
-                    <h6 className='youtubeView'> 👀{video.views}</h6>
-                  </h5>
-                  
-                  <button 
-                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
-                    {isToggleOn.includes(videoId) ? "-":"+"}
-                  </button>
-                </li>
-                <div>
-                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
-                {tagList.map((item, index) => {
-                    if (item === ""){
-                      return null;
-                    }
-                    else{
-                      return(
-                        <button className='youtubeTag' key={index}>{'#' + item}</button>
-                        )
+                <Swiper navigation={true} modules={[Navigation]} className="menu" onSlideChange={(e) => setSlideIndex(e.activeIndex)}>
+                  <SwiperSlide className="menu-contents"><h5>인기 동영상 TOP 10</h5></SwiperSlide>
+                  <SwiperSlide className="menu-contents"><h5>인기 <span style={{color: "red"}}>급상승</span> 동영상 TOP 3</h5></SwiperSlide>
+                </Swiper>
+                <Swiper navigation={{nextEl: null,
+          prevEl: null,disabledClass: "swiper-button-disabled"}} modules={[Navigation]} className="noarrow-menu" onSwiper={setSlider}>
+                  <SwiperSlide>
+                    <br/>
+                  {VideoList.length !== 0 ? VideoList.map((video, index) => {
+                  const videoId = video.videoLink;
+                  const tagList = video.tag.split('#');
+                  return (
+                    <div>
+                      <li className='youtubeBorder'>
+                      <div className='youtubeRankingOut'>
+                        <div className='youtubeRankingIn'>{index + 1}</div>
+                      </div>
+                        <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                        <h5 className='youtubeTitle'>{video.name}<br/>
+                          <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                          <h6 className='youtubeView'> 👀{video.views}</h6>
+                        </h5>
+                        
+                        <button 
+                          onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                          {isToggleOn.includes(videoId) ? "-":"+"}
+                        </button>
+                      </li>
+                      <div>
+                      {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"100%"}}>
+                      {tagList.map((item, index) => {
+                          if (item === ""){
+                            return null;
+                          }
+                          else{
+                            return(
+                              <button className='youtubeTag' key={index}>{'#' + item}</button>
+                              )
+                            }
+                          }
+                        )} 
+                        <iframe 
+                        className='iframe16To9'
+                        src={`https://www.youtube.com/embed/${videoId}`}
+                        title="YouTube video player" frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; 
+                        encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
                       }
+                      </div>
+                      </div>
+                    )
+                  }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <br/>
+                  {TrendVideoList.length !== 0 ? TrendVideoList.map((video, index) => {
+                  const videoId = video.videoLink;
+                  const tagList = video.tag.split('#');
+                return (
+                  <div>
+                    <li className='youtubeBorder' >
+                    <div className='youtubeRankingOut'>
+                      <div className='youtubeRankingIn'>{index + 1}</div>
+                    </div>
+                      <img className='youtubeImage' src={video.thumbnail} alt=""></img>
+                      <h5 className='youtubeTitle'>{video.name}<br/>
+                        <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
+                        <h6 className='youtubeView'> 👀{video.views}</h6>
+                      </h5>
+                      
+                      <button 
+                        onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
+                        {isToggleOn.includes(videoId) ? "-":"+"}
+                      </button>
+                    </li>
+                    <div>
+                    {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"100%"}}>
+                    {tagList.map((item, index) => {
+                        if (item === ""){
+                          return null;
+                        }
+                        else{
+                          return(
+                            <button className='youtubeTag' key={index}>{'#' + item}</button>
+                            )
+                          }
+                        }
+                      )} 
+                      <iframe 
+                      className='iframe16To9'
+                      src={`https://www.youtube.com/embed/${videoId}`}
+                      title="YouTube video player" frameborder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; 
+                      encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      </div>
                     }
-                  )} 
-                  <iframe 
-                  className='iframe16To9'
-                  src={`https://www.youtube.com/embed/${videoId}`}
-                  title="YouTube video player" frameborder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; 
-                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                  </div>
-                }
-                </div>
-                </div>
-              )
-            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
-            <h5>인기 급상승 동영상 TOP 3</h5>
-            {TrendVideoList.length !== 0 ? TrendVideoList.map((video) => {
-              const videoId = video.videoLink;
-              const tagList = video.tag.split('#');
-            return (
-              <div>
-                <li className='youtubeBorder' >
-                  <img className='youtubeImage' src={video.thumbnail} alt=""></img>
-                  <h5 className='youtubeTitle'>{video.name}<br/>
-                    <h6 className='youtubeView'> 👍{video.likes === null? 0 : video.likes}</h6><br/>
-                    <h6 className='youtubeView'> 👀{video.views}</h6>
-                  </h5>
-                  
-                  <button 
-                    onClick={() => !isToggleOn.includes(videoId) ? setToggle([...isToggleOn, videoId]) : setToggle(isToggleOn.filter((b) => b !== video.videoLink))}>
-                    {isToggleOn.includes(videoId) ? "-":"+"}
-                  </button>
-                </li>
-                <div>
-                {isToggleOn.includes(videoId) && <div style={{backgroundColor:"rgb(249, 249, 249)", width:"90%"}}>
-                {tagList.map((item, index) => {
-                    if (item === ""){
-                      return null;
-                    }
-                    else{
-                      return(
-                        <button className='youtubeTag' key={index}>{'#' + item}</button>
-                        )
-                      }
-                    }
-                  )} 
-                  <iframe 
-                  className='iframe16To9'
-                  src={`https://www.youtube.com/embed/${videoId}`}
-                  title="YouTube video player" frameborder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; 
-                  encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                  </div>
-                }
-                </div>
-                </div>
-              )
-            }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+                    </div>
+                    </div>
+                  )
+                }) : <div className='youtubeEmpty'>데이터가 없습니다.</div>}
+                  </SwiperSlide>
+                </Swiper>
             </ul>
           </Drawer.Body>
         </Drawer>
