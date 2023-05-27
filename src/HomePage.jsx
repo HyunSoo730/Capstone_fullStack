@@ -3,6 +3,8 @@ import { MenuItems } from "./HomePageMenuItems";
 import HomeStyle from './HomePage.css';
 import HomeNavStyle from "./HomePageNavbar.css"
 
+import main_logo from './logo.png'
+
 const HomePage = () => {
     const [clicked, setClicked] = useState(false);
 
@@ -13,6 +15,7 @@ const HomePage = () => {
     return (
         <div>
             <nav className='Navbar'>
+            <h1 className="navbar-logo"><img src={main_logo} /></h1>
                 <div className='menu-icon' onClick={handleClick}>
                     <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
