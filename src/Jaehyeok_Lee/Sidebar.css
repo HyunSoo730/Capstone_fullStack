@@ -17,7 +17,7 @@
     justify-content: center;
     width: 100%;
     height: 50px;
-    box-shadow: 2px 2px 5px gray;
+    box-shadow: 2px 2px 3px gray;
 }
 
 .filter_button {
@@ -34,7 +34,8 @@
     height: 100%;
     &.activated { /* 클릭으로 인한 활성화 시 배경 색 변경 */
         color: white;
-        background-color: #22a002;
+        /*background-color: #22a002;*/
+        background-color: #03CF5D;
     }
 }
 
@@ -50,7 +51,7 @@
     justify-content: center;
     width: 100%;
     height: 320px;
-    box-shadow: 2px 2px 5px gray;
+    box-shadow: 2px 2px 3px gray;
 }
 
 .side_inside {

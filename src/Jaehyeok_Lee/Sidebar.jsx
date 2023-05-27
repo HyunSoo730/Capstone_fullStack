@@ -251,7 +251,7 @@ function Sidebar() {
 
             {
                 btnActivate === "sales" ?
-                <div style={{boxShadow: "2px 2px 5px gray", width: "400px", borderRadius: "5px"}}>
+                <div style={{boxShadow: "2px 2px 3px gray", width: "400px", borderRadius: "5px"}}>
                     <Select options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>
                 </div>
                 : null
