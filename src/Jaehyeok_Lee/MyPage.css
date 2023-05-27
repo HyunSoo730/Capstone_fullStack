@@ -1,31 +1,106 @@
-.Wrapper {
-    background-color: blanchedalmond;
+.Page {
+    display: flex;
+    flex-direction: row;
+}
+
+.SideWrapper {
+    background-color: white;
+    box-shadow: 0px 0px 20px lightgray;
     display: flex;
     flex-direction: column;
+    width: 20%;
+    z-index: 10;
+}
+
+.SideTag {
+    background-color: #03CF5D;
+    color: white;
+    margin-top: 100px;
+    padding-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+    height: 50px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+
+.Wrapper {
+    background-color: #F9FBFC;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 80%;
 }
 
 .Container {
-    height: 600px;
-    width: 500px;
+    height: 100%;
+    width: 1000px;
     display: flex;
     flex-direction: row;
-    align-items:flex-start;
+    align-items:center;
     justify-content: center;
     margin-bottom: 10px;
     border-radius: 20px; /* 꼭짓점 둥근 정도 */
     & > * { /* 각 항목별 간격(?) → 잘 모르겠음 */
         :not(:last-child) {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
     }
 }
 
 .PostContainer {
-    height: 100%;
-    width: 70%;
-    padding: 25px 16px;
+    padding-top: 50px;
+    height: max-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+.BasicInfo {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px lightgray;
+    align-items: center;
+    justify-content: start;
+}
+
+.InBasicInfo {
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+.StartUpInfo {
+    background-color: white;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 5px 5px 10px lightgray;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items:start;
+    justify-content: start;
+}
+
+.InStartUpInfo {
+    margin-left: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
 }
 
 .PhotoContainer {
@@ -36,12 +111,12 @@
     align-items: center;
     justify-content: center;
     margin-top: 50px;
-    margin-left: 10px;
+    margin-left: 40px;
 }
 
 .Photo {
-    background-image: url("../nulluser_downsize.jpg");
-    border: 3px solid gray;
+    box-shadow: 2px 2px 5px lightgray;
+    margin-top: 10px;
     height: 105px;
     width: 105px;
     border-radius: 100%;
@@ -54,31 +129,87 @@
     flex-direction: row;
     justify-content: center;
     width: max-content;
-    height: 40px;
+    height: 50px;
 }
 
-.tag {
+.Tag {
     font-size: 17px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: end;
     margin-right: 10px;
     width: 75px;
     height: 100%;
 }
 
-.write {
+.Write {
     text-align: start;
-    width: 220px;
+    margin-left: 50px;
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 300px;
     height: 100%;
-    border: 1px solid gray;
-    border-radius: 5px;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.Button {
-    padding: 8px 16px; /* 잘 모르겠음 */
-    font-size: 16px;
+.Write input:focus-within {
+    border-color: #22a002;
+}
+
+.WriteSelect {
+    text-align: center;
+    margin-left: 50px;
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.PhotoButton {
+    z-index: 10;
+    margin-left: 70px;
     border: 2px solid gray;
-    border-radius: 8px;
+    border-radius: 100%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer; /* 잘 모르겠음 */
+}
+
+.SaveButton {
+    margin-left: 280px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 100%; 
+    background-color: #03CF5D;
+    height: 50px;
+    width: 150px;
+    font-size: 16px;
+    cursor: pointer; /* 잘 모르겠음 */
+}
+
+.CompleteButton {
+    margin-top: 30px;
+    margin-left: 650px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 100%; 
+    background-color: #03CF5D;
+    height: 50px;
+    width: 250px;
+    font-size: 16px;
     cursor: pointer; /* 잘 모르겠음 */
 }

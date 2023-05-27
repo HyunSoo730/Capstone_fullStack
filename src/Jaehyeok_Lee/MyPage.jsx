@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from 'react-select';
+import Avatar from 'react-avatar';
 
 import './MyPage.css';
 
@@ -12,7 +13,6 @@ function MyPage(props) {
     const [borough, setBorough] = useState("");
     const [dong, setDong] = useState("");
     const [choiced, setChoiced] = useState("");
-    const wowfuck = localStorage.getItem('login-token');
 
     var categoryOption = [
         { value: '한식음식점', label: '한식음식점' },
@@ -27,23 +27,39 @@ function MyPage(props) {
         { value: '커피-음료', label: '커피-음료' },
     ];
 
-    const sendToken = () => {
+    const getUserInfo = () => {
         fetch('/mypage/users/me', {
-            method : "GET",
+            method : "POST",
             headers : {
                 "Content-Type" : "application/json",
                 Authorization : localStorage.getItem('login-token'),
             },
+            body : JSON.stringify({})
         })
         .then(response => {return response.json()})
         .then(response => {
-            console.log("꺄르르륵" + response.kakaoEmail);
-            setProfileImg(current => [...current, response.kakaoProfileImg]);
+            setProfileImg(response.kakaoProfileImg);
             setNickname(response.kakaoNickname);
-            setEmail(current => [...current, response.kakaoEmail]);
-            setBorough(current => [...current, response.borough]);
-            setDong(current => [...current, response.dong]);
-            setChoiced(current => [...current, response.serviceName]);
+            setEmail(response.kakaoEmail);
+            setBorough(response.borough);
+            setDong(response.dong);
+            setChoiced(response.serviceName);
+            console.log("이건 프사야 " + profileImg);
+        })
+    }
+
+    const sendUpdatedUserInfo = () => {
+        fetch('/mypage/users/save', {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : localStorage.getItem('login-token'),
+            },
+            body : JSON.stringify({
+                borough: borough,
+                dong: dong,
+                serviceName: choiced,
+            })
         })
     }
 
@@ -60,74 +76,77 @@ function MyPage(props) {
     };
 
     const handleSubmit = (event) => {
+        sendUpdatedUserInfo();
         alert(`수정이 완료되었습니다.`);
-        // 변경 데이터 저장하기
         event.preventDefault();
     };
 
-    useEffect(() => {
-        sendToken();
-        console.log("이런 미친 " + wowfuck);
-        console.log("꾸웨에에엑" + profileImg);
-        console.log("꾸웨에에엑" + nickname);
-        console.log("꾸웨에에엑" + email);
-        console.log("꾸웨에에엑" + borough);
-        console.log("꾸웨에에엑" + dong);
-        console.log("꾸웨에에엑" + choiced);
-    },[])
+    useEffect(() => {getUserInfo();},[])
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div className="Page">
+            <div className="SideWrapper">
+                <div className="SideTag">마이 페이지</div>
+            </div>
             <div className="Wrapper">
                 <div className="Container">
                     <div className="PostContainer">
-                        <h3>기본 정보</h3>
-                        <div className="Label">
-                            <div className="tag">닉 네 임</div>
-                            <input className="write" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
+                        <div className="BasicInfo">
+                            <div className="PhotoContainer">
+                                <h3>기본 정보</h3>
+                                <Avatar className="Photo" src={profileImg}/>
+                                <div
+                                    className="PhotoButton"
+                                    type="submit"
+                                    title="사진 변경"
+                                    onClick={() => {}}
+                                >
+                                    뀨
+                                </div>
+                            </div>
+                            <div className="InBasicInfo">
+                                <div className="Label">
+                                    <div className="Tag">이름</div>
+                                    <input className="Write" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
+                                </div>
+                                <div style={{height: "10px"}}/>
+                                <div className="Label">
+                                    <div className="Tag">이메일</div>
+                                    <div className="Write" type="text" style={{backgroundColor: "white", color: "gray"}}>{email}</div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="Label">
-                            <div className="tag">이 메 일</div>
-                            <div className="write" type="text">{email}</div>
-                        </div>
-                        <p>　</p>
 
-                        <h3>창업 정보</h3>
-                        <div className="Label">
-                            <div className="tag">자 치 구</div>
-                            <input className="write" type="text" defaultValue={borough} onChange={handleChangeBorough} />
+                        <div className="StartUpInfo">
+                            <h3 style={{marginLeft: "130px"}}>창업 정보</h3>
+                            <div className="InStartUpInfo">
+                                <div className="Label">
+                                    <div className="Tag">자치구</div>
+                                    <input className="Write" type="text" defaultValue={borough} onChange={handleChangeBorough} />
+                                </div>
+                                <div style={{height: "10px"}}/>
+                                <div className="Label">
+                                    <div className="Tag">행정동</div>
+                                    <input className="Write" type="text" defaultValue={dong} onChange={handleChangeDong} />
+                                </div>
+                                <div style={{height: "10px"}}/>
+                                <div className="Label">
+                                    <div className="Tag">희망 업종</div>
+                                    <Select className="WriteSelect" options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>
+                                </div>
+                                <div className="SaveButton" title="저장" onClick={() => {}}>
+                                    저장
+                                </div>
+                            </div>
                         </div>
-                        <div className="Label">
-                            <div className="tag">행 정 동</div>
-                            <input className="write" type="text" defaultValue={dong} onChange={handleChangeDong} />
-                        </div>
-                        <div className="Label">
-                            <div className="tag">희망업종</div>
-                            <Select className="write" options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>  
+
+                        <div className="CompleteButton" type="submit" title="수정 완료" onClick={handleSubmit}>
+                            수정 완료
                         </div>
                     </div>
-                    <div className="PhotoContainer">
-                        <div className="Photo"/>
-                        <div
-                            className="Button"
-                            type="submit"
-                            title="사진 변경"
-                            onClick={() => {navigate("/");}}
-                        >
-                            사진 변경
-                        </div>
-                    </div> 
-                </div>
-                <div
-                    className="Button"
-                    type="submit"
-                    title="정보 수정"
-                    onClick={() => {navigate("/");}}
-                >
-                    정보 수정
                 </div>
             </div>
-        </form>
+        </div>
     );
 }
 
