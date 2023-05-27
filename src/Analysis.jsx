@@ -9,6 +9,8 @@ import {locationData} from './LocationDataItems';
 import Sidebar from './Jaehyeok_Lee/Sidebar';
 import Select from 'react-select';
 
+import main_logo from './logo.png'
+
 import { MenuItems } from "./HomePageMenuItems";
 
 import 'leaflet/dist/leaflet.css';
@@ -597,6 +599,7 @@ function Analysis(props){
   return(
     <div>
               <nav className='Navbar' style={{position: "static"}}>
+              <h1 className="navbar-logo"><img src={main_logo} /></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>

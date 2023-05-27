@@ -19,7 +19,8 @@ const Auth = () => {
       })
       .then(res=> {return res.text()})
       .then(res=> localStorage.setItem('login-token', res))
-      }, []);
+      window.location.href='/'  
+    }, []);
     return (
         <div>
         </div>

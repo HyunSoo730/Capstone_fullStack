@@ -9,6 +9,8 @@ import { Navigation } from "swiper";
 
 import { MenuItems } from "./HomePageMenuItems";
 
+import main_logo from "./logo.png"
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "rsuite/dist/rsuite.css";
@@ -143,10 +145,11 @@ function Youtube(props){
     return(
       <div>
         <nav className='Navbar' style={{position: "static"}}>
+        <h1 className="navbar-logo"><img src={main_logo} /></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+          <ul className={clicked ? 'nav-menu active' : 'nav-menu'} style={clicked ? {color:"red"} : {color:"black"}}>
               {MenuItems.map((item, index)=>{
                 return (
                   <li key={index}>
