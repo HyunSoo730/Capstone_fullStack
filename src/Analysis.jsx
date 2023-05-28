@@ -598,20 +598,37 @@ function Analysis(props){
 
   return(
     <div>
-              <nav className='Navbar' style={{position: "static"}}>
-              <h1 className="navbar-logo"><img src={main_logo} /></h1>
+      <nav className='Navbar'>
+              <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+          <ul className="nav-menu-active">
               {MenuItems.map((item, index)=>{
-                return (
-                  <li key={index}>
-                      <a className={item.cName} href={item.url}>
-                          {item.title}
-                      </a>
-                  </li>
-                )
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                  return;
+                }
+                if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                  return;
+                }
+                if(window.location.pathname === '/' + item.url){
+                  return (
+                    <li class="nav-links-active" key={index}>
+                        <a className="nav-component-active" href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={index}>
+                        <a className={item.cName} href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
               })}
           </ul>
         </nav>
@@ -647,34 +664,42 @@ function Analysis(props){
         </Drawer.Header>
         <Drawer.Body>
           <div>
-            <Select options={SelectOption} defaultValue={SelectOption[0]} onChange={(value) => setMarketSelection(value["value"])}></Select>
+            <Select options={SelectOption} theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary25: '#D3FFDC',
+                              primary: '#03CF5D',
+                              primary50: '#D3FFDC',
+                            },
+                        })} defaultValue={SelectOption[0]} onChange={(value) => setMarketSelection(value["value"])}></Select>
             <br></br>
           {MarketFuture && MarketFuture[Object.keys(MarketFuture)[0]] && MyZoom < 15 && 
-            <div>2022년 {DrawerTitle}의 개업 매장 추이는 <b style={{color: "green"}}>{MarketFuture[Object.keys(MarketFuture)[0]][3]["commerceMetrics"]}</b>입니다.</div>
+            <div><b>2022년 {DrawerTitle}의 개업 매장 추이는 <b style={{color: "green"}}>{MarketFuture[Object.keys(MarketFuture)[0]][3]["commerceMetrics"]}</b>입니다.</b></div>
           }
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
-              <div>{DrawerTitle}의 거주 구성원</div>
+              <div><b>{DrawerTitle}의 거주 구성원</b></div>
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
-              <div>{DrawerTitle}의 직장 구성원</div>
+              <div><b>{DrawerTitle}의 직장 구성원</b></div>
               <ReactApexChart options={ApexChartBarOption} series={WorkNum} type="bar" height={300}  />
-              <div>2022년 상권 내 소득 및 지출</div>
+              <div><b>2022년 상권 내 소득 및 지출</b></div>
               <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
-              <div>{DrawerTitle}의 집객시설 개수</div>
+              <div><b>{DrawerTitle}의 집객시설 개수</b></div>
               <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
               {MyZoom < 15 ? <>
-                <div>{DrawerTitle}의 성별 유동 인구</div>
+                <div><b>{DrawerTitle}의 성별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 연령층별 유동 인구</div>
+                <div><b>{DrawerTitle}의 연령층별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 시간대별 유동 인구</div>
+                <div><b>{DrawerTitle}의 시간대별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 요일별 유동 인구</div>
+                <div><b>{DrawerTitle}의 요일별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 분기별 임대료</div>
+                <div><b>{DrawerTitle}의 분기별 임대료</b></div>
                 <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
-                <div>
-                  {DrawerTitle}의 평균 영업시간은 {AvgPeriod}시간 입니다.
-                </div></> : null
+                <div><b>
+                  {DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}</b>시간 입니다.
+                  </b></div></> : null
               }
           </div>
         </Drawer.Body>

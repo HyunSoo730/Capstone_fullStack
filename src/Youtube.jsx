@@ -9,8 +9,13 @@ import { Navigation } from "swiper";
 
 import { MenuItems } from "./HomePageMenuItems";
 
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import { Nav, NavDropdown } from "react-bootstrap";
+
 import main_logo from "./logo.png"
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "rsuite/dist/rsuite.css";
@@ -35,7 +40,6 @@ function Youtube(props){
     const handleClick = () => {
         setClicked(!clicked);
     }
-
 
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
@@ -144,20 +148,37 @@ function Youtube(props){
   if (YoutubePlace){
     return(
       <div>
-        <nav className='Navbar' style={{position: "static"}}>
-        <h1 className="navbar-logo"><img src={main_logo} /></h1>
+        <nav className='Navbar'>
+              <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'} style={clicked ? {color:"red"} : {color:"black"}}>
+          <ul className="nav-menu-active">
               {MenuItems.map((item, index)=>{
-                return (
-                  <li key={index}>
-                      <a className={item.cName} href={item.url}>
-                          {item.title}
-                      </a>
-                  </li>
-                )
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                  return;
+                }
+                if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                  return;
+                }
+                if(window.location.pathname === '/' + item.url){
+                  return (
+                    <li class="nav-links-active" key={index}>
+                        <a className="nav-component-active" href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={index}>
+                        <a className={item.cName} href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
               })}
           </ul>
         </nav>
@@ -179,7 +200,7 @@ function Youtube(props){
             <Drawer.Title>{DrawerTitle}</Drawer.Title>
             <Drawer.Actions>
               <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
-              <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+              <Button style={{backgroundColor: "green"}} onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
             </Drawer.Actions>
           </Drawer.Header>
           <Drawer.Body>
