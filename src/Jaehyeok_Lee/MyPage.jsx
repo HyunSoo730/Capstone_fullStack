@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Select from 'react-select';
 import Avatar from 'react-avatar';
 import Styled from 'styled-components';
+import useDidMountEffect from "../UseDidMountEffect";
 import main_logo from '../logo.png'
 import { MenuItems } from "../HomePageMenuItems";
 
@@ -29,14 +30,17 @@ const StyledSelect = Styled(Select)`
 `;
 
 function MyPage(props) {
+    const [startUpInfoList, setStartUpInfoList] = useState([]);
     const [profileImg, setProfileImg] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
+    const [id, setId] = useState([]);
     const [borough, setBorough] = useState([]);
     const [dong, setDong] = useState([]);
     const [choiced, setChoiced] = useState([]);
     const [clicked, setClicked] = useState(false);
-    const data = [0, 1, 2, 3, 4]
+    const [countList, setCountList] = useState([]);
+    const [saved, setSaved] = useState([]);
 
     const handleClick = () => {setClicked(!clicked);}
 
@@ -83,9 +87,7 @@ function MyPage(props) {
         .then(response => {
             if(Array.isArray(response)){
                 response.map((value)=>{
-                    setBorough(current => [...current, value.borough]);
-                    setDong(current => [...current, value.dong]);
-                    setChoiced(current => [...current, value.serviceName]);
+                    setStartUpInfoList(current => [...current, value]);
                 })
             }
         })
@@ -105,7 +107,7 @@ function MyPage(props) {
         })
     }
 
-    const sendUpdatedStartUpInfo = () => {
+    const addStartUpInfo = () => {
         fetch('/mypage/users/save', {
             method : "POST",
             headers : {
@@ -117,6 +119,16 @@ function MyPage(props) {
                 dong: dong,
                 serviceName: choiced,
             })
+        })
+    }
+
+    const deleteStartUpInfo = (idx) => {
+        fetch(`/mypage/users/${id[idx]}`, {
+            method : "DELETE",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : localStorage.getItem('login-token'),
+            },
         })
     }
 
@@ -142,25 +154,51 @@ function MyPage(props) {
         setDong(current => [...current, event.target.value]);
     };
 
-    const deleteStartUpInfo = (event) => {
+    const checkStartUpInfo = (event) => { 
+        addStartUpInfo();
+        console.log("몇 번째 버튼1?", event.target);
+        console.log("몇 번째 버튼2?", event.target.value);
+        saved[event.target.value] = true;
+        setSaved(saved);
+    }
 
+    const onAddDiv = () => {
+        let countArr = [...countList];
+        let counter = -1;
+        if (countArr.length != 0) {
+            counter = countArr.slice(-1)[0];
+        }
+        counter += 1;
+        saved[counter] = false;
+        setSaved(saved);
+        countArr.push(counter);
+        setCountList(countArr); 
+    }
+
+    const onDelDiv = (event) => {
+        let countArr = [...countList];
+        saved.pop(event.target.value);
+        setSaved(saved);
+        countArr.pop(event.target.value);
+        setCountList(countArr);
+        deleteStartUpInfo(event.target.value);
     }
 
     const handleSubmit = (event) => {
         sendUpdatedUserInfo();
-        sendUpdatedStartUpInfo();
         alert(`수정이 완료되었습니다.`);
         event.preventDefault();
     };
 
-    useEffect(() => {
+    useDidMountEffect(() => {
+        setId([]);
         setBorough([]);
         setDong([]);
         setChoiced([]);
         getBasicUserInfo();
         getStartUpUserInfo();
-        console.log("오우야0번째" + data.length)
-        console.log("오우야1번째" + borough.length)
+        id.map((index)=>{setCountList(current => [...current, index]);})
+        console.log("오우야1번째" + countList)
         console.log("오우야2번째" + dong.length)
         console.log("오우야3번째" + choiced.length)
     }, [])
@@ -212,14 +250,15 @@ function MyPage(props) {
                             <div className="StartUpInfo">
                                 <h3 style={{marginLeft: "130px", marginBottom: "25px"}}>창업 정보</h3>
                                 <span style={{marginLeft: "130px", position: "absolute", top: "495px", color: "lightgray", fontSize: "12px"}}>* 최대 5개까지 등록할 수 있습니다.</span>
-                                {borough.map((idx) => {return(
+                                {countList && countList.map((item, index) => {
+                                    return(
                                     <div className="InStartUpInfo">
-                                        <input className="WriteStartUp" type="text" placeholder="자치구" defaultValue={borough[idx]} onChange={handleChangeBorough} />
-                                        <input className="WriteStartUp" type="text" placeholder="행정동" defaultValue={dong[idx]} onChange={handleChangeDong} />
+                                        <input className="WriteStartUp" type="text" placeholder="자치구" defaultValue={borough[index]} onChange={handleChangeBorough} />
+                                        <input className="WriteStartUp" type="text" placeholder="행정동" defaultValue={dong[index]} onChange={handleChangeDong} />
                                         <Select
                                             placeholder={"희망 업종"}
                                             options={categoryOption}
-                                            defaultValue={{value: choiced[idx], label: choiced[idx]}}
+                                            defaultValue={{value: choiced[index], label: choiced[index]}}
                                             onChange={(value) => setChoiced(current => [...current, value["value"]])}
                                             styles={{
                                                 control: provided => ({...provided, width: '230px', height: '48px', textAlign: 'start', paddingLeft: '10px'}),
@@ -241,12 +280,16 @@ function MyPage(props) {
                                                 <option className="OptionStyle" value={item.value}>{item.value}</option>
                                             ))}
                                             </select>*/}
-                                        <div className="DeleteButton" onClick={deleteStartUpInfo}></div>
+                                        {
+                                            saved[index] == false?
+                                            <div className="CheckButton" onClick={checkStartUpInfo} value={index}></div>:
+                                            <div className="DeleteButton" onClick={onDelDiv} value={index}></div>
+                                        }
                                     </div>
                                 )})}
                                 {
-                                    borough.length < 5?
-                                    <div className="PlusButton" title="저장" onClick={() => {}}>
+                                    countList.length < 5?
+                                    <div className="PlusButton" title="저장" onClick={onAddDiv}>
                                         창업 정보 추가 +
                                     </div>
                                     : null

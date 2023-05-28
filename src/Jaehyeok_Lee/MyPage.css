@@ -212,6 +212,16 @@
     cursor: pointer; /* 잘 모르겠음 */
 }
 
+.CheckButton {
+    width: 30px;
+    height: 30px;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-size: 50px;
+    background-image: url("checkIcon.png");
+    background-size: cover;
+}
+
 .DeleteButton {
     width: 48px;
     height: 48px;
