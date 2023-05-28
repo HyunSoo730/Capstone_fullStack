@@ -7,6 +7,9 @@ import Analysis from './Analysis';
 import Crawling from './Crawling';
 import MyPage from './Jaehyeok_Lee/MyPage';
 
+
+import "./components/Font_style.css"
+
 function App() {
 
   return (
