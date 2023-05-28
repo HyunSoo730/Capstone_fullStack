@@ -23,6 +23,7 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.7.3",
     "rsuite": "^5.32.0",
+    "styled-components": "^5.3.11",
     "swiper": "^9.3.2",
     "web-vitals": "^2.1.4"
   },

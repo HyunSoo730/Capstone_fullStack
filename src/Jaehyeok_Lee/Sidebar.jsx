@@ -252,7 +252,20 @@ function Sidebar() {
             {
                 btnActivate === "sales" ?
                 <div style={{boxShadow: "2px 2px 3px gray", width: "400px", borderRadius: "5px"}}>
-                    <Select options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>
+                    <Select
+                        options={categoryOption}
+                        defaultValue={{value: choiced, label: choiced}}
+                        onChange={(value) => setChoiced(value["value"])}
+                        theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary25: '#D3FFDC',
+                              primary: '#03CF5D',
+                              primary50: '#D3FFDC',
+                            },
+                        })}
+                    />
                 </div>
                 : null
             }
