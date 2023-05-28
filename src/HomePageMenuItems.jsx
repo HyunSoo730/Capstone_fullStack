@@ -1,21 +1,21 @@
 export const MenuItems = [
     {
-        title: 'Youtube',
+        title: '유튜브 트랜드',
         url: 'youtube',
         cName: 'nav-links'
     },
     {
-        title: 'Analysis',
+        title: '상권 분석',
         url: 'analysis',
         cName: 'nav-links'
     },
     {
-        title: 'Sign in',
+        title: '로그인',
         url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`,
         cName: 'nav-links'
     },
     {
-        title: 'My page',
+        title: '내 정보',
         url: 'mypage',
         cName: 'nav-links'
     }

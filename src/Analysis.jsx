@@ -677,6 +677,7 @@ function Analysis(props){
           {MarketFuture && MarketFuture[Object.keys(MarketFuture)[0]] && MyZoom < 15 && 
             <div><b>2022년 {DrawerTitle}의 개업 매장 추이는 <b style={{color: "green"}}>{MarketFuture[Object.keys(MarketFuture)[0]][3]["commerceMetrics"]}</b>입니다.</b></div>
           }
+          <br/>
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
               <div><b>{DrawerTitle}의 거주 구성원</b></div>
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
@@ -698,7 +699,7 @@ function Analysis(props){
                 <div><b>{DrawerTitle}의 분기별 임대료</b></div>
                 <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
                 <div><b>
-                  {DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}</b>시간 입니다.
+                  {DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}시간</b> 입니다.
                   </b></div></> : null
               }
           </div>
