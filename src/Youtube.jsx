@@ -148,17 +148,23 @@ function Youtube(props){
   if (YoutubePlace){
     return(
       <div>
-        <nav className='Navbar' style={{position: "static"}}>
-              <h1 className="navbar-logo"><img src={main_logo} /></h1>
+        <nav className='Navbar'>
+              <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+          <ul className="nav-menu-active">
               {MenuItems.map((item, index)=>{
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                  return;
+                }
+                if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                  return;
+                }
                 if(window.location.pathname === '/' + item.url){
                   return (
-                    <li style={{height: "100%"}} key={index}>
-                        <a class="nav-links nav-links-active" href={item.url}>
+                    <li class="nav-links-active" key={index}>
+                        <a className="nav-component-active" href={item.url}>
                             {item.title}
                         </a>
                     </li>
@@ -181,7 +187,7 @@ function Youtube(props){
           center={[37.541, 126.986]}
           zoom={12}
           scrollWheelZoom={true}
-          style={{ position: "static", width: "100%", height: "calc(100vh - 0px)" }}>
+          style={{ position: "static", width: "100%", height: "calc(100vh - 80px)" }}>
           <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -194,7 +200,7 @@ function Youtube(props){
             <Drawer.Title>{DrawerTitle}</Drawer.Title>
             <Drawer.Actions>
               <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
-              <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+              <Button style={{backgroundColor: "green"}} onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
             </Drawer.Actions>
           </Drawer.Header>
           <Drawer.Body>

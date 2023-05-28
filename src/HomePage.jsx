@@ -14,17 +14,23 @@ const HomePage = () => {
 
     return (
         <div>
-            <nav className='Navbar' style={{position: "static"}}>
-              <h1 className="navbar-logo"><img src={main_logo} /></h1>
+            <nav className='Navbar'>
+              <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+          <ul className="nav-menu-active">
               {MenuItems.map((item, index)=>{
-                if(window.location.pathname === item.url){
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                  return;
+                }
+                if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                  return;
+                }
+                if(window.location.pathname === '/' + item.url){
                   return (
-                    <li key={index}>
-                        <a class="nav-links nav-links-active" href={item.url}>
+                    <li class="nav-links-active" key={index}>
+                        <a className="nav-component-active" href={item.url}>
                             {item.title}
                         </a>
                     </li>
