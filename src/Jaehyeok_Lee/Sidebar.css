@@ -24,6 +24,7 @@
     background-color: lightgray;
     color: black; /* 글자색 */
     font: bold;
+    font-weight: bold;
     border: 5px solid white;
     border-radius: 10px;
     display: flex;

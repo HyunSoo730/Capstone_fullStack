@@ -1,10 +1,15 @@
 .Page {
     display: flex;
+    flex-direction: column;
+}
+
+.InPage {
+    display: flex;
     flex-direction: row;
 }
 
 .SideWrapper {
-    background-color: white;
+    background-color: #F9FBFC;
     box-shadow: 0px 0px 20px lightgray;
     display: flex;
     flex-direction: column;
@@ -47,13 +52,13 @@
     border-radius: 20px; /* 꼭짓점 둥근 정도 */
     & > * { /* 각 항목별 간격(?) → 잘 모르겠음 */
         :not(:last-child) {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
     }
 }
 
 .PostContainer {
-    padding-top: 50px;
+    padding-top: 30px;
     height: max-content;
     width: 100%;
     display: flex;
@@ -65,6 +70,7 @@
 .BasicInfo {
     width: 100%;
     background-color: white;
+    padding-bottom: 22px;
     display: flex;
     flex-direction: row;
     border-radius: 10px;
@@ -74,6 +80,7 @@
 }
 
 .InBasicInfo {
+    margin-top: 22px;
     margin-left: 100px;
     display: flex;
     flex-direction: column;
@@ -87,20 +94,24 @@
     margin-top: 20px;
     box-shadow: 5px 5px 10px lightgray;
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
     border-radius: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items:start;
     justify-content: start;
 }
 
 .InStartUpInfo {
-    margin-left: 190px;
+    margin-top: 10px;
+    margin-left: 130px;
+    padding-left: 3px;
     display: flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content: center;
+    width: 750px;
+    height: 50px;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
 }
 
 .PhotoContainer {
@@ -112,15 +123,6 @@
     justify-content: center;
     margin-top: 50px;
     margin-left: 40px;
-}
-
-.Photo {
-    box-shadow: 2px 2px 5px lightgray;
-    margin-top: 10px;
-    height: 105px;
-    width: 105px;
-    border-radius: 100%;
-    object-fit: cover;
 }
 
 .Label {
@@ -143,7 +145,7 @@
     height: 100%;
 }
 
-.Write {
+.WriteBasic {
     text-align: start;
     margin-left: 50px;
     padding-left: 20px;
@@ -154,62 +156,84 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    outline-color: #03CF5D;
 }
 
-.Write input:focus-within {
-    border-color: #22a002;
-}
-
-.WriteSelect {
-    text-align: center;
-    margin-left: 50px;
+.WriteStartUp {
+    text-align: start;
     padding-left: 20px;
     padding-right: 10px;
-    width: 300px;
-    height: 100%;
+    outline-color: #03CF5D;
+    border: 1px solid lightgray;
+    border-right: 0px;
+    width: 230px;
+    height: 48px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
 
+.OptionStyle {
+    width: 230px;
+    height: 48px;
+    border-radius: 0;
+}
+
 .PhotoButton {
+    position: absolute;
+    top: 290px;
+    left: 90;
     z-index: 10;
     margin-left: 70px;
-    border: 2px solid gray;
+    box-shadow: 2px 2px 5px lightgray;
+    background-image: url("updateProfile.png");
+    background-size: cover;
+    border: 2px solid white;
     border-radius: 100%;
     height: 30px;
     width: 30px;
     cursor: pointer; /* 잘 모르겠음 */
 }
 
-.SaveButton {
-    margin-left: 280px;
+.PlusButton {
+    margin-left: 400px;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: white;
-    font-weight: 700;
     font-size: 100%; 
-    background-color: #03CF5D;
+    color: #03CF5D;
+    border-radius: 5px;
     height: 50px;
     width: 150px;
     font-size: 16px;
     cursor: pointer; /* 잘 모르겠음 */
 }
 
+.DeleteButton {
+    width: 48px;
+    height: 48px;
+    margin-left: 5px;
+    font-size: 50px;
+    background-image: url("deleteIcon.png");
+    background-size: cover;
+}
+
 .CompleteButton {
-    margin-top: 30px;
-    margin-left: 650px;
+    margin-top: 20px;
+    margin-bottom: 17px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: white;
     font-weight: 700;
-    font-size: 100%; 
+    font-size: 100%;
+    border-radius: 5px;
     background-color: #03CF5D;
     height: 50px;
-    width: 250px;
+    width: 200px;
     font-size: 16px;
     cursor: pointer; /* 잘 모르겠음 */
 }
