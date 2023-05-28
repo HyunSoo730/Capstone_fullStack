@@ -630,7 +630,7 @@ function Analysis(props){
         className='sidebar'
         style={{
           position: 'absolute',
-          top: 10,
+          top: 90,
           left: 50,
           zIndex: 10000
         }}>

@@ -2,17 +2,43 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from 'react-select';
 import Avatar from 'react-avatar';
+import Styled from 'styled-components';
+import main_logo from '../logo.png'
+import { MenuItems } from "../HomePageMenuItems";
 
 import './MyPage.css';
 
+const StyledAvatar = Styled(Avatar)`
+    box-shadow: 2px 2px 5px lightgray;
+    height: 105px;
+    width: 105px;
+    border-radius: 100%;
+    object-fit: cover;
+`;
+
+const StyledSelect = Styled(Select)`
+    text-align: start;
+    padding-left: 20px;
+    padding-right: 10px;
+    border: 1px solid lightgray;
+    border-radius: 0;
+    width: 230px;
+    height: 48px;
+    display: flex;
+    outline-color: #03CF5D;
+`;
+
 function MyPage(props) {
-    const navigate = useNavigate();
     const [profileImg, setProfileImg] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
-    const [borough, setBorough] = useState("");
-    const [dong, setDong] = useState("");
-    const [choiced, setChoiced] = useState("");
+    const [borough, setBorough] = useState([]);
+    const [dong, setDong] = useState([]);
+    const [choiced, setChoiced] = useState([]);
+    const [clicked, setClicked] = useState(false);
+    const data = [0, 1, 2, 3, 4]
+
+    const handleClick = () => {setClicked(!clicked);}
 
     var categoryOption = [
         { value: '한식음식점', label: '한식음식점' },
@@ -27,7 +53,7 @@ function MyPage(props) {
         { value: '커피-음료', label: '커피-음료' },
     ];
 
-    const getUserInfo = () => {
+    const getBasicUserInfo = () => {
         fetch('/mypage/users/me', {
             method : "POST",
             headers : {
@@ -41,14 +67,45 @@ function MyPage(props) {
             setProfileImg(response.kakaoProfileImg);
             setNickname(response.kakaoNickname);
             setEmail(response.kakaoEmail);
-            setBorough(response.borough);
-            setDong(response.dong);
-            setChoiced(response.serviceName);
-            console.log("이건 프사야 " + profileImg);
+        })
+    }
+
+    const getStartUpUserInfo = () => {
+        fetch('/mypage/users/savedata', {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : localStorage.getItem('login-token'),
+            },
+            body : JSON.stringify({})
+        })
+        .then(response => {return response.json()})
+        .then(response => {
+            if(Array.isArray(response)){
+                response.map((value)=>{
+                    setBorough(current => [...current, value.borough]);
+                    setDong(current => [...current, value.dong]);
+                    setChoiced(current => [...current, value.serviceName]);
+                })
+            }
         })
     }
 
     const sendUpdatedUserInfo = () => {
+        fetch('/mypage/users/me', {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json",
+                Authorization : localStorage.getItem('login-token'),
+            },
+            body : JSON.stringify({
+                kakaoProfileImg: profileImg,
+                kakaoNickname: nickname,
+            })
+        })
+    }
+
+    const sendUpdatedStartUpInfo = () => {
         fetch('/mypage/users/save', {
             method : "POST",
             headers : {
@@ -63,85 +120,142 @@ function MyPage(props) {
         })
     }
 
+    const handleChangeProfileImg = () => {
+        /*
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            setProfileImg({result: fileReader.result})
+        }
+        fileReader.readAsDataURL(file);
+        */
+    };
+
     const handleChangeNickname = (event) => {
         setNickname(event.target.value);
     };
 
     const handleChangeBorough = (event) => {
-        setBorough(event.target.value);
+        setBorough(current => [...current, event.target.value]);
     };
 
     const handleChangeDong = (event) => {        
-        setDong(event.target.value);
+        setDong(current => [...current, event.target.value]);
     };
+
+    const deleteStartUpInfo = (event) => {
+
+    }
 
     const handleSubmit = (event) => {
         sendUpdatedUserInfo();
+        sendUpdatedStartUpInfo();
         alert(`수정이 완료되었습니다.`);
         event.preventDefault();
     };
 
-    useEffect(() => {getUserInfo();},[])
+    useEffect(() => {
+        setBorough([]);
+        setDong([]);
+        setChoiced([]);
+        getBasicUserInfo();
+        getStartUpUserInfo();
+        console.log("오우야0번째" + data.length)
+        console.log("오우야1번째" + borough.length)
+        console.log("오우야2번째" + dong.length)
+        console.log("오우야3번째" + choiced.length)
+    }, [])
 
     return (
         <div className="Page">
-            <div className="SideWrapper">
-                <div className="SideTag">마이 페이지</div>
-            </div>
-            <div className="Wrapper">
-                <div className="Container">
-                    <div className="PostContainer">
-                        <div className="BasicInfo">
-                            <div className="PhotoContainer">
-                                <h3>기본 정보</h3>
-                                <Avatar className="Photo" src={profileImg}/>
-                                <div
-                                    className="PhotoButton"
-                                    type="submit"
-                                    title="사진 변경"
-                                    onClick={() => {}}
-                                >
-                                    뀨
+            <nav className='Navbar' style={{position: "static"}}>
+                <h1 className="navbar-logo"><img src={main_logo} /></h1>
+                <div className='menu-icon' onClick={handleClick}>
+                    <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+                </div>
+                <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+                    {MenuItems.map((item, index)=>{
+                        return (
+                            <li key={index}>
+                                <a className={item.cName} href={item.url}>{item.title}</a>
+                            </li>
+                        )
+                    })}
+                </ul>
+            </nav>
+            <div className="InPage">
+                <div className="SideWrapper">
+                    <div className="SideTag">마이 페이지</div>
+                </div>
+                <div className="Wrapper">
+                    <div className="Container">
+                        <div className="PostContainer">
+                            <div className="BasicInfo">
+                                <div className="PhotoContainer">
+                                    <h3>기본 정보</h3>
+                                    <StyledAvatar src={profileImg}/>
+                                    <div className="PhotoButton" title="사진 변경" onClick={handleChangeProfileImg}>
+                                    </div>
+                                </div>
+                                <div className="InBasicInfo">
+                                    <div className="Label">
+                                        <div className="Tag">이름</div>
+                                        <input className="WriteBasic" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
+                                    </div>
+                                    <div style={{height: "10px"}}/>
+                                    <div className="Label">
+                                        <div className="Tag">이메일</div>
+                                        <div className="WriteBasic" type="text" style={{backgroundColor: "white", color: "gray"}}>{email}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="InBasicInfo">
-                                <div className="Label">
-                                    <div className="Tag">이름</div>
-                                    <input className="Write" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
-                                </div>
-                                <div style={{height: "10px"}}/>
-                                <div className="Label">
-                                    <div className="Tag">이메일</div>
-                                    <div className="Write" type="text" style={{backgroundColor: "white", color: "gray"}}>{email}</div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="StartUpInfo">
-                            <h3 style={{marginLeft: "130px"}}>창업 정보</h3>
-                            <div className="InStartUpInfo">
-                                <div className="Label">
-                                    <div className="Tag">자치구</div>
-                                    <input className="Write" type="text" defaultValue={borough} onChange={handleChangeBorough} />
-                                </div>
-                                <div style={{height: "10px"}}/>
-                                <div className="Label">
-                                    <div className="Tag">행정동</div>
-                                    <input className="Write" type="text" defaultValue={dong} onChange={handleChangeDong} />
-                                </div>
-                                <div style={{height: "10px"}}/>
-                                <div className="Label">
-                                    <div className="Tag">희망 업종</div>
-                                    <Select className="WriteSelect" options={categoryOption} defaultValue={{value: choiced, label: choiced}} onChange={(value) => setChoiced(value["value"])}/>
-                                </div>
-                                <div className="SaveButton" title="저장" onClick={() => {}}>
-                                    저장
-                                </div>
+                            <div className="StartUpInfo">
+                                <h3 style={{marginLeft: "130px", marginBottom: "25px"}}>창업 정보</h3>
+                                <span style={{marginLeft: "130px", position: "absolute", top: "495px", color: "lightgray", fontSize: "12px"}}>* 최대 5개까지 등록할 수 있습니다.</span>
+                                {borough.map((idx) => {return(
+                                    <div className="InStartUpInfo">
+                                        <input className="WriteStartUp" type="text" placeholder="자치구" defaultValue={borough[idx]} onChange={handleChangeBorough} />
+                                        <input className="WriteStartUp" type="text" placeholder="행정동" defaultValue={dong[idx]} onChange={handleChangeDong} />
+                                        <Select
+                                            placeholder={"희망 업종"}
+                                            options={categoryOption}
+                                            defaultValue={{value: choiced[idx], label: choiced[idx]}}
+                                            onChange={(value) => setChoiced(current => [...current, value["value"]])}
+                                            styles={{
+                                                control: provided => ({...provided, width: '230px', height: '48px', textAlign: 'start', paddingLeft: '10px'}),
+                                                menu: provided => ({...provided, width: '230px', textAlign: 'start'})
+                                            }}
+                                            theme={(theme) => ({
+                                                ...theme,
+                                                borderRadius: 0,
+                                                colors: {
+                                                  ...theme.colors,
+                                                  primary25: '#D3FFDC',
+                                                  primary: '#03CF5D',
+                                                  primary50: '#D3FFDC',
+                                                },
+                                            })}
+                                        />
+                                        {/*<select style={{borderRight: "1px solid lightgray"}} className="WriteStartUp" placeholder="희망 업종" onChange={(value) => setChoiced(value["value"])} defaultValue={{value: choiced, label: choiced}}>
+                                            {categoryOption.map((item) => (
+                                                <option className="OptionStyle" value={item.value}>{item.value}</option>
+                                            ))}
+                                            </select>*/}
+                                        <div className="DeleteButton" onClick={deleteStartUpInfo}></div>
+                                    </div>
+                                )})}
+                                {
+                                    borough.length < 5?
+                                    <div className="PlusButton" title="저장" onClick={() => {}}>
+                                        창업 정보 추가 +
+                                    </div>
+                                    : null
+                                }
                             </div>
-                        </div>
 
-                        <div className="CompleteButton" type="submit" title="수정 완료" onClick={handleSubmit}>
-                            수정 완료
+                            <div className="CompleteButton" type="submit" title="수정 완료" onClick={handleSubmit}>
+                                수정 완료
+                            </div>
                         </div>
                     </div>
                 </div>
