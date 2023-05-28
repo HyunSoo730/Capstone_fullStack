@@ -39,6 +39,12 @@
     transition: all .2s ease-out;
 }
 
+.nav-links-active{
+    color: #03CF5D;
+    height: 80px;
+    border-radius: 4px;
+}
+
 .fa-bars{
     color: #fff;
 }

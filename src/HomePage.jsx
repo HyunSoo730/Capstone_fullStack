@@ -14,23 +14,34 @@ const HomePage = () => {
 
     return (
         <div>
-            <nav className='Navbar'>
-            <h1 className="navbar-logo"><img src={main_logo} /></h1>
-                <div className='menu-icon' onClick={handleClick}>
-                    <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
-                </div>
-                <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
-                    {MenuItems.map((item, index)=>{
-                        return (
-                            <li key={index}>
-                                <a className={item.cName} href={item.url}>
-                                    {item.title}
-                                </a>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </nav>
+            <nav className='Navbar' style={{position: "static"}}>
+              <h1 className="navbar-logo"><img src={main_logo} /></h1>
+          <div className='menu-icon' onClick={handleClick}>
+              <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+          </div>
+          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+              {MenuItems.map((item, index)=>{
+                if(window.location.pathname === item.url){
+                  return (
+                    <li key={index}>
+                        <a class="nav-links nav-links-active" href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={index}>
+                        <a className={item.cName} href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+              })}
+          </ul>
+        </nav>
             <div id={HomeStyle.wrap}>
                 <body id={HomeStyle.body}>
                     <footer id={HomeStyle.footer}>

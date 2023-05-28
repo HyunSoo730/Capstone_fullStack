@@ -9,8 +9,13 @@ import { Navigation } from "swiper";
 
 import { MenuItems } from "./HomePageMenuItems";
 
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import { Nav, NavDropdown } from "react-bootstrap";
+
 import main_logo from "./logo.png"
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "rsuite/dist/rsuite.css";
@@ -35,7 +40,6 @@ function Youtube(props){
     const handleClick = () => {
         setClicked(!clicked);
     }
-
 
   const CountYoutubePlace = () => {
     fetch("api/youtube/return", {
@@ -145,19 +149,30 @@ function Youtube(props){
     return(
       <div>
         <nav className='Navbar' style={{position: "static"}}>
-        <h1 className="navbar-logo"><img src={main_logo} /></h1>
+              <h1 className="navbar-logo"><img src={main_logo} /></h1>
           <div className='menu-icon' onClick={handleClick}>
               <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
           </div>
-          <ul className={clicked ? 'nav-menu active' : 'nav-menu'} style={clicked ? {color:"red"} : {color:"black"}}>
+          <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
               {MenuItems.map((item, index)=>{
-                return (
-                  <li key={index}>
-                      <a className={item.cName} href={item.url}>
-                          {item.title}
-                      </a>
-                  </li>
-                )
+                if(window.location.pathname === '/' + item.url){
+                  return (
+                    <li style={{height: "100%"}} key={index}>
+                        <a class="nav-links nav-links-active" href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={index}>
+                        <a className={item.cName} href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
               })}
           </ul>
         </nav>
@@ -166,7 +181,7 @@ function Youtube(props){
           center={[37.541, 126.986]}
           zoom={12}
           scrollWheelZoom={true}
-          style={{ position: "static", width: "100%", height: "calc(100vh - 80px)" }}>
+          style={{ position: "static", width: "100%", height: "calc(100vh - 0px)" }}>
           <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
