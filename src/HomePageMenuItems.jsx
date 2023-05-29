@@ -11,7 +11,7 @@ export const MenuItems = [
     },
     {
         title: '로그인',
-        url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`,
+        url: `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://3.39.41.194:3000/auth/kakao/callback&response_type=code`,
         cName: 'nav-links'
     },
     {

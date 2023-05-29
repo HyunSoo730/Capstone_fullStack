@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.64c24154.css",
+    "main.js": "/static/js/main.c25aa84b.js",
+    "static/media/background.jpg": "/static/media/background.e3049b15d1a5b07582f7.jpg",
+    "static/media/ibmfont.woff": "/static/media/ibmfont.90c207c02424240d102f.woff",
+    "static/media/logo.png": "/static/media/logo.1cf5e719e02386ba06c3.png",
+    "static/media/updateProfile.png": "/static/media/updateProfile.8444af0d08c89f776f19.png",
+    "static/media/analysisbutton.png": "/static/media/analysisbutton.63aaad68eddb9d4a0347.png",
+    "static/media/trendbutton.png": "/static/media/trendbutton.ef774bebbc0992e8f2e3.png",
+    "index.html": "/index.html",
+    "main.64c24154.css.map": "/static/css/main.64c24154.css.map",
+    "main.c25aa84b.js.map": "/static/js/main.c25aa84b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.64c24154.css",
+    "static/js/main.c25aa84b.js"
+  ]
+}
