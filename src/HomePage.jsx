@@ -4,6 +4,7 @@ import HomeStyle from './HomePage.css';
 import HomeNavStyle from "./HomePageNavbar.css"
 
 import main_logo from './logo.png'
+import { Button } from 'react-bootstrap';
 
 const HomePage = () => {
     const [clicked, setClicked] = useState(false);
@@ -13,7 +14,7 @@ const HomePage = () => {
     }
 
     return (
-        <div>
+        <div className='back'>
             <nav className='Navbar'>
               <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
           <div className='menu-icon' onClick={handleClick}>
@@ -48,15 +49,22 @@ const HomePage = () => {
               })}
           </ul>
         </nav>
-            <div id={HomeStyle.wrap}>
-                <body id={HomeStyle.body}>
-                    <footer id={HomeStyle.footer}>
-                        <span>개발자 : Izony | WHO | WANT | ME </span><br/>
-                        <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
-                        <span>version : 0.1 </span>
-                    </footer>
-                </body>
-            </div>
+        <div>
+          <h1 className='title'>당신의 도전에 <br/> 함께 하겠습니다.</h1>
+          <h5 className='subtitle'>최신 상권 트랜드 솔루션, YouTrend</h5>
+        </div>
+          <div style={{position: "absolute", right: "5%"}}>
+            <Button onClick={()=>window.location.href="/youtube"} className='trendbutton' style={{ width: "350px", height: "407px", backgroundColor: "rgba(200, 200, 200, 0.8)", fontFamily:'mbcfont', right: "10px"}} variant="light">
+              <h4 style={{position: "absolute", top: "10px", left: "10px"}}>유튜브 트렌드</h4>
+              <img style={{display: "block", width: "80%", margin: "auto"}} src={ require('./trendbutton.png') } />
+              <img style={{position: "absolute", width: "30%", bottom: "0", right: "0"}} src={ require('./arrowbutton.png') } />
+            </Button>
+            <Button onClick={()=>window.location.href="/analysis"} className='analysisbutton' style={{ width: "350px", height: "407px", backgroundColor: "rgba(200, 200, 200, 0.8)", fontFamily:'mbcfont'}} variant="light">
+            <h4 style={{position: "absolute", top: "10px", left: "10px"}}>상권 분석</h4>
+              <img style={{display: "block", width: "80%", margin: "auto"}} src={ require('./analysisbutton.png') } />
+              <img style={{position: "absolute", width: "30%", bottom: "0", right: "0"}} src={ require('./arrowbutton.png') } />
+            </Button>
+          </div>
         </div>
     )
 };

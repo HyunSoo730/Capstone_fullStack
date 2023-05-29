@@ -1,6 +1,6 @@
 export const MenuItems = [
     {
-        title: '유튜브 트랜드',
+        title: '유튜브 트렌드',
         url: 'youtube',
         cName: 'nav-links'
     },
