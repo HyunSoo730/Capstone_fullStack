@@ -1,4 +1,5 @@
 .Page {
+    background-color: white;
     display: flex;
     flex-direction: column;
 }
@@ -35,10 +36,11 @@
 .Wrapper {
     background-color: #F9FBFC;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 80%;
+    height: 850px;
 }
 
 .Container {

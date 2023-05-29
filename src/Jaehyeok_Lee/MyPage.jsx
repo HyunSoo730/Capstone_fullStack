@@ -180,7 +180,7 @@ function MyPage(props) {
     }
 
     const onDelDiv = (event) => { // 삭제 버튼
-        deleteStartUpInfo(event.target.value);
+        /*deleteStartUpInfo(event.target.value);*/
 
         saved.splice(event.target.value, 1);
         setSaved(saved);
@@ -197,7 +197,11 @@ function MyPage(props) {
         choiced.splice(event.target.value, 1);
         setChoiced(choiced);
 
-        setCountList(countList);
+        let countArr = [...countList];
+        let counter = countArr.slice(-1)[0];
+        counter -= 1;
+        countArr.pop();
+        setCountList(countArr);
     }
 
     /*
@@ -302,7 +306,7 @@ function MyPage(props) {
 
                             <div className="StartUpInfo" style={{marginBottom: "50px"}}>
                                 <h3 style={{marginLeft: "130px", marginBottom: "25px"}}>창업 정보</h3>
-                                <span style={{marginLeft: "130px", position: "absolute", top: "495px", color: "lightgray", fontSize: "12px"}}>* 최대 5개까지 등록할 수 있습니다.</span>
+                                {/*<span style={{marginLeft: "130px", position: "absolute", top: "495px", color: "lightgray", fontSize: "12px"}}>* 최대 5개까지 등록할 수 있습니다.</span>*/}
                                 {countList.map((item, index) => {
                                     return(
                                         <div className="InStartUpInfo" key={index}>
@@ -363,6 +367,7 @@ function MyPage(props) {
                     </div>
                 </div>
             </div>
+            {/*<div style={{height: "200px", backgroundColor: "#F9FBFC", zIndex: "20"}}/>*/}
             {/*
             <div id={HomeStyle.wrap} style={{zIndex: "20"}}>
                 <body id={HomeStyle.body}>
