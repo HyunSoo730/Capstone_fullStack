@@ -1,9 +1,7 @@
 import axios from 'axios';
 import {React, useEffect} from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Await, useLocation, useNavigate } from 'react-router-dom';
 import useDidMountEffect from './UseDidMountEffect';
-
-
 const Auth = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -11,15 +9,12 @@ const Auth = () => {
     const AUTH_CODE = params.get('code');
 
     useDidMountEffect(() => {
-      fetch(`/auth/kakao/callback?code=${AUTH_CODE}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(res=> {return res.text()})
-      .then(res=> localStorage.setItem('login-token', res))
-      window.location.href='/'  
+      async function fetch() {
+        const response = await axios.get(`/auth/kakao/callback?code=${AUTH_CODE}`);
+        localStorage.setItem('login-token', response);
+        window.location.href = '/'
+    };
+    fetch();
     }, []);
     return (
         <div>
