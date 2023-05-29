@@ -6,11 +6,14 @@ body {
     height: 100%;
   
     /* Center and scale the image nicely */
-    overflow: auto;
+    overflow: hidden;
 
-    background-position: center 10%;
+    scrollbar-width: none;
+    background-position: center 25%;
     background-repeat: no-repeat;
     background-size: cover;
+
+    filter: blur(2);
 }
 
 #wrap {
@@ -70,4 +73,44 @@ footer p span {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+}
+
+.title{
+    position:relative;
+    top: 30%;
+    left: 5%;
+    text-align: left;
+    color: white;
+    margin-top: 5%;
+}
+.subtitle{
+    position:relative;
+    left: 5.5%;
+    text-align: left;
+    color: white;
+    margin-top: 10px;
+}
+.trendbutton{
+    position: relative;
+    width: "500px"; 
+    height: "580px"; 
+    background-color: "rgba(200, 200, 200, 0.8)"; 
+    text-align: left;
+    font-family:'mbcfont';
+    margin-right: auto !important
+}
+.trendbutton:hover{
+    filter:contrast(175%) brightness(103%);
+}
+.analysisbutton{
+    position: relative;
+    width: "250px"; 
+    height: "290px"; 
+    background-color: "rgba(200, 200, 200, 0.8)"; 
+    text-align: left;
+    font-family:'mbcfont';
+    margin-right: auto !important
+}
+.analysisbutton:hover{
+    filter:contrast(175%) brightness(103%);
 }

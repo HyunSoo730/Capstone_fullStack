@@ -9,6 +9,10 @@ import {locationData} from './LocationDataItems';
 import Sidebar from './Jaehyeok_Lee/Sidebar';
 import Select from 'react-select';
 
+import main_logo from './logo.png'
+
+import { MenuItems } from "./HomePageMenuItems";
+
 import 'leaflet/dist/leaflet.css';
 import "rsuite/dist/rsuite.css";
 
@@ -60,9 +64,78 @@ function Analysis(props){
   ];
 
   var changeName = {
-    "numOfFranchiseStore" : "프랜차이즈 매장 수",
-    "totalNumOfStores" : "모든 매장 수",
-  }
+    "numOfFranchiseStores" : "프랜차이즈 매장 수",
+    "numOfStores" : "일반 매장 수",
+    "totalNumOfStores" : "총 매장 수",
+    "numOfMenResidents" : "남자 인구",
+    "totalNumOfResidents": "총 인구",
+    "numOfWomenResidents" : "여자 인구",
+    "numOfAge10Residents": "10대 인구",
+    "numOfAge20Residents": "20대 인구",
+    "numOfAge30Residents": "30대 인구",
+    "numOfAge40Residents": "40대 인구",
+    "numOfAge50Residents": "50대 인구",
+    "numOfAge60Residents": "60대 인구",
+    "totalNumOfWorkplace": "총 직장 인구",
+    "numOfMenWorkplace": "남자 직장 인구",
+    "numOfWomenWorkplace": "여자 직장 인구",
+    "numOf10AgeWorkplace": "10대 직장 인구",
+    "numOf20AgeWorkplace": "20대 직장 인구",
+    "numOf30AgeWorkplace": "30대 직장 인구",
+    "numOf40AgeWorkplace": "40대 직장 인구",
+    "numOf50AgeWorkplace": "50대 직장 인구",
+    "numOf60AgeWorkplace": "60대 직장 인구",
+    "numOfFacility": "총 집객시설 수",
+    "numOfGovernmentOffice": "관공서 수",
+    "numOfBank": "은행 수",
+    "numOfPharmacy": "약국 수",
+    "numOfHospital": "병원 수",
+    "numOfGeneralHospital": "일반 병원 수",
+    "numOfKindergarten": "유치원 수",
+    "numOfElementarySchool": "초등학교 수",
+    "numOfMiddleSchool": "중학교 수",
+    "numOfHighSchool": "고등학교 수",
+    "numOfUniversity": "대학교 수",
+    "numOfDepartmentStore": "백화점 수",
+    "numOfSupermarket": "마트 수",
+    "numOfTheater": "영화관 수",
+    "numOfAccommodation": "숙박시설 수",
+    "numOfRailStation": "기차역 수",
+    "numOfAirport": "공항 수",
+    "numOfBusTerminal": "버스 터미널 수",
+    "numOfSubway": "지하철역 수",
+    "numOfBusStop": "버스 정류장 수",
+    "male_flpop": "남자 유동인구",
+    "female_flpop": "여자 유동인구",
+    "age_10_flpop": "10대 유동인구",
+    "age_20_flpop": "20대 유동인구",
+    "age_30_flpop": "30대 유동인구",
+    "age_40_flpop": "40대 유동인구",
+    "age_50_flpop": "50대 유동인구",
+    "age_60_flpop": "60대 유동인구",
+    "time_1_flpop": "00시~06시 유동인구",
+    "time_2_flpop": "06시~11시 유동인구",
+    "time_3_flpop": "11시~14시 유동인구",
+    "time_4_flpop": "14시~17시 유동인구",
+    "time_5_flpop": "17시~21시 유동인구",
+    "time_6_flpop": "21시~24시 유동인구",
+    "mon_flpop": "월요일 유동인구",
+    "tue_flpop": "화요일 유동인구",
+    "wed_flpop": "수요일 유동인구",
+    "thu_flpop": "목요일 유동인구",
+    "fri_flpop": "금요일 유동인구",
+    "sat_flpop": "토요일 유동인구",
+    "sun_flpop": "요일 유동인구",
+    "rentalfee_total": "총 임대료 평균",
+    "averageMonthlyIncome": "평균 한달 임금",
+    "totalAmountSpent": "총 소비",
+  };
+
+  const [clicked, setClicked] = useState(false);
+
+    const handleClick = () => {
+        setClicked(!clicked);
+    }
 
   var ApexChartLineOption = {
     chart: {
@@ -246,7 +319,7 @@ function Analysis(props){
         var year_data = response.map((item)=>{
           return item[targetValue];
         });
-        setCountMarketNum(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+        setCountMarketNum(current => [...current, {name: changeName[targetValue], data: year_data.slice(0, 4)}]);
       }
       }); 
     }
@@ -263,7 +336,7 @@ function Analysis(props){
         var year_data = response.map((item)=>{
           return item[targetValue];
         });
-        setWorkEarned(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+        setWorkEarned(current => [...current, {name: changeName[targetValue], data: year_data.slice(0, 4)}]);
       }
       }); 
     }
@@ -275,7 +348,7 @@ function Analysis(props){
         var year_data = response.map((item)=>{
           return item[targetValue];
         });
-      setRentalFee(current => [...current, {name: targetValue, data: year_data.slice(0, 4)}]);
+      setRentalFee(current => [...current, {name: changeName[targetValue], data: year_data.slice(0, 4)}]);
         }
       });
     }
@@ -292,7 +365,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
         var current_data = response[3][targetValue];
-        setResidentNum(current => [...current, {name: targetValue, data: [current_data]}]);
+        setResidentNum(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if(data_type === "work"){
@@ -304,7 +377,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
         var current_data = response[3][targetValue];
-        setWorkNum(current => [...current, {name: targetValue, data: [current_data]}]);
+        setWorkNum(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if(data_type === "facility") {
@@ -316,7 +389,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
         var current_data = response[3][targetValue];
-        setFacilityNum(current => [...current, {name: targetValue, data: [current_data]}]);
+        setFacilityNum(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if(data_type === "timepopulation"){
@@ -329,7 +402,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
         var current_data = response[3][targetValue];
-        setTimeFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+        setTimeFloatingPop(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if(data_type === "sexpopulation"){
@@ -342,7 +415,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
-      setSexFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      setSexFloatingPop(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if(data_type === "agepopulation"){
@@ -355,7 +428,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
-      setAgeFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      setAgeFloatingPop(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if (data_type === "weekpopulation"){
@@ -368,7 +441,7 @@ function Analysis(props){
       }
       analysis_data.then(response => {
       var current_data = response[3][targetValue];
-      setWeekFloatingPop(current => [...current, {name: targetValue, data: [current_data]}]);
+      setWeekFloatingPop(current => [...current, {name: changeName[targetValue], data: [current_data]}]);
       });
     }
     else if (data_type === "avgperiod"){
@@ -524,12 +597,46 @@ function Analysis(props){
   }, [DrawerTitle, MarketSelection])
 
   return(
-    <div >
+    <div>
+      <nav className='Navbar'>
+              <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
+          <div className='menu-icon' onClick={handleClick}>
+              <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
+          </div>
+          <ul className="nav-menu-active">
+              {MenuItems.map((item, index)=>{
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                  return;
+                }
+                if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                  return;
+                }
+                if(window.location.pathname === '/' + item.url){
+                  return (
+                    <li class="nav-links-active" key={index}>
+                        <a className="nav-component-active" href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={index}>
+                        <a className={item.cName} href={item.url}>
+                            {item.title}
+                        </a>
+                    </li>
+                  )
+                }
+              })}
+          </ul>
+        </nav>
       <div
-        calssName='sidebar'
+        className='sidebar'
         style={{
           position: 'absolute',
-          top: 10,
+          top: 90,
           left: 50,
           zIndex: 10000
         }}>
@@ -539,7 +646,7 @@ function Analysis(props){
         center={[37.541, 126.986]}
         zoom={12}
         scrollWheelZoom={true}
-        style={{ width: "100%", height: "calc(100vh - 0rem)", position: "absolute", top: 0, left: 0}}>
+        style={{ width: "100%", height: "calc(100vh - 80px)", position: "static"}}>
         <TileLayer
             zIndex={0}
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"
@@ -552,39 +659,48 @@ function Analysis(props){
           <Drawer.Title>{DrawerTitle}</Drawer.Title>
           <Drawer.Actions>
             <Button onClick={() => setDrawerOpen(false)}>Cancel</Button>
-            <Button onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
+            <Button style={{backgroundColor: "green"}} onClick={() => setDrawerOpen(false)} appearance="primary">Confirm</Button>
           </Drawer.Actions>
         </Drawer.Header>
         <Drawer.Body>
           <div>
-            <Select options={SelectOption} defaultValue={SelectOption[0]} onChange={(value) => setMarketSelection(value["value"])}></Select>
+            <Select options={SelectOption} theme={(theme) => ({
+                            ...theme,
+                            colors: {
+                              ...theme.colors,
+                              primary25: '#D3FFDC',
+                              primary: '#03CF5D',
+                              primary50: '#D3FFDC',
+                            },
+                        })} defaultValue={SelectOption[0]} onChange={(value) => setMarketSelection(value["value"])}></Select>
             <br></br>
-          {MarketFuture && MyZoom < 15 && MarketFuture.map((item)=>{return (
-            <div>2022년 {item[3]["dong"]}의 개업 매장 추이는 {item[3]["commerceMetrics"]}입니다.</div>
-          )})}
+          {MarketFuture && MarketFuture[Object.keys(MarketFuture)[0]] && MyZoom < 15 && 
+            <div><b>2022년 {DrawerTitle}의 개업 매장 추이는 <b style={{color: "green"}}>{MarketFuture[Object.keys(MarketFuture)[0]][3]["commerceMetrics"]}</b>입니다.</b></div>
+          }
+          <br/>
               <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
-              <div>{DrawerTitle}의 거주 구성원</div>
+              <div><b>{DrawerTitle}의 거주 구성원</b></div>
               <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
-              <div>{DrawerTitle}의 직장 구성원</div>
+              <div><b>{DrawerTitle}의 직장 구성원</b></div>
               <ReactApexChart options={ApexChartBarOption} series={WorkNum} type="bar" height={300}  />
-              <div>2022년 상권 내 소득 및 지출</div>
+              <div><b>2022년 상권 내 소득 및 지출</b></div>
               <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
-              <div>{DrawerTitle}의 집객시설 개수</div>
+              <div><b>{DrawerTitle}의 집객시설 개수</b></div>
               <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
               {MyZoom < 15 ? <>
-                <div>{DrawerTitle}의 성별 유동 인구</div>
+                <div><b>{DrawerTitle}의 성별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 연령층별 유동 인구</div>
+                <div><b>{DrawerTitle}의 연령층별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 시간대별 유동 인구</div>
+                <div><b>{DrawerTitle}의 시간대별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 요일별 유동 인구</div>
+                <div><b>{DrawerTitle}의 요일별 유동 인구</b></div>
                 <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
-                <div>{DrawerTitle}의 분기별 임대료</div>
+                <div><b>{DrawerTitle}의 분기별 임대료</b></div>
                 <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
-                <div>
-                  {DrawerTitle}의 평균 영업시간은 {AvgPeriod}시간 입니다.
-                </div></> : null
+                <div><b>
+                  {DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}시간</b> 입니다.
+                  </b></div></> : null
               }
           </div>
         </Drawer.Body>

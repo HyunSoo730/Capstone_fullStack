@@ -14,6 +14,7 @@
     "leaflet": "^1.9.3",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-avatar": "^5.0.3",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
@@ -22,6 +23,8 @@
     "react-scripts": "^5.0.1",
     "react-select": "^5.7.3",
     "rsuite": "^5.32.0",
+    "styled-components": "^5.3.11",
+    "swiper": "^9.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

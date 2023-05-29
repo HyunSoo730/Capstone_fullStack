@@ -1,64 +1,251 @@
-.Wrapper {
-    background-color: aliceblue;
-    padding: 20px;
+.Page {
     display: flex;
     flex-direction: column;
+}
+
+.InPage {
+    display: flex;
+    flex-direction: row;
+}
+
+.SideWrapper {
+    background-color: #F9FBFC;
+    box-shadow: 0px 0px 20px lightgray;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    z-index: 10;
+}
+
+.SideTag {
+    background-color: #03CF5D;
+    color: white;
+    margin-top: 100px;
+    padding-right: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+    height: 50px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+
+.Wrapper {
+    background-color: #F9FBFC;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 80%;
 }
 
 .Container {
-    height: 550px;
-    width: 500px;
+    height: 100%;
+    width: 1000px;
     display: flex;
     flex-direction: row;
-    align-items:flex-start;
+    align-items:center;
     justify-content: center;
     margin-bottom: 10px;
-    border: 2px solid gray; /* 테두리 두께 및 색 */
     border-radius: 20px; /* 꼭짓점 둥근 정도 */
     & > * { /* 각 항목별 간격(?) → 잘 모르겠음 */
         :not(:last-child) {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
     }
 }
 
 .PostContainer {
-    height: 500px;
-    width: 300px;
-    padding: 25px 16px;
+    padding-top: 30px;
+    height: max-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+.BasicInfo {
+    width: 100%;
+    background-color: white;
+    padding-bottom: 22px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px lightgray;
+    align-items: center;
+    justify-content: start;
+}
+
+.InBasicInfo {
+    margin-top: 22px;
+    margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+}
+
+.StartUpInfo {
+    background-color: white;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 5px 5px 10px lightgray;
+    padding-top: 50px;
+    padding-bottom: 60px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items:start;
+    justify-content: start;
+}
+
+.InStartUpInfo {
+    margin-top: 10px;
+    margin-left: 130px;
+    padding-left: 3px;
+    display: flex;
+    width: 750px;
+    height: 50px;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
 }
 
 .PhotoContainer {
-    height: 200px;
-    width: 150px;
+    height: 40%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 50px;
-    margin-left: 10px;
-}
-
-.Photo {
-    background-image: url("../nulluser_downsize.jpg");
-    border: 3px solid gray;
-    height: 105px;
-    width: 105px;
-    border-radius: 100%;
-    object-fit: cover;
+    margin-left: 40px;
 }
 
 .Label {
     font-size: 16px; /* 글자 크기 */
-    font-weight: 500;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: max-content;
+    height: 50px;
 }
 
-.Button {
-    padding: 8px 16px; /* 잘 모르겠음 */
+.Tag {
+    font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: end;
+    margin-right: 10px;
+    width: 75px;
+    height: 100%;
+}
+
+.WriteBasic {
+    text-align: start;
+    margin-left: 50px;
+    padding-left: 20px;
+    padding-right: 10px;
+    width: 300px;
+    height: 100%;
+    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    outline-color: #03CF5D;
+}
+
+.WriteStartUp {
+    text-align: start;
+    padding-left: 20px;
+    padding-right: 10px;
+    outline-color: #03CF5D;
+    border: 1px solid lightgray;
+    border-right: 0px;
+    width: 230px;
+    height: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.OptionStyle {
+    width: 230px;
+    height: 48px;
+    border-radius: 0;
+}
+
+.PhotoButton {
+    position: absolute;
+    top: 290px;
+    left: 90;
+    z-index: 10;
+    margin-left: 70px;
+    box-shadow: 2px 2px 5px lightgray;
+    background-image: url("updateProfile.png");
+    background-size: cover;
+    border: 2px solid white;
+    border-radius: 100%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer; /* 잘 모르겠음 */
+}
+
+.PlusButton {
+    margin-left: 400px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 100%; 
+    color: #03CF5D;
+    border-radius: 5px;
+    height: 50px;
+    width: 150px;
     font-size: 16px;
-    border: 2px solid gray;
-    border-radius: 8px;
+    cursor: pointer; /* 잘 모르겠음 */
+}
+
+.CheckButton {
+    width: 25px;
+    height: 25px;
+    margin-top: 12px;
+    margin-right: 8px;
+    margin-left: 20px;
+    font-size: 50px;
+    background-image: url("checkIcon.png");
+    background-size: cover;
+}
+
+.DeleteButton {
+    width: 25px;
+    height: 25px;
+    margin-top: 12px;
+    margin-left: 20px;
+    font-size: 50px;
+    background-image: url("deleteIcon.png");
+    background-size: cover;
+}
+
+.CompleteButton {
+    margin-top: 20px;
+    margin-bottom: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 100%;
+    border-radius: 5px;
+    background-color: #03CF5D;
+    height: 50px;
+    width: 200px;
+    font-size: 16px;
     cursor: pointer; /* 잘 모르겠음 */
 }
