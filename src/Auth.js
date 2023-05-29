@@ -11,7 +11,7 @@ const Auth = () => {
     useDidMountEffect(() => {
       async function fetch() {
         const response = await axios.get(`/auth/kakao/callback?code=${AUTH_CODE}`);
-        localStorage.setItem('login-token', response);
+        localStorage.setItem('login-token', response.data);
         window.location.href = '/'
     };
     fetch();
