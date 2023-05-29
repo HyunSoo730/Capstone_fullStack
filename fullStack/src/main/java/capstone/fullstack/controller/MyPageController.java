@@ -42,6 +42,7 @@ public class MyPageController {
     /**
      * 사용자 정보 수정
      * 일단은 사용자의 닉네임만 수정. 추후에 얘기해서 뭐 더 있으면 추가.
+     * 커뮤니티 기능 안써서 굳이 ?
      */
     @PostMapping("/users/update/me")
     public ResponseEntity<Object> updateUser(@RequestHeader("Authorization") String token, @RequestBody UserDto dto) {
@@ -56,6 +57,7 @@ public class MyPageController {
     }
 
     /**
+     * 창업 희망하는 곳
      * 저장정보 저장.
      */
     @PostMapping("/users/save")
