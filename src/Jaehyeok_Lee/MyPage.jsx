@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import Select from 'react-select';
 import Avatar from 'react-avatar';
 import Styled from 'styled-components';
+import useDidMountEffect from "../UseDidMountEffect";
 import main_logo from '../logo.png'
 import { MenuItems } from "../HomePageMenuItems";
+import HomeStyle from '../HomePage.css';
 
 import './MyPage.css';
 
@@ -14,29 +15,21 @@ const StyledAvatar = Styled(Avatar)`
     width: 105px;
     border-radius: 100%;
     object-fit: cover;
-`;
-
-const StyledSelect = Styled(Select)`
-    text-align: start;
-    padding-left: 20px;
-    padding-right: 10px;
-    border: 1px solid lightgray;
-    border-radius: 0;
-    width: 230px;
-    height: 48px;
-    display: flex;
-    outline-color: #03CF5D;
+    margin-bottom: 10px;
 `;
 
 function MyPage(props) {
+    const [saved, setSaved] = useState([]);
+    //const [startUpInfoList, setStartUpInfoList] = useState([]);
     const [profileImg, setProfileImg] = useState("");
     const [nickname, setNickname] = useState("");
     const [email, setEmail] = useState("");
+    const [idPocket, setIdPocket] = useState([]);
     const [borough, setBorough] = useState([]);
     const [dong, setDong] = useState([]);
     const [choiced, setChoiced] = useState([]);
     const [clicked, setClicked] = useState(false);
-    const data = [0, 1, 2, 3, 4]
+    const [countList, setCountList] = useState([]);
 
     const handleClick = () => {setClicked(!clicked);}
 
@@ -83,6 +76,7 @@ function MyPage(props) {
         .then(response => {
             if(Array.isArray(response)){
                 response.map((value)=>{
+                    setIdPocket(current => [...current, value.reportId]);
                     setBorough(current => [...current, value.borough]);
                     setDong(current => [...current, value.dong]);
                     setChoiced(current => [...current, value.serviceName]);
@@ -90,7 +84,8 @@ function MyPage(props) {
             }
         })
     }
-
+    
+    /*
     const sendUpdatedUserInfo = () => {
         fetch('/mypage/users/me', {
             method : "POST",
@@ -104,8 +99,9 @@ function MyPage(props) {
             })
         })
     }
+    */
 
-    const sendUpdatedStartUpInfo = () => {
+    const addStartUpInfo = (idx) => {
         fetch('/mypage/users/save', {
             method : "POST",
             headers : {
@@ -113,10 +109,23 @@ function MyPage(props) {
                 Authorization : localStorage.getItem('login-token'),
             },
             body : JSON.stringify({
-                borough: borough,
-                dong: dong,
-                serviceName: choiced,
+                borough: borough[idx],
+                dong: dong[idx],
+                serviceName: choiced[idx],
             })
+        })
+    }
+
+    const deleteStartUpInfo = (idx) => {
+        console.log("아이디 인덱스 : " + idPocket[idx]);
+        fetch(`/mypage/users/${idPocket[idx]}`, {
+            method : "DELETE",
+            headers : {
+                Authorization : localStorage.getItem('login-token'),
+            },
+        })
+        .then(response => {
+            if(response.ok) {console.log("삭제 성공")}
         })
     }
 
@@ -135,50 +144,132 @@ function MyPage(props) {
     };
 
     const handleChangeBorough = (event) => {
-        setBorough(current => [...current, event.target.value]);
+        borough[event.target.name] = event.target.value;
+        setBorough(borough);
     };
 
-    const handleChangeDong = (event) => {        
-        setDong(current => [...current, event.target.value]);
+    const handleChangeDong = (event) => {
+        dong[event.target.name] = event.target.value;
+        setDong(dong);
     };
 
-    const deleteStartUpInfo = (event) => {
-
+    const checkStartUpInfo = (event) => { // 저장 버튼
+        addStartUpInfo(event.target.value);
+        saved[event.target.value] = true;
+        setSaved(saved);
+        onUpdateDiv();
     }
 
+    const onAddDiv = () => { 
+        if(saved[saved.length - 1] == true || countList.length == 0) {
+            let countArr = [...countList];
+            let counter = -1;
+            if (countArr.length != 0) {
+                counter = countArr.slice(-1)[0];
+            }
+            counter += 1;
+            countArr.push(counter);
+            setCountList(countArr);
+            setSaved(current => [...current, false]);
+        }
+    }
+
+    const onUpdateDiv = () => {
+        let countArr = [...countList];
+        setCountList(countArr);
+    }
+
+    const onDelDiv = (event) => { // 삭제 버튼
+        deleteStartUpInfo(event.target.value);
+
+        saved.splice(event.target.value, 1);
+        setSaved(saved);
+
+        idPocket.splice(event.target.value, 1);
+        setIdPocket(idPocket);
+
+        borough.splice(event.target.value, 1);
+        setBorough(borough);
+
+        dong.splice(event.target.value, 1);
+        setDong(dong);
+
+        choiced.splice(event.target.value, 1);
+        setChoiced(choiced);
+
+        setCountList(countList);
+    }
+
+    /*
     const handleSubmit = (event) => {
         sendUpdatedUserInfo();
-        sendUpdatedStartUpInfo();
         alert(`수정이 완료되었습니다.`);
         event.preventDefault();
     };
+    */
 
     useEffect(() => {
+
+        setSaved([]);
+        setProfileImg("");
+        setNickname("");
+        setEmail("");
+        setIdPocket([]);
         setBorough([]);
         setDong([]);
         setChoiced([]);
+        setCountList([]);
+
         getBasicUserInfo();
         getStartUpUserInfo();
-        console.log("오우야0번째" + data.length)
-        console.log("오우야1번째" + borough.length)
-        console.log("오우야2번째" + dong.length)
-        console.log("오우야3번째" + choiced.length)
-    }, [])
+
+        
+
+        borough && borough.map((item, index)=>{
+            console.log("아이템이양 " + item);
+            setCountList(current => [...current, index]);
+            setSaved(current => [...current, true]);
+        })
+        
+        console.log("이름 : " + nickname);
+        console.log("이메일 : " + email);
+        console.log("아이디 : " + idPocket);
+        console.log("자치구 : " + borough);
+        console.log("행정동 : " + dong);
+        console.log("창업 정보 : " + choiced);
+        console.log("창업정보 리스트 : " + countList);
+        console.log("세이브 여부 : " + saved);
+    },[])
 
     return (
         <div className="Page">
-            <nav className='Navbar' style={{position: "static"}}>
-                <h1 className="navbar-logo"><img src={main_logo} /></h1>
+            <nav className='Navbar'>
+                <h1 className="navbar-logo"><img src={main_logo} onClick={() => window.location.href='/'}/></h1>
                 <div className='menu-icon' onClick={handleClick}>
                     <i className={clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
                 </div>
-                <ul className={clicked ? 'nav-menu active' : 'nav-menu'}>
+                <ul className="nav-menu-active">
                     {MenuItems.map((item, index)=>{
-                        return (
-                            <li key={index}>
-                                <a className={item.cName} href={item.url}>{item.title}</a>
-                            </li>
-                        )
+                        if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                            return;
+                        }
+                        if(!localStorage.getItem('login-token') && item.url === "mypage"){
+                            return;
+                        }
+                        if(window.location.pathname === '/' + item.url){
+                            return (
+                                <li class="nav-links-active" key={index}>
+                                    <a className="nav-component-active" href={item.url}>{item.title}</a>
+                                </li>
+                            )
+                        }
+                        else{
+                            return (
+                                <li key={index}>
+                                    <a className={item.cName} href={item.url}>{item.title}</a>
+                                </li>
+                            )
+                        }
                     })}
                 </ul>
             </nav>
@@ -193,13 +284,13 @@ function MyPage(props) {
                                 <div className="PhotoContainer">
                                     <h3>기본 정보</h3>
                                     <StyledAvatar src={profileImg}/>
-                                    <div className="PhotoButton" title="사진 변경" onClick={handleChangeProfileImg}>
-                                    </div>
+                                    {/*<div className="PhotoButton" title="사진 변경" onClick={handleChangeProfileImg}></div>*/}
                                 </div>
                                 <div className="InBasicInfo">
                                     <div className="Label">
                                         <div className="Tag">이름</div>
-                                        <input className="WriteBasic" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>
+                                        <div className="WriteBasic" type="text" style={{backgroundColor: "white", color: "gray"}}>{nickname}</div>
+                                        {/*<input className="WriteBasic" type="text" defaultValue={nickname} onChange={handleChangeNickname}/>*/}
                                     </div>
                                     <div style={{height: "10px"}}/>
                                     <div className="Label">
@@ -209,57 +300,80 @@ function MyPage(props) {
                                 </div>
                             </div>
 
-                            <div className="StartUpInfo">
+                            <div className="StartUpInfo" style={{marginBottom: "50px"}}>
                                 <h3 style={{marginLeft: "130px", marginBottom: "25px"}}>창업 정보</h3>
                                 <span style={{marginLeft: "130px", position: "absolute", top: "495px", color: "lightgray", fontSize: "12px"}}>* 최대 5개까지 등록할 수 있습니다.</span>
-                                {borough.map((idx) => {return(
-                                    <div className="InStartUpInfo">
-                                        <input className="WriteStartUp" type="text" placeholder="자치구" defaultValue={borough[idx]} onChange={handleChangeBorough} />
-                                        <input className="WriteStartUp" type="text" placeholder="행정동" defaultValue={dong[idx]} onChange={handleChangeDong} />
-                                        <Select
-                                            placeholder={"희망 업종"}
-                                            options={categoryOption}
-                                            defaultValue={{value: choiced[idx], label: choiced[idx]}}
-                                            onChange={(value) => setChoiced(current => [...current, value["value"]])}
-                                            styles={{
-                                                control: provided => ({...provided, width: '230px', height: '48px', textAlign: 'start', paddingLeft: '10px'}),
-                                                menu: provided => ({...provided, width: '230px', textAlign: 'start'})
-                                            }}
-                                            theme={(theme) => ({
-                                                ...theme,
-                                                borderRadius: 0,
-                                                colors: {
-                                                  ...theme.colors,
-                                                  primary25: '#D3FFDC',
-                                                  primary: '#03CF5D',
-                                                  primary50: '#D3FFDC',
-                                                },
-                                            })}
-                                        />
-                                        {/*<select style={{borderRight: "1px solid lightgray"}} className="WriteStartUp" placeholder="희망 업종" onChange={(value) => setChoiced(value["value"])} defaultValue={{value: choiced, label: choiced}}>
-                                            {categoryOption.map((item) => (
-                                                <option className="OptionStyle" value={item.value}>{item.value}</option>
-                                            ))}
-                                            </select>*/}
-                                        <div className="DeleteButton" onClick={deleteStartUpInfo}></div>
-                                    </div>
-                                )})}
+                                {countList.map((item, index) => {
+                                    return(
+                                        <div className="InStartUpInfo" key={index}>
+                                            <input className="WriteStartUp" name={index} disabled={saved[index] == true? true:false} type="text" placeholder="자치구" defaultValue={borough[index]} onChange={handleChangeBorough} />
+                                            <input className="WriteStartUp" name={index} disabled={saved[index] == true? true:false} type="text" placeholder="행정동" defaultValue={dong[index]} onChange={handleChangeDong} />
+                                            <Select
+                                                //isDisabled={saved[index] == true? true:false}
+                                                label="희망 업종"
+                                                placeholder="희망 업종"
+                                                options={categoryOption}
+                                                defaultValue={{value: choiced[index], label: choiced[index]}}
+                                                onChange={(value) => setChoiced(current => [...current, value["value"]])}
+                                                styles={{
+                                                    //container: provided => ({...provided, }),
+                                                    control: provided => ({...provided, width: '230px', height: '48px', textAlign: 'left', paddingLeft: '10px'}),
+                                                    menu: provided => ({...provided, width: '240px', textAlign: 'left'}),
+                                                    placeholder: (provided) => ({...provided, color: 'gray'})
+                                                }}
+                                                theme={(theme) => ({
+                                                    ...theme,
+                                                    borderRadius: 0,
+                                                    colors: {
+                                                    ...theme.colors,
+                                                    primary25: '#D3FFDC',
+                                                    primary: '#03CF5D',
+                                                    primary50: '#D3FFDC',
+                                                    },
+                                                })}
+                                            />
+                                            {/*<select style={{borderRight: "1px solid lightgray"}} className="WriteStartUp" placeholder="희망 업종" onChange={(value) => setChoiced(value["value"])} defaultValue={{value: choiced, label: choiced}}>
+                                                {categoryOption.map((item) => (
+                                                    <option className="OptionStyle" value={item.value}>{item.value}</option>
+                                                ))}
+                                                </select>*/}
+                                            
+                                            {
+                                                saved[index] == false?
+                                                <button className="CheckButton" type="submit" value={index} onClick={checkStartUpInfo}/>:
+                                                <button className="DeleteButton" type="submit" value={index} onClick={onDelDiv}/>
+                                            }
+                                        </div>
+                                    )
+                                })}
                                 {
-                                    borough.length < 5?
-                                    <div className="PlusButton" title="저장" onClick={() => {}}>
+                                    countList.length < 5?
+                                    <div className="PlusButton" title="저장" onClick={onAddDiv}>
                                         창업 정보 추가 +
                                     </div>
                                     : null
                                 }
                             </div>
-
+                            {/*
                             <div className="CompleteButton" type="submit" title="수정 완료" onClick={handleSubmit}>
                                 수정 완료
                             </div>
+                            */}
                         </div>
                     </div>
                 </div>
             </div>
+            {/*
+            <div id={HomeStyle.wrap} style={{zIndex: "20"}}>
+                <body id={HomeStyle.body}>
+                    <footer id={HomeStyle.footer}>
+                        <span>개발자 : Izony | WHO | WANT | ME </span><br/>
+                        <span>Github : https://github.com/HyunSoo730/Capstone_fullStack</span><br/>
+                        <span>version : 0.1 </span>
+                    </footer>
+                </body>
+            </div>
+            */}
         </div>
     );
 }
