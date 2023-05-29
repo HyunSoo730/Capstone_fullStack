@@ -36,23 +36,25 @@ public class User {
     @CreationTimestamp
     private Timestamp createTime;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> postList = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Post> postList = new ArrayList<>();
+//
+//    @Builder.Default
+//    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> commentList = new ArrayList<>();
 
     //== 연관관계 메서드 ==//
     public void addPost(Post post){
         //post의 writer 설정은 post에서 함
-        postList.add(post);
+//        postList.add(post);
+        return;
     }
 
     public void addComment(Comment comment){
         //comment의 writer 설정은 comment에서 함
-        commentList.add(comment);
+//        commentList.add(comment);
+        return;
     }
 
     //@Builder
