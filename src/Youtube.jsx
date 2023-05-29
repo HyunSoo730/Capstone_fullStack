@@ -155,7 +155,7 @@ function Youtube(props){
           </div>
           <ul className="nav-menu-active">
               {MenuItems.map((item, index)=>{
-                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://localhost:3000/auth/kakao/callback&response_type=code`){
+                if (localStorage.getItem('login-token') && item.url === `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.REACT_APP_REST_API_KEY}&redirect_uri=http://3.39.41.194:3000/auth/kakao/callback&response_type=code`){
                   return;
                 }
                 if(!localStorage.getItem('login-token') && item.url === "mypage"){
