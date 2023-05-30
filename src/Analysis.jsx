@@ -678,28 +678,28 @@ function Analysis(props){
             <div><b>2022년 {DrawerTitle}의 개업 매장 추이는 <b style={{color: "green"}}>{MarketFuture[Object.keys(MarketFuture)[0]][3]["commerceMetrics"]}</b>입니다.</b></div>
           }
           <br/>
-              <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300}  />
+              {CountMarketNum && <ReactApexChart options={ApexChartLineOption} series={CountMarketNum} type="line" height={300} />}
               <div><b>{DrawerTitle}의 거주 구성원</b></div>
-              <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}  />
+              {ResidentNum && <ReactApexChart options={ApexChartBarOption} series={ResidentNum} type="bar" height={300}/>}
               <div><b>{DrawerTitle}의 직장 구성원</b></div>
-              <ReactApexChart options={ApexChartBarOption} series={WorkNum} type="bar" height={300}  />
+              {WorkNum && <ReactApexChart options={ApexChartBarOption} series={WorkNum} type="bar" height={300}  />}
               <div><b>2022년 상권 내 소득 및 지출</b></div>
-              <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />
+              {WorkEarned && <ReactApexChart options={ApexChartLineOption} series={WorkEarned} type="line" height={300}  />}
               <div><b>{DrawerTitle}의 집객시설 개수</b></div>
-              <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />
+              {FacilityNum && <ReactApexChart options={ApexChartBarOption} series={FacilityNum} type="bar" height={300}  />}
               {MyZoom < 15 ? <>
                 <div><b>{DrawerTitle}의 성별 유동 인구</b></div>
-                <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />
+                {SexFloatingPop && <ReactApexChart options={ApexChartBarOption} series={SexFloatingPop} type="bar" height={300}  />}
                 <div><b>{DrawerTitle}의 연령층별 유동 인구</b></div>
-                <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />
+                {AgeFloatingPop && <ReactApexChart options={ApexChartBarOption} series={AgeFloatingPop} type="bar" height={300}  />}
                 <div><b>{DrawerTitle}의 시간대별 유동 인구</b></div>
-                <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />
+                {TimeFloatingPop && <ReactApexChart options={ApexChartBarOption} series={TimeFloatingPop} type="bar" height={300}  />}
                 <div><b>{DrawerTitle}의 요일별 유동 인구</b></div>
-                <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />
+                {WeekFloatingPop && <ReactApexChart options={ApexChartBarOption} series={WeekFloatingPop} type="bar" height={300}  />}
                 <div><b>{DrawerTitle}의 분기별 임대료</b></div>
-                <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />
+                {RentalFee && <ReactApexChart options={ApexChartLineOption} series={RentalFee} type="line" height={300}  />}
                 <div><b>
-                  {DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}시간</b> 입니다.
+                  {AvgPeriod && <div>{DrawerTitle}의 평균 영업시간은 <b style={{color: "green"}}>{AvgPeriod}시간</b> 입니다.</div>}
                   </b></div></> : null
               }
           </div>
