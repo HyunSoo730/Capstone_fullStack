@@ -1,7 +1,7 @@
 # 창업스팟파인더 🏬
 
 <div align="center">
-<img width="550" alt="창업스팟파인더 이미지" src="https://example.com/startup_spot_finder.png">
+<img width="400" alt="창업스팟파인더 이미지" src="https://github.com/HyunSoo730/Capstone_fullStack/assets/102610889/1fa300d8-8d4b-497e-974d-e9308a677cf7">
 </div>
 
 # 창업스팟파인더 - 서울시 상권 분석 및 추천 서비스
