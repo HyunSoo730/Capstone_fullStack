@@ -20,6 +20,8 @@
 
 - 🥇 **장려상** - 2023 서울시 열린데이터 경진대회
   - 서울특별시가 주최하는 열린데이터 경진대회에서 장려상을 수상했습니다.
+- 🥇 **장려상** - 2023 제15회 세종대학교 창의설계경진대회 장려상
+  - 세종대학교에서 주최하는 창의설계경진대회에서 장려상을 수상했습니다. 
   
 
 ## 🛠️ 기술 스택
@@ -52,8 +54,8 @@
 ### 팀원
 |    조현수      |          배승진         |       이재혁         |       신주희         |                                                                                         
 | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|   <img width="160px" src="https://i.postimg.cc/FzHqR8gZ/image.png" />    |                      <img width="160px" src="https://user-images.githubusercontent.com/50205887/207570536-f5a82e48-99a1-4399-91d3-75fc5f8f3349.png" />    |                   <img width="160px" src="https://user-images.githubusercontent.com/50205887/207570536-f5a82e48-99a1-4399-91d3-75fc5f8f3349.png"/>   |                   <img width="160px" src="https://user-images.githubusercontent.com/50205887/207570536-f5a82e48-99a1-4399-91d3-75fc5f8f3349.png"/>   |
-|   [@hyunsoo](https://github.com/HyunSoo730)   |    [@Seung-jin](https://github.com/hyejin)  | [@Jae-hyuk](https://github.com/jinwoo)  | [@Ju-hee](https://github.com/taeyoung)  |
+|   <img width="160px" src="https://i.postimg.cc/FzHqR8gZ/image.png" />    |                      <img width="160px" src="https://avatars.githubusercontent.com/u/50067697?v=4" />    |                   <img width="160px" src="https://avatars.githubusercontent.com/u/93297796?v=4"/>   |                   <img width="160px" src="https://avatars.githubusercontent.com/u/85965862?v=4"/>   |
+|   [@hyunsoo](https://github.com/HyunSoo730)   |    [@Seung-jin](https://github.com/pip-izony)  | [@Jae-hyuk](https://github.com/JaeHyeokee)  | [@Ju-hee](https://github.com/juhee1224)  |
 | 백엔드 개발 | 프론트엔드 개발 | 프론트엔드 개발 | 백엔드 개발 |
 
 ## 🙋‍♂️ 백엔드 개발자 역할 및 기여도
